@@ -1,0 +1,5 @@
+{
+    "compilerOptions": {
+      "jsx": "react" // or "react-jsx" for React 17+
+    }
+}
