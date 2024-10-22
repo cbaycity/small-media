@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import artHoundHeader from './header/header';
 
 function App() {
   const [data, setData] = useState([]);
@@ -14,7 +15,8 @@ function App() {
     
   return (
     <div className="App">
-      <div className="App-header">
+      {artHoundHeader()}
+      <div className="App-body">
         <p>Members List</p>
         {(data.length === 0) ? (<p>loading</p>) : 
         (data.map((member, index) =>(

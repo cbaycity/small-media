@@ -6,11 +6,20 @@
 The react front end was built with `npx create-react-app client --template typescript`. By adding a `proxy` to `package.json`, the front end is connected to the backend. By connect, I mean that when react requests a file using a relative path, it will prepend the proxy to get the end path. 
 
 ## Useful commands:
-1. `flask --app main run` starts up a development server.
+1. The command `flask --app main run` can be from from the backend directory to start up a development server. You need the poetry environment to be runnning and setup correctly.
+2. The front end can be started by running `npm start` in the client directory.
+Note: Once this is done, you can see that the app is delivered by the NPM server but it is requesting reasources from the Flask server. This will let us build an Apache Kafka backend database management via Flask but we'll focus on building the front end web experience using the NPM app. These two components are connected with proxy variable in the react app, which directs the traffic to the Flask server.
 
 ## Current to do:
 
-1. Remove Vite code and the Javascript backend that is being managed by node.
+1. Finish Header
+  i. Control state for signin
+  ii. Add Arthound Logo
+  iii. control state for what header option is currently selected.
+  iv. Get the spacing correct.
+2. Add general feed styling and components.
+3. Create the Local Art and Popular Art sections from the general feed components.
+4. Add 
 
 
 ## Mac Environment Setup:
