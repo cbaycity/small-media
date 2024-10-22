@@ -3,12 +3,12 @@ import React from 'react';
 function artHoundHeader() {
     return(
     <div className="container">
-        <header className = "d-flex align-items-center justify-content-mb-between py-3 mb-4 border-bottom">
-            <div className="logo d-flex align-items-center">
-            <img src="/public/artHoundLogo.png" alt="Art Hound Logo" className="d-flex align-items-center App-logo"/>
+        <header className = "header">
+            <div className="logo">
+            <img src="/public/artHoundLogo.png" alt="Art Hound Logo"/>
             </div>
-            <div className="align-items-center">
-            <ul className="navigation ul mb-2 justify-content-center">
+            <div className="navigation">
+            <ul className="nav-list">
                 <li> <a href="LocalArt" className="navigation-link px-2 link-two">Local Art</a></li>
                 <li> <a href="PopularArt" className="navigation-link px-2 link-two">Popular Art</a></li>
                 <li> <a href="profile" className="navigation-link px-2 link-two">My Art</a></li>
@@ -16,9 +16,13 @@ function artHoundHeader() {
                 <li> <a href="about" className="navigation-link px-2 link-two">About</a></li>
             </ul>
             </div>
-            <div className="d-flex button-right">
-                <button type="button" className="btn btn-outline-primary me-2">Login</button>
-                <button type="button" className="btn btn-primary">Sign-Up</button>
+            <div className="login">
+                <div className="login-button">
+                <button type="button" className="login-button">Login</button>
+                </div>
+                <div className="login-button">
+                <button type="button" className="login-button">Sign-Up</button>
+                </div>
             </div>
         </header>
     </div>
