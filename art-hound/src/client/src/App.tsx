@@ -14,9 +14,9 @@ function App() {
       })}, [])
     
   return (
-    <div className="App">
+    <div className="app">
       {artHoundHeader()}
-      <div className="App-body">
+      <div className="app-body">
         <p>Members List</p>
         {(data.length === 0) ? (<p>loading</p>) : 
         (data.map((member, index) =>(

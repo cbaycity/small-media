@@ -1,200 +1,76 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.container {
-  width: 100%;
-  padding-right: var(--bs-gutter-x, .75rem);
-  padding-left: var(--bs-gutter-x, .75rem);
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  padding-right: 5rem;
-  justify-self: left;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.App-body {
-  background-color: #f2f2f2;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
-}
-
-.d-flex {
-  display: flex !important;
-}
-
-.align-items-center {
-  align-items: center !important;
-}
-
-.btn {
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: center;
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
   text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  border-radius: .25rem;
-  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.btn-outline-primary {
-  color: #0d6efd;
-  border-color: #0d6efd;
+.header {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 100px;
+  background-color: white;
+  padding-bottom: 2rem;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-.ul {
-  display: block;
-  list-style-type: disc;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  padding-inline-start: 40px;
-  unicode-bidi: isolate;
+.navigation {
+  font-size: 16;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 0;
+  margin-bottom: 0;
+  align-content: center;
+  flex-grow: 1;
 }
 
 .li {
   display: list-item;
-  text-align: -webkit-match-parent;
-  unicode-bidi: isolate;
+  padding-left: 5px;
 }
 
-.navigation {
+.nav-list {
+  font-size: 16;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 0;
   margin-bottom: 0;
-  list-style: none;
+  align-content: center;
+  flex-grow: 1;
 }
 
-.navigation-link {
-  display: block;
-  padding: .5rem 1rem;
-  color: #0d6efd;
-  text-decoration: none;
-  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+
+.logo {
+  justify-content: center;
+  justify-self: left;
+  flex-basis: 20%;
 }
 
-.border-bottom {
-  border-bottom: 1px solid #dee2e6 !important;
-  border-bottom-width: 1px !important;
-  border-bottom-style: solid !important;
-  border-bottom-color: rgb(222, 226, 230) !important;
+.login {
+  display: flex;
+  justify-content: right;
+  gap: 20px;
+  align-content: center;
+  flex-basis: 20%;
+  margin-right: 20px;
 }
 
-.text-dark {
-  color: #212529 !important;
+.login-button {
+  justify-content: right;
+  justify-self: right;
+  align-content: center;
 }
 
-.text-decoration-none {
-  text-decoration: none !important;
+
+.app-body {
+  background-color: gray;
 }
 
-.flex-wrap {
-  flex-wrap: wrap !important;
-}
-
-.me-2 {
-  margin-right: .5rem !important;
-}
-
-.px-2 {
-  padding-right: .5rem !important;
-  padding-left: .5rem !important;
-}
-
-.link-two {
-  color: #6c757d;
-}
-
-.col-12 {
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-.mb-2 {
-  margin-bottom: .5rem !important;
-}
-
-.justify-content-md-between {
-  justify-content: space-between !important;
-}
-
-.justify-content-center {
-  justify-content: center !important;
-}
-
-.justify-content-left {
-  justify-content: left !important;
-}
-
-.button-right {
-  padding-left: 5rem;
-  justify-self: right !important;
-}
-
-.align-items-left {
-  align-items: left !important;
-}
-
-.py-3 {
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-}
-
-.mb-4 {
-  margin-bottom: 1.5rem !important;
+.app {
+  background-color: gray;
 }
