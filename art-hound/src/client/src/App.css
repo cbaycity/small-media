@@ -3,6 +3,8 @@
   padding: 0;
   list-style: none;
   text-decoration: none;
+  font-family: "Bradley Hand", "Comic Sans MS", cursive;
+  font-size: 24px;
 }
 
 .header {
@@ -18,7 +20,6 @@
 }
 
 .navigation {
-  font-size: 16;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -31,10 +32,10 @@
 .li {
   display: list-item;
   padding-left: 5px;
+  font-size: 50px;
 }
 
 .nav-list {
-  font-size: 16;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -48,15 +49,17 @@
 .logo {
   justify-content: center;
   justify-self: left;
-  flex-basis: 20%;
+  flex-basis: 30%;
 }
 
 .login {
   display: flex;
   justify-content: right;
-  gap: 20px;
+  align-items: center;
+  padding: .375rem .75rem;
+  gap: 30px;
   align-content: center;
-  flex-basis: 20%;
+  flex-basis: 30%;
   margin-right: 20px;
 }
 
@@ -64,6 +67,26 @@
   justify-content: right;
   justify-self: right;
   align-content: center;
+  /*Bootstrap button.*/
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    top: 50%;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 
@@ -74,3 +97,4 @@
 .app {
   background-color: gray;
 }
+
