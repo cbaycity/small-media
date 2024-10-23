@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import artHoundHeader from './header/header';
+import artHoundHeader from './components/Header';
 
 function App() {
   const [data, setData] = useState([]);
