@@ -10,8 +10,8 @@ def index():
 
 
 @app.route("/public/<file>")
-def styling(file):
-    return app.send_static_file(f"public/{file}")
+def public(file):
+    return app.send_static_file(f"client/public/{file}")
 
 
 @app.route("/members")

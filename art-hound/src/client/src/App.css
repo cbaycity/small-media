@@ -1,22 +1,29 @@
-*{
+body {
   margin: 0;
   padding: 0;
   list-style: none;
   text-decoration: none;
-  font-family: "Bradley Hand", "Comic Sans MS", cursive;
-  font-size: 24px;
+  font-family: "Comic Sans MS", cursive;
+  font-size: 16px;
 }
 
-.header {
+#header {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 100px;
   background-color: white;
-  padding-bottom: 2rem;
+  padding-bottom: .5rem;
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 18px;
+  max-width: 1920px; /* whatever you desire */
+  margin-left: auto; /* center the container */
+  margin-right: auto; /* center the container */
+}
+
+.headerSection {
+  height: 100%;
 }
 
 .navigation {
@@ -43,6 +50,7 @@
   margin-bottom: 0;
   align-content: center;
   flex-grow: 1;
+  list-style: none;
 }
 
 
