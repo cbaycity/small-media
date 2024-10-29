@@ -97,7 +97,6 @@ body {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-
 .app-body {
   background-color: gray;
 }
@@ -106,3 +105,21 @@ body {
   background-color: gray;
 }
 
+.p40{
+  flex-basis: 40%;
+}
+
+.about-me-body{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.portrait{
+  max-width: 400px;
+  max-height: 400px;
+  padding-left: 5%;
+  float: right;
+}
