@@ -1,22 +1,29 @@
-*{
+body {
   margin: 0;
   padding: 0;
   list-style: none;
   text-decoration: none;
-  font-family: "Bradley Hand", "Comic Sans MS", cursive;
-  font-size: 24px;
+  font-family: "Comic Sans MS", cursive;
+  font-size: 16px;
 }
 
-.header {
+#header {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 100px;
   background-color: white;
-  padding-bottom: 2rem;
+  padding-bottom: .5rem;
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 18px;
+  max-width: 1920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.headerSection {
+  height: 100%;
 }
 
 .navigation {
@@ -43,6 +50,7 @@
   margin-bottom: 0;
   align-content: center;
   flex-grow: 1;
+  list-style: none;
 }
 
 
@@ -89,7 +97,6 @@
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-
 .app-body {
   background-color: gray;
 }
@@ -98,3 +105,26 @@
   background-color: gray;
 }
 
+.p40{
+  flex-basis: 40%;
+}
+
+.about-me-body{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 1920px;
+}
+
+.about-me-text {
+  align-content: center;
+}
+
+.portrait{
+  max-width: 400px;
+  max-height: 400px;
+  padding-left: 5%;
+  float: right;
+}

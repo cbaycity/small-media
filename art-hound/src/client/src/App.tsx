@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import artHoundHeader from './header/header';
+import artHoundHeader from './components/Header';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./components/Home";
+import About from "./components/About";
+import LocalArt from "./components/LocalArt";
+import PopularArt from "./components/PopularArt";
+import UserProfile from "./components/UserProfile";
+import Friends from "./components/Friends";
+
 
 function App() {
-  const [data, setData] = useState([]);
-  
-  useEffect(() => {
-    fetch("/members")
-      .then(res => res.json())
-      .then((data) => {
-        setData(data);
-        console.log(data);
-      })}, [])
-    
   return (
     <div className="app">
       {artHoundHeader()}
-      <div className="app-body">
-        <p>Members List</p>
-        {(data.length === 0) ? (<p>loading</p>) : 
-        (data.map((member, index) =>(
-          <li key={index}>
-            {member}
-          </li>
-        ))
-      )}
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/Home" element={<Home />}/>
+        <Route path="/About" element={<About />}/>
+        <Route path="/Friends" element={<Friends />}/>
+        <Route path="/LocalArt" element={<LocalArt />}/>
+        <Route path="/PopularArt" element={<PopularArt />}/>
+        <Route path="/MyArt" element={<UserProfile />}/>
+      </Routes>
     </div>
   );
 }

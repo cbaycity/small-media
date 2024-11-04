@@ -14,12 +14,11 @@ Note: Once this is done, you can see that the app is delivered by the NPM server
 
 1. Finish Header
   i. Control state for signin
-  ii. Add Arthound Logo
-  iii. control state for what header option is currently selected.
-  iv. Get the spacing correct.
-2. Add general feed styling and components.
+  ii. Add Arthound Logo Update and Small logo icon.
+2. Create a signup form. 
+3. Create a database that manages a backend with access.
 3. Create the Local Art and Popular Art sections from the general feed components.
-4. Add 
+4. Style has to look like an artist made it. Consider making the buttons paint brush marks.
 
 
 ## Mac Environment Setup:

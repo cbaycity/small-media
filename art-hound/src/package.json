@@ -20,7 +20,7 @@
       "redux": "^3.6.0"
     },
     "scripts": {
-      "start": "react-scripts-ts start",
+      "start": "react-scripts-ts start client/src/index.tsx",
       "build": "react-scripts-ts build",
       "test": "react-scripts-ts test --env=jsdom",
       "eject": "react-scripts-ts eject"
