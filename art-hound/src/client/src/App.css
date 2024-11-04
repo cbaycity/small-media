@@ -17,9 +17,9 @@ body {
   padding-left: 10px;
   padding-right: 10px;
   font-size: 18px;
-  max-width: 1920px; /* whatever you desire */
-  margin-left: auto; /* center the container */
-  margin-right: auto; /* center the container */
+  max-width: 1920px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .headerSection {
@@ -115,6 +115,11 @@ body {
   justify-content: space-between;
   padding-left: 10px;
   padding-right: 10px;
+  max-width: 1920px;
+}
+
+.about-me-text {
+  align-content: center;
 }
 
 .portrait{

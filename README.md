@@ -15,7 +15,8 @@ Note: Once this is done, you can see that the app is delivered by the NPM server
 1. Finish Header
   i. Control state for signin
   ii. Add Arthound Logo Update and Small logo icon.
-2. Create an About page.
+2. Create a signup form. 
+3. Create a database that manages a backend with access.
 3. Create the Local Art and Popular Art sections from the general feed components.
 4. Style has to look like an artist made it. Consider making the buttons paint brush marks.
 
