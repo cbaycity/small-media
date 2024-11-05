@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 
 
-function artHoundHeader() {
+function ArtHoundHeader() {
+    
+    let navigate = useNavigate();
+    const routeChange = (path:string) =>{ 
+        navigate(path);
+      }
+    
     return(
     <div className="container">
         <header className = "header" id="header">
@@ -19,16 +25,12 @@ function artHoundHeader() {
                 </ul>
             </div>
             <div className="login headerSection">
-                <div className="login-button">
                 <button type="button" className="login-button">Login</button>
-                </div>
-                <div className="login-button">
-                <button type="button" className="login-button">Sign-Up</button>
-                </div>
+                <button type="button" className="login-button" onClick={() => routeChange("/signup")}>Sign-Up</button>
             </div>
         </header>
     </div>
     );
 };
 
-export default artHoundHeader;
+export default ArtHoundHeader;

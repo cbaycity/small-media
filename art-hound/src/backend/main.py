@@ -19,5 +19,11 @@ def members():
     return ["Bayard", "Sean", "Eamon"]
 
 
+@app.route("/createAccount")
+def createAccount():
+    """Creates a new account if the username and email don't already exist."""
+    return True
+
+
 if __name__ == "__main__":
     app.run(debug=True)  # Need to turn off when in production.
