@@ -60,6 +60,7 @@ function AccountCreation() {
 
     return (
         <div className="container">
+            <></>
             <section>
                 {/*The below p object displays error messages*/}
                 <p ref={errRef} className={ errMsg ? "errMsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -88,6 +89,8 @@ function AccountCreation() {
                     <p>Confirm Password:<input type="password" name="_" maxLength={30}/></p>
                     <p>Submit<input type="submit" value="Submit"></input></p>
                 </form>
+                {/*Add the stylesheet to the CSS.*/}
+                <link rel="stylesheet" href="public/signup-form.css" />
             </section>
         </div>
     );
