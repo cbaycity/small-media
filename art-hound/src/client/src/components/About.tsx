@@ -2,11 +2,11 @@ import React from 'react';
 
 function About() {
     return(
-    <div className="container about-me-body">
+    <div className="container about-me-body center-body">
         <div className="p40">
             <img className="portrait" src="public/BayardPhoto.png"></img>
         </div>
-        <div className="p40 about-me-text">
+        <div className="p40 about-me-text div-body">
             <p>Art Hound is a place where artists can post their art, project updates, and other work without fearing that it will be used to train a generative AI model.</p>
             <p>We fight to ensure that our user's artwork isn't trained on.</p>
             <ul>

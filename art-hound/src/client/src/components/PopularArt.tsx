@@ -2,7 +2,7 @@ import React from 'react';
 
 function PopularArt() {
     return(
-    <div className="container">
+    <div className="container center-body">
         <p>Need to build the PopularArt website.</p>
     </div>
     );

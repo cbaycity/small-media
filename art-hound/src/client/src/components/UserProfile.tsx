@@ -2,7 +2,7 @@ import React from 'react';
 
 function UserProfile() {
     return(
-    <div className="container">
+    <div className="container center-body">
         <p>Need to build the UserProfile website.</p>
     </div>
     );
