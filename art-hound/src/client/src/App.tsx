@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import ArtHoundHeader from './components/Header';
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import { Home, Login } from "./components/Home";
 import About from "./components/About";
 import LocalArt from "./components/LocalArt";
 import PopularArt from "./components/PopularArt";
@@ -23,6 +23,7 @@ function App() {
         <Route path="/PopularArt" element={<PopularArt />}/>
         <Route path="/MyArt" element={<UserProfile />}/>
         <Route path="/signup" element={<AccountCreation />}/>
+        <Route path="/login" element={<Login />}/>
       </Routes>
     </div>
   );

@@ -59,8 +59,8 @@ function AccountCreation() {
     }, [user, pwd, matchPwd])
 
     return (
-        <div className="container">
-            <div className="form-container">
+        <div className="container full-height">
+            <div className="form-container full-height">
                 <div id="form-one-block">
                 {/*The below p object displays error messages*/}
                 <p ref={errRef} className={ errMsg ? "errMsg" : "offscreen"} aria-live="assertive">{errMsg}</p>

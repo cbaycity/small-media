@@ -10,7 +10,7 @@ function ArtHoundHeader() {
       }
     
     return(
-    <div className="container center-body">
+    <div className="container">
         <header className = "header" id="header">
             <div className="logo headerSection">
             <img src="/public/artHoundLogo.svg" alt="Art Hound Logo" width="150px" height="90px"/>
@@ -25,7 +25,7 @@ function ArtHoundHeader() {
                 </ul>
             </div>
             <div className="login headerSection">
-                <button type="button" className="login-button">Login</button>
+                <button type="button" className="login-button" onClick={() => routeChange("/login")}>Login</button>
                 <button type="button" className="login-button" onClick={() => routeChange("/signup")}>Sign-Up</button>
             </div>
         </header>
