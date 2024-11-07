@@ -17,9 +17,9 @@ body {
   padding-left: 10px;
   padding-right: 10px;
   font-size: 18px;
-  max-width: 1920px;
   margin-left: auto;
   margin-right: auto;
+  align-items: center;
 }
 
 .headerSection {
@@ -51,6 +51,7 @@ body {
   align-content: center;
   flex-grow: 1;
   list-style: none;
+  align-items: center;
 }
 
 

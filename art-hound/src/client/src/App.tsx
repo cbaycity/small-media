@@ -12,6 +12,7 @@ import { AccountCreation } from "./components/SignupForm";
 
 function App() {
   return (
+    <body>
     <div className="app">
       {ArtHoundHeader()}
       <Routes>
@@ -25,6 +26,7 @@ function App() {
         <Route path="/signup" element={<AccountCreation />}/>
       </Routes>
     </div>
+    </body>
   );
 }
 

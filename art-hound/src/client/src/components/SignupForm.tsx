@@ -60,13 +60,13 @@ function AccountCreation() {
 
     return (
         <div className="container">
-            <></>
-            <section>
+            <div className="form-container">
+                <div id="form-one-block">
                 {/*The below p object displays error messages*/}
                 <p ref={errRef} className={ errMsg ? "errMsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <h1>Signup</h1>
-                <form action="/createAccount" method="post">
-                    <p>Username:<input
+                <form className = "signup-form" action="/createAccount" method="post">
+                    <h2>Signup</h2>
+                    <label htmlFor="username">Username:<input
                         type="text"
                         id = "username"
                         name="username"
@@ -78,20 +78,21 @@ function AccountCreation() {
                         aria-describedby='uidnote'
                         onFocus={() => setUserFocus(true)}
                         onBlur={() => setUserFocus(false)}
-                        maxLength={30}/></p>
-                    <p id="uidnote" className={userFocus && user && !validName ? "instructions": "offscreen"}>
+                        maxLength={30}/></label>
+                    <label id="uidnote" className={userFocus && user && !validName ? "instructions": "offscreen"}>
                         4 to 24 characters.<br />
                         Must begin with a letter.<br />
                         Only letters, numbers, underscores, hyphens allowed.
-                    </p>
-                    <p>Email:<input type="email" name="email"/></p>
-                    <p>Password:<input type="password" name="password" maxLength={30}/></p>
-                    <p>Confirm Password:<input type="password" name="_" maxLength={30}/></p>
-                    <p>Submit<input type="submit" value="Submit"></input></p>
+                    </label>
+                    <label htmlFor="email">Email:<input type="email" id = "email" name="email"/></label>
+                    <label htmlFor="password">Password:<input type="password" id="password" name="password" maxLength={30}/></label>
+                    <label htmlFor="confirmPassword">Confirm Password:<input type="password" id="confirmPassword" name="confirmPassword" maxLength={30}/></label>
+                    <button type="submit">Sign Up</button>
                 </form>
-                {/*Add the stylesheet to the CSS.*/}
+                </div>
+                {/* Add the stylesheet to the CSS.*/}
                 <link rel="stylesheet" href="public/signup-form.css" />
-            </section>
+            </div>
         </div>
     );
 };
