@@ -56,19 +56,23 @@ html, body { height: 100%;   width: 100%; margin: 0; padding: 0; }
   flex-wrap: wrap;
   justify-content: space-between;
   padding-left: 0;
-  margin-bottom: 0;
+  margin: 0;
   align-content: center;
   flex-grow: 1;
   list-style: none;
   align-items: center;
   text-align: center;
   vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .nav-list ul {
   align-items: center;
   text-align: center;
   vertical-align: center;
+  margin: auto;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .nav-list li {
