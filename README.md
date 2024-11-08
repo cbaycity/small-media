@@ -12,13 +12,16 @@ Note: Once this is done, you can see that the app is delivered by the NPM server
 
 ## Current to do:
 
-1. Finish Header
-  i. Control state for signin
-  ii. Add Arthound Logo Update and Small logo icon.
-2. Create a signup form. 
-3. Create a database that manages a backend with access.
-3. Create the Local Art and Popular Art sections from the general feed components.
-4. Style has to look like an artist made it. Consider making the buttons paint brush marks.
+1. Make small icon for logo. Make logo without color. (Done!)
+2. Finish Header
+  i. Update to new logo and then be done with this component. (Done!)
+  ii. Figure out why the centering of the list is changing for some pages. Everything needs to be centered. (Working!)
+3. Add images and info to the backend for a single post.  (Done!)
+4. Create a signup form. 
+  i. Need to control state using Javascript. The userFocus variables need to be updated as does the error checking.
+5. Create a database that manages a backend with access.
+6. Create the Local Art and Popular Art sections from the general feed components.
+7. Figure out some form of testing for the components and for the site. Jack suggests that only testing for backend hits is needed?
 
 
 ## Mac Environment Setup:
