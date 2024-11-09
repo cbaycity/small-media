@@ -12,7 +12,7 @@ function Home() {
 
 function Login(){
     return (
-        <div className="container full-height">
+        <div className="container full-height general-body-background">
             <div className="form-container">
                 <div id="form-one-block">
                 {/*The below p object displays error messages*/}

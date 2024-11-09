@@ -13,7 +13,7 @@ function ArtHoundHeader() {
     <div className="container">
         <header className = "header" id="header">
             <div className="logo headerSection">
-            <img src="/public/artHoundLogo.svg" alt="Art Hound Logo" width="150px" height="90px"/>
+            <img src="/public/artHoundLogoColor.svg" alt="Art Hound Logo" width="150px" height="90px"/>
             </div>
             <div className="navigation headerSection">
                 <ul className="nav-list">

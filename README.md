@@ -15,7 +15,7 @@ Note: Once this is done, you can see that the app is delivered by the NPM server
 1. Make small icon for logo. Make logo without color. (Done!)
 2. Finish Header
   i. Update to new logo and then be done with this component. (Done!)
-  ii. Figure out why the centering of the list is changing for some pages. Everything needs to be centered. (Working!)
+  ii. Figure out why the centering of the list is changing for some pages. Everything needs to be centered. (Done!)
 3. Add images and info to the backend for a single post.  (Done!)
 4. Create a signup form. 
   i. Need to control state using Javascript. The userFocus variables need to be updated as does the error checking.

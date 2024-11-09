@@ -2,7 +2,7 @@ import React from 'react';
 
 function About() {
     return(
-    <div className="container about-me-body center-body">
+    <div className="container about-me-body center-body general-body-background full-height">
         <div className="p40">
             <img className="portrait" src="public/BayardPhoto.png"></img>
         </div>

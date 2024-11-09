@@ -4,8 +4,7 @@ import ArtHoundHeader from './components/Header';
 import { Routes, Route } from "react-router-dom";
 import { Home, Login } from "./components/Home";
 import About from "./components/About";
-import LocalArt from "./components/LocalArt";
-import PopularArt from "./components/PopularArt";
+import Feed from "./components/Feed";
 import UserProfile from "./components/UserProfile";
 import Friends from "./components/Friends";
 import { AccountCreation } from "./components/SignupForm";
@@ -19,8 +18,8 @@ function App() {
         <Route path="/Home" element={<Home />}/>
         <Route path="/About" element={<About />}/>
         <Route path="/Friends" element={<Friends />}/>
-        <Route path="/LocalArt" element={<LocalArt />}/>
-        <Route path="/PopularArt" element={<PopularArt />}/>
+        <Route path="/LocalArt" element={<Feed />}/>
+        <Route path="/PopularArt" element={<Feed />}/>
         <Route path="/MyArt" element={<UserProfile />}/>
         <Route path="/signup" element={<AccountCreation />}/>
         <Route path="/login" element={<Login />}/>
