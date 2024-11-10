@@ -19,4 +19,7 @@ def createFeed(user, feed_type):
     with open("sample-assets/bayard-post-two/post-data.json", "r") as file:
         post_two = json.load(file)
 
-    return [post_one, post_two]
+    with open("sample-assets/bayard-post-three/post-data.json", "r") as file:
+        post_three = json.load(file)
+
+    return [post_one, post_two, post_three]

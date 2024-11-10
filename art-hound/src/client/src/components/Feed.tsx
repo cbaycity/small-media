@@ -62,6 +62,13 @@ function Feed() {
                 <img className = "post-img" src="postphotos/photoTwo.jpg"/>
             </div>
 
+            <div className="post">
+                <h3>Testing Image Size.</h3>
+                <p>October 3rd 2024</p>
+                <p>Space Image.</p>
+                <img className = "post-img" src="postphotos/photoThree.png"/>
+            </div>
+
         </div>
         <div id="right-side-bar" className="side-bar">
             <p>Ad</p>

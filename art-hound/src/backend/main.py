@@ -1,5 +1,5 @@
 from flask import Flask, request
-from feed import createFeed
+from backend.feed import createFeed
 
 app = Flask(__name__, static_folder="../", static_url_path="/")
 
