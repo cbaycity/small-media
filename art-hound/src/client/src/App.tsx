@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import artHoundHeader from './components/Header';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./components/Home";
-import About from "./components/About";
-import LocalArt from "./components/LocalArt";
-import PopularArt from "./components/PopularArt";
-import UserProfile from "./components/UserProfile";
-import Friends from "./components/Friends";
-
+import React from 'react'
+import './App.css'
+import ArtHoundHeader from './components/Header'
+import { Routes, Route } from 'react-router-dom'
+import { Home, Login } from './components/Home'
+import About from './components/About'
+import Feed from './components/Feed'
+import UserProfile from './components/UserProfile'
+import Friends from './components/Friends'
+import { AccountCreation } from './components/SignupForm'
 
 function App() {
-  return (
-    <div className="app">
-      {artHoundHeader()}
-      <Routes>
-        <Route path="/" element={<Home />}/>
-        <Route path="/Home" element={<Home />}/>
-        <Route path="/About" element={<About />}/>
-        <Route path="/Friends" element={<Friends />}/>
-        <Route path="/LocalArt" element={<LocalArt />}/>
-        <Route path="/PopularArt" element={<PopularArt />}/>
-        <Route path="/MyArt" element={<UserProfile />}/>
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="app div-body">
+            {ArtHoundHeader()}
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/Home" element={<Home />} />
+                <Route path="/About" element={<About />} />
+                <Route path="/Friends" element={<Friends />} />
+                <Route path="/LocalArt" element={<Feed />} />
+                <Route path="/PopularArt" element={<Feed />} />
+                <Route path="/MyArt" element={<UserProfile />} />
+                <Route path="/signup" element={<AccountCreation />} />
+                <Route path="/login" element={<Login />} />
+            </Routes>
+        </div>
+    )
 }
 
-export default App;
+export default App
