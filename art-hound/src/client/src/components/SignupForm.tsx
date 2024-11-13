@@ -77,7 +77,14 @@ function AccountCreation() {
         } else {
             setErrMsg('')
         }
-    }, [user, pwd, matchPwd, email])
+    }, [validName, validPwd, validMatch, validEmail])
+
+    const [isValidForm, setValidForm] = useState(false);
+    useEffect(() => {
+        if (validName && validEmail && validPwd && validMatch){
+            setValidForm(true)
+        }
+    }, [validName, validEmail, validPwd, validMatch])
 
     return (
         <div className="container full-height general-body-background">
@@ -203,7 +210,8 @@ function AccountCreation() {
                             Passwords must match.
                         </p>
                         <br />
-                        <button type="submit">Sign Up</button>
+                        <p className={errMsg && user && pwd && email && matchPwd ? 'instructions' : 'offscreen'}>{errMsg}</p>
+                        <button type="submit" disabled={!isValidForm}>Sign Up</button>
                     </form>
                 </div>
                 {/* Add the stylesheet to the CSS.*/}
