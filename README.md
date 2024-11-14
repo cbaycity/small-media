@@ -35,6 +35,7 @@ The react front end was built with `npx create-react-app client --template types
 6. Set default vscode interpreter to the poetry shell env.
 
 ## Linter Notes:
+
 ```bash
 python -m black <target>
 prettier <target: ex. ./*> --write

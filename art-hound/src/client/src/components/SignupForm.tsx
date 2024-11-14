@@ -1,11 +1,19 @@
 import React from 'react'
 import { useRef, useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const USER_VALIDATION = /^[a-zA-Z][a-zA-Z0-9-_]{3,20}$/
 const PASSWORD_VALIDATION = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/
 const EMAIL_VALIDATION = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
-function AccountCreation({ email_taken, username_taken}: {email_taken:boolean, username_taken: boolean}) {
+function AccountCreation() {
+    const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
+
+    // Parse the query parameters
+    const email_taken = queryParams.get('email_taken') === 'true'
+    const username_taken = queryParams.get('username_taken') === 'true'
+
     const userRef = useRef<HTMLInputElement>(null)
 
     const [user, setUser] = useState('')
@@ -77,13 +85,12 @@ function AccountCreation({ email_taken, username_taken}: {email_taken:boolean, u
         }
     }, [validName, validPwd, validMatch, validEmail])
 
-    const [isValidForm, setValidForm] = useState(false);
+    const [isValidForm, setValidForm] = useState(false)
     useEffect(() => {
-        if (validName && validEmail && validPwd && validMatch){
+        if (validName && validEmail && validPwd && validMatch) {
             setValidForm(true)
         }
     }, [validName, validEmail, validPwd, validMatch])
-
 
     return (
         <div className="container full-height general-body-background">
@@ -97,13 +104,15 @@ function AccountCreation({ email_taken, username_taken}: {email_taken:boolean, u
                     >
                         {email_taken && (
                             <h3 className="instructions">
-                                The email provided was used in another account, please choose another.
+                                The email provided was used in another account,
+                                please choose another.
                             </h3>
                         )}
 
                         {username_taken && (
                             <h3 className="instructions">
-                                The username requested was taken, please choose another.
+                                The username requested was taken, please choose
+                                another.
                             </h3>
                         )}
 
@@ -221,8 +230,18 @@ function AccountCreation({ email_taken, username_taken}: {email_taken:boolean, u
                             Passwords must match.
                         </p>
                         <br />
-                        <p className={errMsg && user && pwd && email && matchPwd ? 'instructions' : 'offscreen'}>{errMsg}</p>
-                        <button type="submit" disabled={!isValidForm}>Sign Up</button>
+                        <p
+                            className={
+                                errMsg && user && pwd && email && matchPwd
+                                    ? 'instructions'
+                                    : 'offscreen'
+                            }
+                        >
+                            {errMsg}
+                        </p>
+                        <button type="submit" disabled={!isValidForm}>
+                            Sign Up
+                        </button>
                     </form>
                 </div>
                 {/* Add the stylesheet to the CSS.*/}

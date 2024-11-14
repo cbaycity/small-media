@@ -21,10 +21,7 @@ function App() {
                 <Route path="/LocalArt" element={<Feed />} />
                 <Route path="/PopularArt" element={<Feed />} />
                 <Route path="/MyArt" element={<UserProfile />} />
-                <Route
-                    path="/signup"
-                    element={<AccountCreation email_taken={false} username_taken = {false}/>}
-                    />
+                <Route path="/signup" element={<AccountCreation />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/createProfile" element={<ProfileCreation />} />
             </Routes>
