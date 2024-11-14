@@ -5,9 +5,8 @@ const USER_VALIDATION = /^[a-zA-Z][a-zA-Z0-9-_]{3,20}$/
 const PASSWORD_VALIDATION = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/
 const EMAIL_VALIDATION = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
-function AccountCreation() {
+function AccountCreation({ email_taken, username_taken}: {email_taken:boolean, username_taken: boolean}) {
     const userRef = useRef<HTMLInputElement>(null)
-    const errRef = useRef<HTMLInputElement>(null)
 
     const [user, setUser] = useState('')
     const [validName, setValidName] = useState(false)
@@ -26,7 +25,6 @@ function AccountCreation() {
     const [emailFocus, setEmailFocus] = useState(false)
 
     const [errMsg, setErrMsg] = useState('')
-    const [success, setSuccess] = useState(false)
 
     /* Checks if the user's screen is focused on the user component.*/
     useEffect(() => {
@@ -86,6 +84,7 @@ function AccountCreation() {
         }
     }, [validName, validEmail, validPwd, validMatch])
 
+
     return (
         <div className="container full-height general-body-background">
             <div className="form-container full-height">
@@ -96,6 +95,18 @@ function AccountCreation() {
                         action="/createAccount"
                         method="post"
                     >
+                        {email_taken && (
+                            <h3 className="instructions">
+                                The email provided was used in another account, please choose another.
+                            </h3>
+                        )}
+
+                        {username_taken && (
+                            <h3 className="instructions">
+                                The username requested was taken, please choose another.
+                            </h3>
+                        )}
+
                         <h2>Signup</h2>
                         <label htmlFor="username">
                             Username:
