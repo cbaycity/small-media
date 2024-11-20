@@ -34,6 +34,7 @@ The react front end was built with `npx create-react-app client --template types
 4. pip install poetry
 5. use poetry shell for development
 6. Set default vscode interpreter to the poetry shell env.
+7. Had to turn off airplay reciever to open up port 5000 for development with Docker.
 
 ## Linter Notes:
 
