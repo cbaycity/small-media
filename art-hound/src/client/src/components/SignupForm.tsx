@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 const USER_VALIDATION = /^[a-zA-Z][a-zA-Z0-9-_]{3,20}$/
 const PASSWORD_VALIDATION = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/
-const EMAIL_VALIDATION = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+const EMAIL_VALIDATION = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 function AccountCreation() {
     const location = useLocation()

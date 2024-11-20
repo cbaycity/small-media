@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    networks:
+      - art-hound
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./client
+    networks:
+      - art-hound
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+networks:
+  art-hound:
+    driver: bridge

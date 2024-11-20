@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, url_for
-from backend.feed import createFeed
-from backend.login import newUser, login
+from feed import createFeed
+from login import newUser, login
 from flask_wtf import CSRFProtect
 import secrets
 
