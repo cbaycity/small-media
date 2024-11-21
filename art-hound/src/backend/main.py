@@ -3,12 +3,20 @@ from feed import createFeed
 from login import newUser, login
 from flask_wtf import CSRFProtect
 import secrets
+from pymongo import MongoClient
+import os
 
 app = Flask(__name__, static_folder="/", static_url_path="/")
 app.secret_key = secrets.token_hex(98)
 # Need to protect against Cross-site request forgery.
 # Ignoring this for now.
 # CSRFProtect(app)
+
+
+# MongoDB Connection.
+mongo_uri = os.getenv("MONGO_URI", "mongodb://mongodb:27017/mydatabase")
+client = MongoClient(mongo_uri)
+db = client.mydatabase
 
 
 @app.route("/")
