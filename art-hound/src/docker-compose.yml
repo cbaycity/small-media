@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-    mongodb:
+  mongodb:
     image: mongo:latest
     container_name: mongodb
     ports:
@@ -32,3 +32,7 @@ services:
 networks:
   art-hound:
     driver: bridge
+
+volumes:
+  mongodb_data:
+    external: true
