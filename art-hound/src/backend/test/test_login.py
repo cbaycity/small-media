@@ -1,7 +1,7 @@
 """Tests that the login functions work with MongoDB correctly."""
 
 from login import newUser, login
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Tuple
 import pytest
 from pymongo.database import Database
 
@@ -34,7 +34,7 @@ def test_new_user_login(users: List[TestUser], db: Database):
 
 
 @pytest.mark.parametrize(
-    "testname,users",
+    "testname,users,result",
     [
         (
             "Duplicate Username",
@@ -42,6 +42,7 @@ def test_new_user_login(users: List[TestUser], db: Database):
                 TestUser("test1", "test@gmail.com", "Password1"),
                 TestUser("test1", "test2@gmail.com", "Password2"),
             ],
+            (False, True),
         ),
         (
             "Duplicate Email",
@@ -49,14 +50,25 @@ def test_new_user_login(users: List[TestUser], db: Database):
                 TestUser("test1", "test@gmail.com", "Password1"),
                 TestUser("test2", "test@gmail.com", "Password2"),
             ],
+            (True, False),
+        ),
+        (
+            "Duplicate Email and Username",
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test1", "test@gmail.com", "Password2"),
+            ],
+            (False, False),
         ),
     ],
 )
-def test_new_user_fail(testname: str, users: List[TestUser], db: Database):
+def test_new_user_fail(
+    testname: str, users: List[TestUser], result: Tuple[bool, bool], db: Database
+):
     """Tests that duplicate usernames and email can't be created."""
     print(testname)
     # Add the first user.
     newUser(users[0].username, users[0].email, users[0].password, db)
     # Check that the second user isn't added.
 
-    assert newUser(users[1].username, users[1].email, users[1].password, db) == False
+    assert newUser(users[1].username, users[1].email, users[1].password, db) == result

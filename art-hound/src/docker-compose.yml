@@ -18,7 +18,7 @@ services:
       - art-hound
     container_name: backend
     environment:
-      - MONGO_URI: "mongodb://mongodb:27017"
+      MONGO_URI: "mongodb://mongodb:27017"
     ports:
       - "5000:5000"
 

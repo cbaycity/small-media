@@ -50,9 +50,12 @@ def accountCreation():
     user = request.form.get("username")
     email = request.form.get("password")
     pwd = request.form.get("email")
-    if newUser(user, email, pwd):
+    username_new, email_new = newUser(user, email, pwd)
+    if username_new and email_new:
         return redirect("/login")
-    return redirect("/signup?email_taken=false&name_taken=false")
+    return redirect(
+        f"/signup?email_taken={str(email_new).lower()}&name_taken={str(username_new).lower()}"
+    )
 
 
 if __name__ == "__main__":
