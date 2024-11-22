@@ -11,8 +11,8 @@ function AccountCreation() {
     const queryParams = new URLSearchParams(location.search)
 
     // Parse the query parameters
-    const email_taken = queryParams.get('email_taken') === 'true'
-    const username_taken = queryParams.get('username_taken') === 'true'
+    var email_taken = queryParams.get('email_taken') === 'false'
+    var username_taken = queryParams.get('username_taken') === 'false'
 
     const userRef = useRef<HTMLInputElement>(null)
 

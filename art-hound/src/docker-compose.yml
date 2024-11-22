@@ -31,6 +31,22 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+
+  jupyter:
+    image: jupyter/datascience-notebook
+    volumes:
+      - ./code-explore:/home/jovyan/work
+    ports:
+      - "8888:8888"
+    networks:
+      - art-hound
+    container_name: explore-notebook
+    depends_on:
+      - backend
+      - mongodb
+    profiles:
+      - explore
+  
 networks:
   art-hound:
     driver: bridge

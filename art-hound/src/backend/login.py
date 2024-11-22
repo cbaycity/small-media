@@ -8,7 +8,7 @@ from typing import Tuple
 # MongoDB Connection.
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 client = MongoClient(mongo_uri)
-db = client.mydatabase
+db = client.production
 
 # Create a collection of usernames and passwords.
 collection_list = db.list_collection_names()

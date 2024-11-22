@@ -19,12 +19,11 @@ function GetFeed(feedType: string, userInfo: string) {
             })
     }, [])
 
-    var msg = "";
-    if (data !== undefined){
-        msg = "Need to process data";
-    }
-    else{
-        msg = "Retrieving Post Data";
+    var msg = ''
+    if (data !== undefined) {
+        msg = 'Need to process data'
+    } else {
+        msg = 'Retrieving Post Data'
     }
 
     return msg
@@ -54,21 +53,33 @@ function Feed() {
                     <p>
                         Loved seeing the larches before they lost their leaves.
                     </p>
-                    <img className="post-img" src="postphotos/photoOne.jpg" alt = "Larch Post"/>
+                    <img
+                        className="post-img"
+                        src="postphotos/photoOne.jpg"
+                        alt="Larch Post"
+                    />
                 </div>
 
                 <div className="post">
                     <h3>Larch Season</h3>
                     <p>March 3rd 2024</p>
                     <p>Going to see the larches part two.</p>
-                    <img className="post-img" src="postphotos/photoTwo.jpg" alt = "Larch Post"/>
+                    <img
+                        className="post-img"
+                        src="postphotos/photoTwo.jpg"
+                        alt="Larch Post"
+                    />
                 </div>
 
                 <div className="post">
                     <h3>Testing Image Size.</h3>
                     <p>October 3rd 2024</p>
                     <p>Space Image.</p>
-                    <img className="post-img" src="postphotos/photoThree.png" alt = "Planet Post"/>
+                    <img
+                        className="post-img"
+                        src="postphotos/photoThree.png"
+                        alt="Planet Post"
+                    />
                 </div>
             </div>
             <div id="right-side-bar" className="side-bar">

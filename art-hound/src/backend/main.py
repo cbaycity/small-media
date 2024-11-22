@@ -54,7 +54,7 @@ def accountCreation():
     if username_new and email_new:
         return redirect("/login")
     return redirect(
-        f"/signup?email_taken={str(email_new).lower()}&name_taken={str(username_new).lower()}"
+        f"/signup?email_taken={str(email_new).lower()}&username_taken={str(username_new).lower()}"
     )
 
 

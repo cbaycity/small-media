@@ -4,7 +4,11 @@ function About() {
     return (
         <div className="container about-me-body center-body general-body-background full-height">
             <div className="p40">
-                <img className="portrait" src="public/BayardPhoto.png" alt="Bayard Carlson, Arthound founder."></img>
+                <img
+                    className="portrait"
+                    src="public/BayardPhoto.png"
+                    alt="Bayard Carlson, Arthound founder."
+                ></img>
             </div>
             <div className="p40 about-me-text div-body">
                 <p>
