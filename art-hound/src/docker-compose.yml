@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - art-hound
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+  
+  backend:
+    build: ./backend
+    networks:
+      - art-hound
+    container_name: backend
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017"
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./client
+    networks:
+      - art-hound
+    container_name: react-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  jupyter:
+    image: jupyter/datascience-notebook
+    volumes:
+      - ./code-explore:/home/jovyan/work
+    ports:
+      - "8888:8888"
+    networks:
+      - art-hound
+    container_name: explore-notebook
+    depends_on:
+      - backend
+      - mongodb
+    profiles:
+      - explore
+  
+networks:
+  art-hound:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    external: true

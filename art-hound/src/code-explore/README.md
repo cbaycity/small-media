@@ -1,0 +1,1 @@
+If ```docker compose --profile explore up --build``` is called, a Jupyter lab connected to the folder `code-explore` will appear. This is helpful in investigating what the database looks like.

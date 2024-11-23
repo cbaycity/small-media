@@ -7,7 +7,7 @@ import About from './components/About'
 import Feed from './components/Feed'
 import UserProfile from './components/UserProfile'
 import Friends from './components/Friends'
-import { AccountCreation } from './components/SignupForm'
+import { AccountCreation, ProfileCreation } from './components/SignupForm'
 
 function App() {
     return (
@@ -23,6 +23,7 @@ function App() {
                 <Route path="/MyArt" element={<UserProfile />} />
                 <Route path="/signup" element={<AccountCreation />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/createProfile" element={<ProfileCreation />} />
             </Routes>
         </div>
     )

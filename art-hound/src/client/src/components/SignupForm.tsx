@@ -1,13 +1,20 @@
 import React from 'react'
 import { useRef, useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const USER_VALIDATION = /^[a-zA-Z][a-zA-Z0-9-_]{3,20}$/
 const PASSWORD_VALIDATION = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/
-const EMAIL_VALIDATION = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+const EMAIL_VALIDATION = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 function AccountCreation() {
+    const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
+
+    // Parse the query parameters
+    var email_taken = queryParams.get('email_taken') === 'false'
+    var username_taken = queryParams.get('username_taken') === 'false'
+
     const userRef = useRef<HTMLInputElement>(null)
-    const errRef = useRef<HTMLInputElement>(null)
 
     const [user, setUser] = useState('')
     const [validName, setValidName] = useState(false)
@@ -26,7 +33,6 @@ function AccountCreation() {
     const [emailFocus, setEmailFocus] = useState(false)
 
     const [errMsg, setErrMsg] = useState('')
-    const [success, setSuccess] = useState(false)
 
     /* Checks if the user's screen is focused on the user component.*/
     useEffect(() => {
@@ -77,7 +83,14 @@ function AccountCreation() {
         } else {
             setErrMsg('')
         }
-    }, [user, pwd, matchPwd, email])
+    }, [validName, validPwd, validMatch, validEmail])
+
+    const [isValidForm, setValidForm] = useState(false)
+    useEffect(() => {
+        if (validName && validEmail && validPwd && validMatch) {
+            setValidForm(true)
+        }
+    }, [validName, validEmail, validPwd, validMatch])
 
     return (
         <div className="container full-height general-body-background">
@@ -89,6 +102,20 @@ function AccountCreation() {
                         action="/createAccount"
                         method="post"
                     >
+                        {email_taken && (
+                            <h3 className="instructions">
+                                The email provided was used in another account,
+                                please choose another.
+                            </h3>
+                        )}
+
+                        {username_taken && (
+                            <h3 className="instructions">
+                                The username requested was taken, please choose
+                                another.
+                            </h3>
+                        )}
+
                         <h2>Signup</h2>
                         <label htmlFor="username">
                             Username:
@@ -203,7 +230,18 @@ function AccountCreation() {
                             Passwords must match.
                         </p>
                         <br />
-                        <button type="submit">Sign Up</button>
+                        <p
+                            className={
+                                errMsg && user && pwd && email && matchPwd
+                                    ? 'instructions'
+                                    : 'offscreen'
+                            }
+                        >
+                            {errMsg}
+                        </p>
+                        <button type="submit" disabled={!isValidForm}>
+                            Sign Up
+                        </button>
                     </form>
                 </div>
                 {/* Add the stylesheet to the CSS.*/}

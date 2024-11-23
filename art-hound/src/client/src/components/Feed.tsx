@@ -19,7 +19,14 @@ function GetFeed(feedType: string, userInfo: string) {
             })
     }, [])
 
-    return 'Collecting Data'
+    var msg = ''
+    if (data !== undefined) {
+        msg = 'Need to process data'
+    } else {
+        msg = 'Retrieving Post Data'
+    }
+
+    return msg
 }
 
 /*
@@ -40,28 +47,39 @@ function Feed() {
             </div>
             <div id="feed" className="feed">
                 <p>{GetFeed('LOCAL', 'cbaycity')}</p>
-
                 <div className="post">
                     <h3>Larch Madness</h3>
                     <p>March 3rd 2024</p>
                     <p>
                         Loved seeing the larches before they lost their leaves.
                     </p>
-                    <img className="post-img" src="postphotos/photoOne.jpg" />
+                    <img
+                        className="post-img"
+                        src="postphotos/photoOne.jpg"
+                        alt="Larch Post"
+                    />
                 </div>
 
                 <div className="post">
                     <h3>Larch Season</h3>
                     <p>March 3rd 2024</p>
                     <p>Going to see the larches part two.</p>
-                    <img className="post-img" src="postphotos/photoTwo.jpg" />
+                    <img
+                        className="post-img"
+                        src="postphotos/photoTwo.jpg"
+                        alt="Larch Post"
+                    />
                 </div>
 
                 <div className="post">
                     <h3>Testing Image Size.</h3>
                     <p>October 3rd 2024</p>
                     <p>Space Image.</p>
-                    <img className="post-img" src="postphotos/photoThree.png" />
+                    <img
+                        className="post-img"
+                        src="postphotos/photoThree.png"
+                        alt="Planet Post"
+                    />
                 </div>
             </div>
             <div id="right-side-bar" className="side-bar">

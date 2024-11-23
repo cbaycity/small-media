@@ -10,22 +10,22 @@ The react front end was built with `npx create-react-app client --template types
 1. The command `flask --app main run` can be from from the backend directory to start up a development server. You need the poetry environment to be runnning and setup correctly.
 2. The front end can be started by running `npm start` in the client directory.
    Note: Once this is done, you can see that the app is delivered by the NPM server but it is requesting reasources from the Flask server. This will let us build an Apache Kafka backend database management via Flask but we'll focus on building the front end web experience using the NPM app. These two components are connected with proxy variable in the react app, which directs the traffic to the Flask server.
+3. `docker compose up --build` will start all of the services. `docker compose --profile explore up --build` will start the jupyter notebook too that can explore the database.
 
 ## Current to do:
 
-1. Create a signup form.
-   i. Need to control state using Javascript. The userFocus variables need to be updated as does the error checking.
-2. Adjust the backend to process signup requests. Read the Flask book on managing this.
-3. Figure out some form of testing for the components and for the site. Jack suggests that only testing for backend hits is needed?
-4. Add My Art feed.
-5. Add a friend's section.
+0. Get Docker to spin up the database and frontend. Connect the two, and process requests that way.
+1. Adjust the backend to process signup requests with a database.
+2. Figure out some form of testing for the components and for the site. Jack suggests that only testing for backend hits is needed?
+3. Add My Art feed.
+4. Add a friend's section.
    i. Friends list
    ii. Follow requests.
    iii. Friend's feed.
-   iv.
-6. Adjust local art section to have location focused on.
-7. Containerize deployment in Docker.
-8. Setup ESLint for typescript.
+5. Adjust local art section to have location focused on.
+6. Containerize deployment in Docker.
+7. Setup ESLint for typescript.
+8. Add a Create Post button to replace the login button in the header.
 
 ## Mac Environment Setup:
 
@@ -35,3 +35,11 @@ The react front end was built with `npx create-react-app client --template types
 4. pip install poetry
 5. use poetry shell for development
 6. Set default vscode interpreter to the poetry shell env.
+7. Had to turn off airplay reciever to open up port 5000 for development with Docker.
+
+## Linter Notes:
+
+```bash
+python -m black <target>
+prettier <target: ex. ./*> --write
+```
