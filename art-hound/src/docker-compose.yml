@@ -17,8 +17,7 @@ services:
     networks:
       - art-hound
     container_name: backend
-    environment:
-      MONGO_URI: "mongodb://mongodb:27017"
+    env_file: .env
     ports:
       - "5000:5000"
 
@@ -33,9 +32,9 @@ services:
       - backend
 
   jupyter:
-    image: jupyter/datascience-notebook
+    build: ./code-explore
     volumes:
-      - ./code-explore:/home/jovyan/work
+      - ./backend:/code-explore/backend
     ports:
       - "8888:8888"
     networks:
@@ -46,6 +45,7 @@ services:
       - mongodb
     profiles:
       - explore
+    env_file: .env
   
 networks:
   art-hound:
