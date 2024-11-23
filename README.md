@@ -14,18 +14,13 @@ The react front end was built with `npx create-react-app client --template types
 
 ## Current to do:
 
-0. Get Docker to spin up the database and frontend. Connect the two, and process requests that way.
-1. Adjust the backend to process signup requests with a database.
-2. Figure out some form of testing for the components and for the site. Jack suggests that only testing for backend hits is needed?
-3. Add My Art feed.
-4. Add a friend's section.
-   i. Friends list
-   ii. Follow requests.
-   iii. Friend's feed.
-5. Adjust local art section to have location focused on.
-6. Containerize deployment in Docker.
-7. Setup ESLint for typescript.
-8. Add a Create Post button to replace the login button in the header.
+1. Add a Create Post button to replace the login button in the header.
+2. Add a projects section (Notably, let artists add each other to a project.)
+3. Add a friends page and following projects.
+
+Future to do:
+1. Store hashed passwords
+2. Protect against Request Forgery.
 
 ## Mac Environment Setup:
 
