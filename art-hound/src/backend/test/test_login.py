@@ -23,14 +23,14 @@ class TestUser(NamedTuple):
         )
     ],
 )
-def test_new_user_login(users: List[TestUser], db: Database):
+def test_new_user_login(users: List[TestUser]):
     """Tests that users are added to the database and that login works."""
     # Add Users
     for user in users:
-        newUser(user.username, user.email, user.password, db)
+        newUser(user.username, user.email, user.password)
 
     for user in users:
-        assert login(user.username, user.password, db)
+        assert login(user.username, user.password)
 
 
 @pytest.mark.parametrize(
@@ -62,13 +62,11 @@ def test_new_user_login(users: List[TestUser], db: Database):
         ),
     ],
 )
-def test_new_user_fail(
-    testname: str, users: List[TestUser], result: Tuple[bool, bool], db: Database
-):
+def test_new_user_fail(testname: str, users: List[TestUser], result: Tuple[bool, bool]):
     """Tests that duplicate usernames and email can't be created."""
     print(testname)
     # Add the first user.
-    newUser(users[0].username, users[0].email, users[0].password, db)
+    newUser(users[0].username, users[0].email, users[0].password)
     # Check that the second user isn't added.
 
-    assert newUser(users[1].username, users[1].email, users[1].password, db) == result
+    assert newUser(users[1].username, users[1].email, users[1].password) == result
