@@ -3,7 +3,8 @@
 from pymongo import MongoClient
 from pymongo.database import Database
 import os
-from typing import Tuple
+from typing import Tuple, Dict, Any
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # MongoDB Connection.
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
@@ -25,7 +26,7 @@ def login(username: str, password: str) -> bool:
     """
     # NOTE: need to return a cookie in the future.
     user = db["users"].find_one({"username": username})
-    if user and user["password"] == password:
+    if user and check_password_hash(user["password"], password):
         return True
     return False
 
@@ -46,7 +47,11 @@ def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
     user = db["users"].find_one(query)
 
     if not user:
-        newUser = {"username": username, "password": password, "email": email}
+        newUser = {
+            "username": username,
+            "password": generate_password_hash(password),
+            "email": email,
+        }
         db["users"].insert_one(newUser)
         return True, True
     return (user["username"] != username, user["email"] != email)

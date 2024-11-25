@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect
 from feed import createFeed
 from login import newUser, login
 from flask_wtf import CSRFProtect
@@ -19,11 +19,6 @@ def index():
 @app.route("/public/<file>")
 def public(file):
     return app.send_static_file(f"public/{file}")
-
-
-@app.route("/members")
-def members():
-    return ["Bayard", "Sean", "Eamon"]
 
 
 @app.route("/createAccount")
