@@ -16,7 +16,7 @@ function Login() {
                     {/*The below p object displays error messages*/}
                     <form
                         className="signup-form"
-                        action="/createAccount"
+                        action="/login"
                         method="post"
                     >
                         <h2>Signin</h2>

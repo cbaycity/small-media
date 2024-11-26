@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect
 from feed import createFeed
-from login import newUser, login
+from login import newUser, login, checkLogin
 from flask_wtf import CSRFProtect
 import secrets
 
@@ -19,12 +19,6 @@ def index():
 @app.route("/public/<file>")
 def public(file):
     return app.send_static_file(f"public/{file}")
-
-
-@app.route("/createAccount")
-def createAccount():
-    """Creates a new account if the username and email don't already exist."""
-    return True
 
 
 @app.route("/feed")
@@ -51,6 +45,35 @@ def accountCreation():
     return redirect(
         f"/signup?email_taken={str(email_new).lower()}&username_taken={str(username_new).lower()}"
     )
+
+
+@app.route("/login", methods=["POST"])
+def userLogin():
+    username_or_email = request.form.get("username")
+    pwd = request.form.get("password")
+    if login(username_or_email, pwd):
+        return True
+    return False  # Need to return regular HTML codes for invalid credentials.
+
+
+@app.route("/validLogin", methods=["GET", "POST"])
+def login():
+    # Validate user credentials (e.g., from request.json)
+    username = request.json.get("username")
+    password = request.json.get("password")
+
+    if username == "valid_user" and password == "valid_pass":
+        response = make_response(jsonify({"message": "Login successful"}))
+        response.set_cookie(
+            "auth_token",
+            "your_secure_token",
+            httponly=True,
+            samesite="Strict",
+            secure=True,
+        )
+        return response
+    else:
+        return jsonify({"error": "Invalid credentials"}), 401
 
 
 if __name__ == "__main__":

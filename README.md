@@ -17,10 +17,12 @@ The react front end was built with `npx create-react-app client --template types
 1. Add a Create Post button to replace the login button in the header.
 2. Add a projects section (Notably, let artists add each other to a project.)
 3. Add a friends page and following projects.
+4. Manage logins session.
 
 Future to do:
-1. Store hashed passwords
+1. Store hashed passwords (Done!)
 2. Protect against Request Forgery.
+3. Enable username or email based login.
 
 ## Mac Environment Setup:
 

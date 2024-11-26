@@ -27,7 +27,7 @@ def login(username: str, password: str) -> bool:
     # NOTE: need to return a cookie in the future.
     user = db["users"].find_one({"username": username})
     if user and check_password_hash(user["password"], password):
-        return True
+        return True  # Return a cookie for the session. Create a session.
     return False
 
 
