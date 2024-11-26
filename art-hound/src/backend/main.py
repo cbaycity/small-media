@@ -1,11 +1,17 @@
 from flask import Flask, request, redirect
 from feed import createFeed
-from login import newUser, login, checkLogin
-from flask_wtf import CSRFProtect
-import secrets
+from login import newUser, login
+
+# from flask_wtf import CSRFProtect
+from dotenv import load_dotenv
+import os
+
+# Load env keys
+load_dotenv()
 
 app = Flask(__name__, static_folder="/", static_url_path="/")
-app.secret_key = secrets.token_hex(98)
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 # Need to protect against Cross-site request forgery.
 # Ignoring this for now.
 # CSRFProtect(app)
@@ -36,8 +42,8 @@ def photoprocess(photofile: str):
 
 @app.route("/createAccount", methods=["POST"])
 def accountCreation():
-    user = request.form.get("username")
-    email = request.form.get("password")
+    user = request.form.get("username", None)
+    email = request.form.get("password", None)
     pwd = request.form.get("email")
     username_new, email_new = newUser(user, email, pwd)
     if username_new and email_new:
@@ -47,33 +53,20 @@ def accountCreation():
     )
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/userLogin", methods=["POST"])
 def userLogin():
     username_or_email = request.form.get("username")
     pwd = request.form.get("password")
-    if login(username_or_email, pwd):
-        return True
-    return False  # Need to return regular HTML codes for invalid credentials.
+    status, token = login(username_or_email, pwd)
+    if status:
+        return token, 200
+    return "", 401
 
 
 @app.route("/validLogin", methods=["GET", "POST"])
-def login():
-    # Validate user credentials (e.g., from request.json)
-    username = request.json.get("username")
-    password = request.json.get("password")
-
-    if username == "valid_user" and password == "valid_pass":
-        response = make_response(jsonify({"message": "Login successful"}))
-        response.set_cookie(
-            "auth_token",
-            "your_secure_token",
-            httponly=True,
-            samesite="Strict",
-            secure=True,
-        )
-        return response
-    else:
-        return jsonify({"error": "Invalid credentials"}), 401
+def validLogin():
+    """Checks if the current user token is valid."""
+    return True  # Need to update.
 
 
 if __name__ == "__main__":

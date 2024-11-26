@@ -2,7 +2,8 @@ import React from 'react'
 import './App.css'
 import ArtHoundHeader from './components/Header'
 import { Routes, Route } from 'react-router-dom'
-import { Home, Login } from './components/Home'
+import Home from './components/Home'
+import LoginForm from './components/LoginForm' // Ignore the error, this runs without issue.
 import About from './components/About'
 import Feed from './components/Feed'
 import UserProfile from './components/UserProfile'
@@ -22,7 +23,7 @@ function App() {
                 <Route path="/PopularArt" element={<Feed />} />
                 <Route path="/MyArt" element={<UserProfile />} />
                 <Route path="/signup" element={<AccountCreation />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<LoginForm />} />
                 <Route path="/createProfile" element={<ProfileCreation />} />
             </Routes>
         </div>

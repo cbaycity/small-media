@@ -29,7 +29,8 @@ def test_new_user_login(users: List[TestUser]):
         newUser(user.username, user.email, user.password)
 
     for user in users:
-        assert login(user.username, user.password)
+        status, _ = login(user.username, user.password)
+        assert status
 
 
 @pytest.mark.parametrize(
