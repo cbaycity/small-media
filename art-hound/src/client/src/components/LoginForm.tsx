@@ -43,9 +43,9 @@ const FormSubmit = async (loginEvent: FormEvent<HTMLFormElement>) => {
 
         if (response.ok) {
             const data = await response.json();
-
+            console.log("data.token = " + data.token)
             if (data.token) {
-                const loginContext = {"username": formData.username, "token": data.token}
+                loginContext = {"username": formData.username, "token": data.token}
             }
             else { 
                 console.error("Failed login. Status: ", response.status)
