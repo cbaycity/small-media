@@ -21,7 +21,7 @@ function GetFeed(feedType: string, userInfo: string) {
 
     var msg = ''
     if (data !== undefined) {
-        msg = 'Need to process data'
+        msg = 'Still hardcoding posts, work with a DB Bayard'
     } else {
         msg = 'Retrieving Post Data'
     }

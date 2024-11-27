@@ -131,9 +131,21 @@ function LoginForm() {
     )
 }
 
-function CheckLogin() {
-    // Check token with backend...
-    return false
+const CheckLogin = async (token: string): Promise<boolean> => {
+    try {
+    const response = await fetch('/validLogin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"token": token}),
+    })
+    return response.ok
+}
+    catch (error){
+        console.error('Error during user token validation:', error);
+        return false
+    }
 }
 
-export { LoginForm, LoginContext, useLoginState}
+export { LoginForm, LoginContext, useLoginState, CheckLogin}

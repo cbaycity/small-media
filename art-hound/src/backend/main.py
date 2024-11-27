@@ -23,7 +23,7 @@ def index():
 
 
 @app.route("/public/<file>")
-def public(file):
+def public(file: str):
     return app.send_static_file(f"public/{file}")
 
 
@@ -68,7 +68,9 @@ def userLogin():
 def validToken():
     """Checks if the current user token is valid."""
     data = request.get_json()
-    return validLogin(data["token"])
+    if validLogin(data["token"]):
+        return jsonify({"valid": True}), 200
+    return jsonify({"valid": False}), 489
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext, useEffect, useState} from 'react'
+import { LoginContext, CheckLogin } from './LoginForm'
 import { Link, useNavigate } from 'react-router-dom'
 
 function ArtHoundHeader() {
@@ -6,6 +7,22 @@ function ArtHoundHeader() {
     const routeChange = (path: string) => {
         navigate(path)
     }
+
+    const { token, setToken } = useContext(LoginContext);
+
+    const [ isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    useEffect( () => {
+        const validateLogin = async () => {
+            if (token){
+                const isValid = await CheckLogin(token);
+                setIsLoggedIn(isValid);
+            }
+            else {
+                setIsLoggedIn(false);
+            }
+        }
+        validateLogin()
+    }, [token]);
 
     return (
         <div className="container">
@@ -67,6 +84,22 @@ function ArtHoundHeader() {
                         </li>
                     </ul>
                 </div>
+                { isLoggedIn ? 
+                <div className="login headerSection">
+                    <button
+                        type="button"
+                        className="login-button"
+                        onClick={() => routeChange('/newPost')}>
+                            New Post
+                    </button>
+                    <button
+                        type="button"
+                        className="login-button"
+                        onClick={() => {setToken("")}}>
+                            Sign-Out
+                        </button>
+                </div>
+                :
                 <div className="login headerSection">
                     <button
                         type="button"
@@ -82,7 +115,7 @@ function ArtHoundHeader() {
                     >
                         Sign-Up
                     </button>
-                </div>
+                </div>}
             </header>
         </div>
     )

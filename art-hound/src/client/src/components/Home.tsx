@@ -1,12 +1,26 @@
-import React, { useContext } from 'react'
-import { LoginContext, LoginForm } from './LoginForm'
+import React, { useContext, useState, useEffect} from 'react'
+import { LoginContext, LoginForm, CheckLogin } from './LoginForm'
 
 function Home() {
     const { token } = useContext(LoginContext);
 
+    const [ isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    useEffect( () => {
+        const validateLogin = async () => {
+            if (token){
+                const isValid = await CheckLogin(token);
+                setIsLoggedIn(isValid);
+            }
+            else {
+                setIsLoggedIn(false);
+            }
+        }
+        validateLogin()
+    }, [token]);
+
     return (
         <div className="container center-body">
-            {!token? <LoginForm /> : <p>Need to build the Home website.</p>}
+            {!isLoggedIn? <LoginForm /> : <p>Need to build the Home website.</p>}
         </div>
     )
 }
