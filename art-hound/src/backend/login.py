@@ -1,10 +1,10 @@
 """This is a module to track if users have an account with ArtHound."""
 
 from pymongo import MongoClient
-from pymongo.database import Database
 import os
-from typing import Tuple, Dict, Any
+from typing import Tuple
 from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
 
 # MongoDB Connection.
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
@@ -15,6 +15,8 @@ db = client.production  # monkey patch switch to client.testdatabase for tests.
 collection_list = db.list_collection_names()
 if "users" not in collection_list:
     USERS = db.create_collection("users")
+
+TOKEN_LENGTH = 32  # URL Safe length for tokens.
 
 
 def login(username: str, password: str) -> bool:
@@ -27,7 +29,7 @@ def login(username: str, password: str) -> bool:
     # NOTE: need to return a cookie in the future.
     user = db["users"].find_one({"username": username})
     if user and check_password_hash(user["password"], password):
-        return True, "token"
+        return True, secrets.token_urlsafe(TOKEN_LENGTH)
     return False, ""
 
 

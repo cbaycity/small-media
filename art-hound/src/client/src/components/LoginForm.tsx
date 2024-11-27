@@ -51,7 +51,7 @@ const FormSubmit = async (loginEvent: FormEvent<HTMLFormElement>) => {
                 console.error("Failed login. Status: ", response.status)
             }
         }
-        else{
+        else {
             console.error("Failed Login: Status: ", response.status)
         }
     }

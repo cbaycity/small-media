@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, jsonify
 from feed import createFeed
 from login import newUser, login
 
@@ -43,8 +43,8 @@ def photoprocess(photofile: str):
 @app.route("/createAccount", methods=["POST"])
 def accountCreation():
     user = request.form.get("username", None)
-    email = request.form.get("password", None)
-    pwd = request.form.get("email")
+    email = request.form.get("email", None)
+    pwd = request.form.get("password")
     username_new, email_new = newUser(user, email, pwd)
     if username_new and email_new:
         return redirect("/login")
@@ -55,12 +55,13 @@ def accountCreation():
 
 @app.route("/userLogin", methods=["POST"])
 def userLogin():
-    username_or_email = request.form.get("username")
-    pwd = request.form.get("password")
+    data = request.get_json()
+    username_or_email = data["username"]
+    pwd = data["password"]
     status, token = login(username_or_email, pwd)
     if status:
-        return token, 200
-    return "", 401
+        return jsonify({"token": token}), 200
+    return jsonify({"token": ""}), 401
 
 
 @app.route("/validLogin", methods=["GET", "POST"])
