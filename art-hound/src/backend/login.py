@@ -5,6 +5,7 @@ import os
 from typing import Tuple
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
+import datetime
 
 # MongoDB Connection.
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
@@ -29,7 +30,14 @@ def login(username: str, password: str) -> bool:
     # NOTE: need to return a cookie in the future.
     user = db["users"].find_one({"username": username})
     if user and check_password_hash(user["password"], password):
-        return True, secrets.token_urlsafe(TOKEN_LENGTH)
+        userToken = secrets.token_urlsafe(TOKEN_LENGTH)
+        db["tokens"].insert_one(
+            {
+                "token": userToken,
+                "init-time": datetime.datetime.now(),
+            }
+        )
+        return True, userToken
     return False, ""
 
 
@@ -57,3 +65,11 @@ def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
         db["users"].insert_one(newUser)
         return True, True
     return (user["username"] != username, user["email"] != email)
+
+
+def validLogin(token: str):
+    """Checks if a login token is valid."""
+    db_entry = db["tokens"].find_one({"token": token})
+    if db_entry["init-time"] > datetime.datetime.now() + datetime.timedelta(days=-1):
+        return True
+    return False

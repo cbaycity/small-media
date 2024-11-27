@@ -1,8 +1,9 @@
 """Tests that the login functions work with MongoDB correctly."""
 
-from login import newUser, login
+from login import newUser, login, validLogin
 from typing import List, NamedTuple, Tuple
 import pytest
+import datetime as dt
 
 
 class TestUser(NamedTuple):
@@ -98,3 +99,35 @@ def test_passwords_hashed(users: List[TestUser]):
     for user in users:
         db_entry = db["users"].find({"username": user.username})
         assert db_entry[0]["password"] != user.password
+
+
+@pytest.mark.parametrize(
+    "user, result, new_time",
+    [
+        (TestUser("test1", "test@gmail.com", "Password1"), True, dt.datetime.now()),
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            False,
+            dt.datetime(year=1950, month=1, day=1),
+        ),
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            False,
+            dt.datetime.now() + dt.timedelta(days=-2),
+        ),
+    ],
+)
+def test_validLogin(user, result, new_time):
+    """Tests that valid login works as expected."""
+    # Create and Login user
+    newUser(user.username, user.email, user.password)
+    _, token = login(user.username, user.password)
+
+    # Adjust time
+    from login import db
+
+    query = {"token": token}
+    _ = db["tokens"].update_one(query, {"$set": {"init-time": new_time}})
+
+    # Check result
+    assert validLogin(token) == result

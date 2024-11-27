@@ -1,6 +1,6 @@
 from flask import Flask, request, redirect, jsonify
 from feed import createFeed
-from login import newUser, login
+from login import newUser, login, validLogin
 
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
@@ -65,9 +65,10 @@ def userLogin():
 
 
 @app.route("/validLogin", methods=["GET", "POST"])
-def validLogin():
+def validToken():
     """Checks if the current user token is valid."""
-    return True  # Need to update.
+    data = request.get_json()
+    return validLogin(data["token"])
 
 
 if __name__ == "__main__":

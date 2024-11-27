@@ -1,9 +1,12 @@
-import React, { createContext } from 'react'
+import React, { useContext } from 'react'
+import { LoginContext, LoginForm } from './LoginForm'
 
 function Home() {
+    const { token } = useContext(LoginContext);
+
     return (
         <div className="container center-body">
-            <p>Need to build the Home website.</p>
+            {!token? <LoginForm /> : <p>Need to build the Home website.</p>}
         </div>
     )
 }

@@ -1,70 +1,96 @@
 import react, {
     createContext,
-    useContext,
     useState,
-    ReactNode,
-    useEffect,
+    useContext,
     FormEvent,
 } from 'react'
 
-
-interface LoginContextData {
-    username: string
-    token: string
-}
-
-interface LoginFormData{
+interface LoginFormData {
     username: string // username or email
     password: string // associated password
 }
 
+// Define the type for the login state
+interface LoginState {
+    user: string
+    setUser: React.Dispatch<React.SetStateAction<string>>
+    token: string
+    setToken: React.Dispatch<React.SetStateAction<string>>
+}
 
-const FormSubmit = async (loginEvent: FormEvent<HTMLFormElement>) => {
-    loginEvent.preventDefault();
+const useLoginState = () => {
+    const [user, setUser] = useState('')
+    const [token, setToken] = useState('')
+    return { user, setUser, token, setToken }
+}
+
+const initialLoginState : LoginState = {
+    user: "",
+    setUser: () => {}, // Placeholder function
+    token: "",
+    setToken: () => {}, // Placeholder function.
+}
+
+// Creates the LoginContext
+const LoginContext = createContext<LoginState>(initialLoginState)
+
+const FormSubmit = async (loginEvent: FormEvent<HTMLFormElement>, loginContext: LoginState) => {
+    loginEvent.preventDefault()
+
+    const { user, setUser, token, setToken } = loginContext;
+
+    if (!loginContext) {
+        console.error('FormSubmit must be used within a LoginContextProvider')
+        return
+    }
 
     const formData: LoginFormData = {
-        username: ((loginEvent.target as HTMLFormElement).elements.namedItem("username") as HTMLFormElement)?.value as string,
-        password: ((loginEvent.target as HTMLFormElement).elements.namedItem("password") as HTMLFormElement)?.value as string,
-    };
-
-    console.log(formData); // print data to see that things are working as expected.
-
-    var loginContext = {"username": "not set", "token": "not set"}
+        username: (
+            (loginEvent.target as HTMLFormElement).elements.namedItem(
+                'username'
+            ) as HTMLFormElement
+        )?.value as string,
+        password: (
+            (loginEvent.target as HTMLFormElement).elements.namedItem(
+                'password'
+            ) as HTMLFormElement
+        )?.value as string,
+    }
 
     // Send data to backend to see if login succeeds
     try {
-        const response = await fetch("/userLogin",{
-            method: "POST",
+        const response = await fetch('/userLogin', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData),
-        });
+        })
 
         if (response.ok) {
-            const data = await response.json();
-            console.log("data.token = " + data.token)
+            const data = await response.json()
+            console.log('data.token = ' + data.token)
             if (data.token) {
-                loginContext = {"username": formData.username, "token": data.token}
+                setUser(formData.username)
+                setToken(data.token)
+            } else {
+                console.error('Failed login. Status: ', response.status)
             }
-            else { 
-                console.error("Failed login. Status: ", response.status)
-            }
+        } else {
+            console.error('Failed Login: Status: ', response.status)
         }
-        else {
-            console.error("Failed Login: Status: ", response.status)
-        }
+    } catch (error) {
+        console.error('Login failed: ', error)
     }
-    catch (error) {
-        console.error("Login failed: ", error)
-    }
-    console.log("LoginContext: ", loginContext)
-};
+    console.log('User: ', user, ' Token: ', token)
+}
 
 function LoginForm() {
-    const [userToken, setUserToken] = useState(null)
+    const loginContext = useContext(LoginContext);
 
-    const UserToken = createContext(null)    
+    if (!loginContext) {
+        throw new Error('LoginForm must be used within a LoginProvider');
+    }
 
     return (
         <div className="container full-height general-body-background">
@@ -73,7 +99,7 @@ function LoginForm() {
                     {/*The below p object displays error messages*/}
                     <form
                         className="signup-form"
-                        onSubmit={FormSubmit}
+                        onSubmit={(e) => FormSubmit(e, loginContext)}
                         method="post"
                     >
                         <h2>Signin</h2>
@@ -110,4 +136,4 @@ function CheckLogin() {
     return false
 }
 
-export default LoginForm
+export { LoginForm, LoginContext, useLoginState}
