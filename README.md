@@ -18,15 +18,20 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 
 ## Current to do:
 
-1. Add a Create Post button to replace the login button in the header.
-2. Add a projects section (Notably, let artists add each other to a project.)
-3. Add a friends page and following projects.
-4. Manage logins session.
+1. Update login flow to throw an error for an incorrect login attempt.
+2. Update headers to what you want the product to be.
+3. Add a projects section (Notably, let artists add each other to a project.)
+4. Add a friends page and following projects.
+5. Have posts actually paste an update to the database.
 
 Future to do:
-1. Store hashed passwords (Done!)
-2. Protect against Request Forgery.
-3. Enable username or email based login.
+1. Protect against Request Forgery.
+
+Current Work Going On:
+1. Need to ensure that the function called on the login button click calls storeUser and storeToken.
+2. Need to ensure that functions which consume the token and user are typed correctly.
+3. Need to ensure that the state is being saved correctly in the brower local storage variable.
+
 
 ## Mac Environment Setup:
 

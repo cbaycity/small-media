@@ -3,7 +3,7 @@ import './App.css'
 import ArtHoundHeader from './components/Header'
 import { Routes, Route } from 'react-router-dom'
 import Home from './components/Home'
-import { LoginContext, useLoginState } from './components/LoginForm'
+import { LoginProvider } from './components/LoginForm'
 import About from './components/About'
 import Feed from './components/Feed'
 import UserProfile from './components/UserProfile'
@@ -12,10 +12,8 @@ import { AccountCreation, ProfileCreation } from './components/SignupForm'
 
 function App() {
 
-    const loginState = useLoginState();
-
     return (
-        <LoginContext.Provider value = {loginState}>
+        <LoginProvider>
             <div className="app div-body">
                 {ArtHoundHeader()}
                 <Routes>
@@ -31,7 +29,7 @@ function App() {
                     <Route path="/createProfile" element={<ProfileCreation />} />
                 </Routes>
             </div>
-        </LoginContext.Provider>
+        </LoginProvider>
     )
 }
 

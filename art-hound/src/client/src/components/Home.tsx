@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect} from 'react'
 import { LoginContext, LoginForm, CheckLogin } from './LoginForm'
 
 function Home() {
-    const { token } = useContext(LoginContext);
+    const { user, storeUser, token, storeToken, logOut} = useContext(LoginContext);
 
     const [ isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
     useEffect( () => {
