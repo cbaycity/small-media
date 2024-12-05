@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import ArtHoundHeader from './components/Header'
 import { Routes, Route } from 'react-router-dom'
@@ -15,7 +15,7 @@ function App() {
     return (
         <LoginProvider>
             <div className="app div-body">
-                {ArtHoundHeader()}
+                <ArtHoundHeader></ArtHoundHeader>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/Home" element={<Home />} />

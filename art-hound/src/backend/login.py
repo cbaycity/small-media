@@ -70,6 +70,8 @@ def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
 def validLogin(token: str):
     """Checks if a login token is valid."""
     db_entry = db["tokens"].find_one({"token": token})
-    if db_entry["init-time"] > datetime.datetime.now() + datetime.timedelta(days=-1):
+    if db_entry and db_entry[
+        "init-time"
+    ] > datetime.datetime.now() + datetime.timedelta(days=-1):
         return True
     return False

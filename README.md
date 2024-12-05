@@ -54,3 +54,10 @@ prettier <target: ex. ./*> --write
 ### Sample Users:
 username: test
 password: Password1
+
+
+### Deploy to AWS using AWS ECR Repository
+1. Place to push and store Docker images.
+2. Use EC2 instance to just trigger ```docker run```.
+3. Put a firewall, like AWS waff, to stop bots.
+

@@ -22,7 +22,7 @@ interface LoginState {
 }
 
 // Creates the LoginContext
-const LoginContext = createContext<LoginState| undefined>(undefined)
+const LoginContext = createContext<LoginState>({user:"", storeUser:() => {}, token:"", storeToken: ()=> {}, logOut:()=> {}})
 
 const LoginProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     
@@ -45,6 +45,22 @@ const LoginProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         setToken(null)
         localStorage.removeItem('token')
     }
+
+    // Function to set login to the loginState stored if it is stored.
+    const StoredLoginDetails = () => {
+        var user = localStorage.getItem('user')
+        var token = localStorage.getItem('token')
+        if (user != "" && user != null){
+            setUser(user)
+        }
+        if (token != "" && token != null){
+            setToken(token)
+        }
+    }
+
+    // Set user and token if they're stored.
+    useEffect(() => {StoredLoginDetails()}, [])
+
     return (
         <LoginContext.Provider value={{user, storeUser, token, storeToken, logOut}}>
             {children}
@@ -147,7 +163,7 @@ function LoginForm() {
     )
 }
 
-const CheckLogin = async (token: string): Promise<boolean> => {
+const CheckLogin = async (token: string  | null): Promise<boolean> => {
     try {
     const response = await fetch('/validLogin', {
         method: 'POST',
@@ -164,4 +180,4 @@ const CheckLogin = async (token: string): Promise<boolean> => {
     }
 }
 
-export { LoginForm, LoginContext, LoginProvider, CheckLogin}
+export { LoginForm, LoginContext, LoginProvider, CheckLogin, }

@@ -68,7 +68,10 @@ def userLogin():
 def validToken():
     """Checks if the current user token is valid."""
     data = request.get_json()
-    if validLogin(data["token"]):
+    token = data.get("token")
+    if token is None:
+        return jsonify({"valid": False}), 200
+    if validLogin(token):
         return jsonify({"valid": True}), 200
     return jsonify({"valid": False}), 489
 

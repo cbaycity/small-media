@@ -8,13 +8,14 @@ function ArtHoundHeader() {
         navigate(path)
     }
 
+    
     const { user, storeUser, token, storeToken, logOut } = useContext(LoginContext);
 
     const [ isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
     useEffect( () => {
         const validateLogin = async () => {
             if (token){
-                var isValid = await CheckLogin(token);
+                const isValid = await CheckLogin(token);
                 setIsLoggedIn(isValid);
             }
             else {
@@ -22,7 +23,7 @@ function ArtHoundHeader() {
             }
         }
         validateLogin()
-    }, [token, CheckLogin]);
+    }, [token]);
 
     return (
         <div className="container">
@@ -95,7 +96,7 @@ function ArtHoundHeader() {
                     <button
                         type="button"
                         className="login-button"
-                        onClick={() => {logOut}}>
+                        onClick={() => {logOut()}}>
                             Sign-Out
                         </button>
                 </div>
