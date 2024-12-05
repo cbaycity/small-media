@@ -18,8 +18,8 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 
 ## Current to do:
 
-1. Update login flow to throw an error for an incorrect login attempt.
-2. Update headers to what you want the product to be.
+1. Move About to footer.
+2. Adjust headers: Local, Projects, Friends, Profile
 3. Add a projects section (Notably, let artists add each other to a project.)
 4. Add a friends page and following projects.
 5. Have posts actually paste an update to the database.

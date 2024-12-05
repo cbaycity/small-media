@@ -9,12 +9,13 @@ import Feed from './components/Feed'
 import UserProfile from './components/UserProfile'
 import Friends from './components/Friends'
 import { AccountCreation, ProfileCreation } from './components/SignupForm'
+import Footer from './components/Footer'
 
 function App() {
     return (
         <LoginProvider>
             <div className="app div-body">
-                <ArtHoundHeader></ArtHoundHeader>
+                <ArtHoundHeader />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/Home" element={<Home />} />
@@ -30,6 +31,7 @@ function App() {
                         element={<ProfileCreation />}
                     />
                 </Routes>
+                <Footer />
             </div>
         </LoginProvider>
     )

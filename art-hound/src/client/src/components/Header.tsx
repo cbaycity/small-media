@@ -73,15 +73,6 @@ function ArtHoundHeader() {
                                 Friends
                             </Link>
                         </li>
-                        <li>
-                            {' '}
-                            <Link
-                                to="/About"
-                                className="navigation-link px-2 link-two"
-                            >
-                                About
-                            </Link>
-                        </li>
                     </ul>
                 </div>
                 {isLoggedIn ? (
