@@ -22,21 +22,26 @@ interface LoginState {
 }
 
 // Creates the LoginContext
-const LoginContext = createContext<LoginState>({user:"", storeUser:() => {}, token:"", storeToken: ()=> {}, logOut:()=> {}})
+const LoginContext = createContext<LoginState>({
+    user: '',
+    storeUser: () => {},
+    token: '',
+    storeToken: () => {},
+    logOut: () => {},
+})
 
-const LoginProvider: React.FC<{ children: ReactNode }> = ({children}) => {
-    
+const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<string | null>(null)
     const [token, setToken] = useState<string | null>(null)
 
     const storeUser = (newUser: string) => {
         setUser(newUser)
-        localStorage.setItem("user", newUser)
+        localStorage.setItem('user', newUser)
     }
 
     const storeToken = (newToken: string) => {
         setToken(newToken)
-        localStorage.setItem("token", newToken)
+        localStorage.setItem('token', newToken)
     }
 
     const logOut = () => {
@@ -50,28 +55,35 @@ const LoginProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const StoredLoginDetails = () => {
         var user = localStorage.getItem('user')
         var token = localStorage.getItem('token')
-        if (user != "" && user != null){
+        if (user != '' && user != null) {
             setUser(user)
         }
-        if (token != "" && token != null){
+        if (token != '' && token != null) {
             setToken(token)
         }
     }
 
     // Set user and token if they're stored.
-    useEffect(() => {StoredLoginDetails()}, [])
+    useEffect(() => {
+        StoredLoginDetails()
+    }, [])
 
     return (
-        <LoginContext.Provider value={{user, storeUser, token, storeToken, logOut}}>
+        <LoginContext.Provider
+            value={{ user, storeUser, token, storeToken, logOut }}
+        >
             {children}
         </LoginContext.Provider>
     )
 }
 
-const FormSubmit = async (loginEvent: FormEvent<HTMLFormElement>, loginContext: LoginState) => {
+const FormSubmit = async (
+    loginEvent: FormEvent<HTMLFormElement>,
+    loginContext: LoginState
+) => {
     loginEvent.preventDefault()
 
-    const { user, storeUser, token, storeToken } = loginContext;
+    const { user, storeUser, token, storeToken } = loginContext
 
     if (!loginContext) {
         console.error('FormSubmit must be used within a LoginContextProvider')
@@ -118,10 +130,10 @@ const FormSubmit = async (loginEvent: FormEvent<HTMLFormElement>, loginContext: 
 }
 
 function LoginForm() {
-    const loginContext = useContext(LoginContext);
+    const loginContext = useContext(LoginContext)
 
     if (!loginContext) {
-        throw new Error('LoginForm must be used within a LoginProvider');
+        throw new Error('LoginForm must be used within a LoginProvider')
     }
 
     return (
@@ -163,21 +175,20 @@ function LoginForm() {
     )
 }
 
-const CheckLogin = async (token: string  | null): Promise<boolean> => {
+const CheckLogin = async (token: string | null): Promise<boolean> => {
     try {
-    const response = await fetch('/validLogin', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({"token": token}),
-    })
-    return response.ok
-}
-    catch (error){
-        console.error('Error during user token validation:', error);
+        const response = await fetch('/validLogin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: token }),
+        })
+        return response.ok
+    } catch (error) {
+        console.error('Error during user token validation:', error)
         return false
     }
 }
 
-export { LoginForm, LoginContext, LoginProvider, CheckLogin, }
+export { LoginForm, LoginContext, LoginProvider, CheckLogin }

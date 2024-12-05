@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import ArtHoundHeader from './components/Header'
 import { Routes, Route } from 'react-router-dom'
@@ -11,7 +11,6 @@ import Friends from './components/Friends'
 import { AccountCreation, ProfileCreation } from './components/SignupForm'
 
 function App() {
-
     return (
         <LoginProvider>
             <div className="app div-body">
@@ -26,7 +25,10 @@ function App() {
                     <Route path="/MyArt" element={<UserProfile />} />
                     <Route path="/signup" element={<AccountCreation />} />
                     <Route path="/login" element={<Home />} />
-                    <Route path="/createProfile" element={<ProfileCreation />} />
+                    <Route
+                        path="/createProfile"
+                        element={<ProfileCreation />}
+                    />
                 </Routes>
             </div>
         </LoginProvider>
