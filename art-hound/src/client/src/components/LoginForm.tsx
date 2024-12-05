@@ -79,7 +79,8 @@ const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 const FormSubmit = async (
     loginEvent: FormEvent<HTMLFormElement>,
-    loginContext: LoginState
+    loginContext: LoginState,
+    incorrectLoginSetter: react.Dispatch<react.SetStateAction<boolean>>
 ) => {
     loginEvent.preventDefault()
 
@@ -122,6 +123,7 @@ const FormSubmit = async (
                 console.error('Failed login. Status: ', response.status)
             }
         } else {
+            incorrectLoginSetter(true) // Set invalid login to true.
             console.error('Failed Login: Status: ', response.status)
         }
     } catch (error) {
@@ -136,17 +138,27 @@ function LoginForm() {
         throw new Error('LoginForm must be used within a LoginProvider')
     }
 
+    const [invalidLogin, setInvalidLogin] = useState(false)
+
     return (
         <div className="container full-height general-body-background">
             <div className="form-container">
                 <div id="form-one-block">
-                    {/*The below p object displays error messages*/}
                     <form
                         className="signup-form"
-                        onSubmit={(e) => FormSubmit(e, loginContext)}
+                        onSubmit={(e) =>
+                            FormSubmit(e, loginContext, setInvalidLogin)
+                        }
                         method="post"
                     >
                         <h2>Signin</h2>
+                        {invalidLogin ? (
+                            <h3>
+                                Login failed due to invalid credentials. Please
+                                try again.
+                                <br />
+                            </h3>
+                        ) : null}
                         <label htmlFor="username">
                             Username or Email:
                             <input
