@@ -8,8 +8,9 @@ import About from './components/About'
 import Feed from './components/Feed'
 import UserProfile from './components/UserProfile'
 import Friends from './components/Friends'
-import { AccountCreation, ProfileCreation } from './components/SignupForm'
+import { AccountCreation } from './components/SignupForm'
 import Footer from './components/Footer'
+import { CreatePost, CreateProject, EditProfile } from './components/PostForms'
 
 function App() {
     return (
@@ -21,15 +22,14 @@ function App() {
                     <Route path="/Home" element={<Home />} />
                     <Route path="/About" element={<About />} />
                     <Route path="/Friends" element={<Friends />} />
-                    <Route path="/LocalArt" element={<Feed />} />
-                    <Route path="/PopularArt" element={<Feed />} />
-                    <Route path="/MyArt" element={<UserProfile />} />
+                    <Route path="/Local" element={<Feed />} />
+                    <Route path="/Projects" element={<Feed />} />
+                    <Route path="/Profile" element={<UserProfile />} />
                     <Route path="/signup" element={<AccountCreation />} />
                     <Route path="/login" element={<Home />} />
-                    <Route
-                        path="/createProfile"
-                        element={<ProfileCreation />}
-                    />
+                    <Route path="/editProfile" element={<EditProfile />} />
+                    <Route path="/createPost" element={<CreatePost />} />
+                    <Route path="/createProject" element={<CreateProject />} />
                 </Routes>
                 <Footer />
             </div>

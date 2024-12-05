@@ -40,28 +40,28 @@ function ArtHoundHeader() {
                         <li>
                             {' '}
                             <Link
-                                to="/LocalArt"
+                                to="/Local"
                                 className="navigation-link px-2 link-two"
                             >
-                                Local Art
+                                Local
                             </Link>
                         </li>
                         <li>
                             {' '}
                             <Link
-                                to="/PopularArt"
+                                to="/Projects"
                                 className="navigation-link px-2 link-two"
                             >
-                                Popular Art
+                                Projects
                             </Link>
                         </li>
                         <li>
                             {' '}
                             <Link
-                                to="/MyArt"
+                                to="/Profile"
                                 className="navigation-link px-2 link-two"
                             >
-                                My Art
+                                Profile
                             </Link>
                         </li>
                         <li>
@@ -80,7 +80,7 @@ function ArtHoundHeader() {
                         <button
                             type="button"
                             className="login-button"
-                            onClick={() => routeChange('/newPost')}
+                            onClick={() => routeChange('/createPost')}
                         >
                             New Post
                         </button>

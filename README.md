@@ -18,11 +18,12 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 
 ## Current to do:
 
-1. Move About to footer.
+1. Move About to footer. (Done)
 2. Adjust headers: Local, Projects, Friends, Profile
 3. Add a projects section (Notably, let artists add each other to a project.)
 4. Add a friends page and following projects.
 5. Have posts actually paste an update to the database.
+6. Adjust signup to automatically log the user in for posts.
 
 Future to do:
 1. Protect against Request Forgery.
