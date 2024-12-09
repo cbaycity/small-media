@@ -35,3 +35,9 @@ def createProject(username: str, title: str, description: str, image: FileStorag
         }
     )
     return True  # The project was added successfully.
+
+
+def getUserProjects(username: str):
+    """Returns a list of all of the project titles associated with a user."""
+    projects = PROJECTS.find({"username": username}).to_list()
+    return [project["project-title"] for project in projects]

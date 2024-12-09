@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, jsonify
 from feed import createFeed
 from login import newUser, login, validLogin, getUser
 from posts import createPost
-from projects import createProject
+from projects import createProject, getUserProjects
 
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
@@ -81,9 +81,7 @@ def validToken():
 @app.route("/createPost", method=["POST"])
 def processPost():
     """Processes a user's new post."""
-    data = request.get_json()
-    token = data.get("token")
-
+    token = request.form.get("token")
     # Check valid token.
     if ~validToken(token):
         return "Invalid login token.", 401
@@ -101,9 +99,7 @@ def processPost():
 @app.route("/createProject", method=["POST"])
 def processProject():
     """Processes new project requests."""
-    data = request.get_json()
-    token = data.get("token")
-
+    token = request.form.get("token")
     # Check valid token.
     if ~validToken(token):
         return "Invalid login token.", 401
@@ -114,6 +110,18 @@ def processProject():
     if user:
         createProject(user, title, description, image)
     return redirect("/Profile")
+
+
+@app.route("/UserProjects", method=["POST"])
+def userProjects():
+    """Returns a list of a user's projects"""
+    data = request.get_json()
+    token = data.get("token")
+    # Check valid token.
+    if ~validToken(token):
+        return "Invalid login token.", 401
+    user = getUser(token)
+    return getUserProjects(user)
 
 
 if __name__ == "__main__":

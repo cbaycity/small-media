@@ -1,6 +1,6 @@
 """Tests that ensure that projects are successfully added and managed."""
 
-from projects import createProject
+from projects import createProject, getUserProjects
 import pytest
 from typing import NamedTuple, Any, List
 from test_login import TestUser
@@ -85,3 +85,99 @@ def test_createProject(users: List[TestUser], projects: List[ExampleProject]):
         image_entry = FS.get(image)
         assert image_entry.read() == b"Sample File"
         # Checks that the file was added correctly.
+
+
+@pytest.mark.parametrize(
+    "users, projects, expectedProjectNames",
+    [
+        (
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                )
+            ],
+            ["sample one"],
+        ),
+        (
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+                ExampleProject(
+                    "test1",
+                    "sample two",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ["sample one", "sample two"],
+        ),
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+            ],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+                ExampleProject(
+                    "test1",
+                    "sample two",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ["sample one", "sample two"],
+        ),
+    ],
+)
+def test_getUserProjects(
+    users: List[TestUser],
+    projects: List[ExampleProject],
+    expectedProjectNames: List[str],
+):
+    """Checks that after adding projects each project is returned by expectedProjectNames"""
+    for user in users:
+        newUser(user.username, user.email, user.password)
+
+    for project in projects:
+        assert createProject(
+            project.username, project.title, project.description, project.image
+        )
+
+    result = getUserProjects(users[0].username)
+    # Always check the projects of the first user.
+    for name in expectedProjectNames:
+        assert name in result
