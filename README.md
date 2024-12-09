@@ -16,6 +16,13 @@ The react front end was built with `npx create-react-app client --template types
 poetry export --without-hashes --format=requirements.txt > requirements.txt
 ```
 
+## WIP
+1. Add routing for create project and create projects
+2. link projects and create projects.
+3. Redirect after posts and projects are created to myProfile.
+Note: Profile should show recent activity and projects.
+5. 
+
 ## Current to do:
 
 1. Move About to footer. (Done)
@@ -24,6 +31,7 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 4. Add a friends page and following projects.
 5. Have posts actually paste an update to the database.
 6. Adjust signup to automatically log the user in for posts.
+7. You can add tests for routing of the main.py file. You should add these just after launching.
 
 Future to do:
 1. Protect against Request Forgery.

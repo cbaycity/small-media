@@ -109,7 +109,7 @@ function CreateProject() {
                             method="post"
                         >
                             <label htmlFor="project-title">
-                                Post Title
+                                Project Title
                                 <input
                                     type="text"
                                     id="title"
@@ -131,8 +131,8 @@ function CreateProject() {
                                     maxLength={320}
                                 />
                             </label>
-                            <label htmlFor="profile-image">
-                                Profile Photo:
+                            <label htmlFor="project-image">
+                                Project Profile Photo:
                                 <input type="file" accept="image/*" />
                             </label>
                             <button type="submit">Submit</button>

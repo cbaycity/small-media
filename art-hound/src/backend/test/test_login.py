@@ -1,6 +1,6 @@
 """Tests that the login functions work with MongoDB correctly."""
 
-from login import newUser, login, validLogin
+from login import newUser, login, validLogin, getUser
 from typing import List, NamedTuple, Tuple
 import pytest
 import datetime as dt
@@ -93,11 +93,11 @@ def test_passwords_hashed(users: List[TestUser]):
 
     # Get the monkeypatched db.
     # Note: This cannot be done earlier because the db value changes for each test.
-    from login import db
+    from backend_db import DB
 
     # Check that the password isn't stored raw.
     for user in users:
-        db_entry = db["users"].find({"username": user.username})
+        db_entry = DB["users"].find({"username": user.username})
         assert db_entry[0]["password"] != user.password
 
 
@@ -124,10 +124,34 @@ def test_validLogin(user, result, new_time):
     _, token = login(user.username, user.password)
 
     # Adjust time
-    from login import db
+    from backend_db import DB
 
     query = {"token": token}
-    _ = db["tokens"].update_one(query, {"$set": {"init-time": new_time}})
+    _ = DB["tokens"].update_one(query, {"$set": {"init-time": new_time}})
 
     # Check result
     assert validLogin(token) == result
+
+
+@pytest.mark.parametrize(
+    "users",
+    [
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+                TestUser("test3", "test3@gmail.com", "Password3"),
+            ]
+        ),
+    ],
+)
+def test_validLogin(users):
+    """Tests that valid login works as expected."""
+    # Create and Login user
+    tokens = []
+    for user in users:
+        newUser(user.username, user.email, user.password)
+        _, token = login(user.username, user.password)
+        tokens.append(token)
+    for user, token in zip(users, tokens):
+        assert getUser(token) == user.username
