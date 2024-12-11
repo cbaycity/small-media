@@ -88,6 +88,118 @@ def test_createProject(users: List[TestUser], projects: List[ExampleProject]):
 
 
 @pytest.mark.parametrize(
+    "name,users,init_projects,test_case",
+    [
+        (
+            "Failure with matching project title and user.",
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            [
+                ExampleProject(
+                    "test1",
+                    "Sample Title",
+                    "Sample Description",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                "Sample Title",
+                "Sample Description",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+        ),
+        (
+            "Failure with null title.",
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            [
+                ExampleProject(
+                    "test1",
+                    "Sample Title",
+                    "Sample Description",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                None,
+                "Sample Description",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+        ),
+        (
+            "Failure with title that has no characters.",
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            [
+                ExampleProject(
+                    "test1",
+                    "Sample Title",
+                    "Sample Description",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                "",
+                "Sample Description",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+        ),
+    ],
+)
+def test_createProjectFailures(
+    name: str,
+    users: List[TestUser],
+    init_projects: List[ExampleProject],
+    test_case: ExampleProject,
+):
+    """Tests that createProject fails when needed."""
+    # Fail without a title or with a matching title for the user.
+
+    print(f"Test: {name}")
+
+    # Add users to the database.
+    for user in users:
+        newUser(user.username, user.email, user.password)
+
+    # Add posts to the database.
+    for project in init_projects:
+        assert createProject(
+            project.username, project.title, project.description, project.image
+        )
+
+    assert (
+        createProject(
+            test_case.username, test_case.title, test_case.description, test_case.image
+        )
+        is False
+    )
+
+
+@pytest.mark.parametrize(
     "users, projects, expectedProjectNames",
     [
         (

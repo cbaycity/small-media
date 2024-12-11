@@ -50,9 +50,7 @@ const NewProjectButton = () => {
             type="button"
             className="login-button"
             onClick={() => routeChange('/createProject')}
-            style={{padding: "10px",
-                margin: "10px"
-            }}
+            style={{ padding: '10px', margin: '10px' }}
         >
             New Project
         </button>

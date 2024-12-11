@@ -11,6 +11,9 @@ PROJECTS = DB["projects"]
 def createProject(username: str, title: str, description: str, image: FileStorage):
     """Adds a post to the user's database and looks up related projects if needed."""
 
+    if title is None or len(title) == 0:
+        return False
+
     # Assert that the user doesn't have a project
     user_projects = PROJECTS.find(
         {

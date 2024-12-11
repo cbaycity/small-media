@@ -50,10 +50,10 @@ function CreatePost() {
     const [selectedProject, setSelectedProject] = useState('')
     useEffect(() => {
         counter += 1
-        console.log("Call Counter at ", counter)
-        console.log("token: ", token)
-        if (!token){
-            console.log("Token not set, not calling lookup")
+        console.log('Call Counter at ', counter)
+        console.log('token: ', token)
+        if (!token) {
+            console.log('Token not set, not calling lookup')
             return
         }
         const fetchData = async () => {
@@ -146,7 +146,12 @@ function CreatePost() {
                             <br />
                             <label htmlFor="post-image">
                                 Post Photo:
-                                <input id = "post-image" name = "post-image" type="file" accept="image/*" />
+                                <input
+                                    id="post-image"
+                                    name="post-image"
+                                    type="file"
+                                    accept="image/*"
+                                />
                             </label>
                             {token ? (
                                 <input
@@ -205,7 +210,12 @@ function CreateProject() {
                             </label>
                             <label htmlFor="project-image">
                                 Project Profile Photo:
-                                <input id = "project-image" name = "project-image" type="file" accept="image/*" />
+                                <input
+                                    id="project-image"
+                                    name="project-image"
+                                    type="file"
+                                    accept="image/*"
+                                />
                             </label>
                             {token ? (
                                 <input
