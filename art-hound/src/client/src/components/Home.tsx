@@ -1,51 +1,32 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import { LoginContext, LoginForm, CheckLogin } from './LoginForm'
 
 function Home() {
+    const { user, storeUser, token, storeToken, logOut } =
+        useContext(LoginContext)
+
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
+    useEffect(() => {
+        const validateLogin = async () => {
+            if (token) {
+                const isValid = await CheckLogin(token)
+                setIsLoggedIn(isValid)
+            } else {
+                setIsLoggedIn(false)
+            }
+        }
+        validateLogin()
+    }, [token])
+
     return (
         <div className="container center-body">
-            <p>Need to build the Home website.</p>
+            {!isLoggedIn ? (
+                <LoginForm />
+            ) : (
+                <p>Need to build the Home website.</p>
+            )}
         </div>
     )
 }
 
-function Login() {
-    return (
-        <div className="container full-height general-body-background">
-            <div className="form-container">
-                <div id="form-one-block">
-                    {/*The below p object displays error messages*/}
-                    <form
-                        className="signup-form"
-                        action="/createAccount"
-                        method="post"
-                    >
-                        <h2>Signin</h2>
-                        <label htmlFor="username">
-                            Username:
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                required
-                            />
-                        </label>
-                        <label htmlFor="password">
-                            Password:
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                maxLength={30}
-                            />
-                        </label>
-                        <button type="submit">Login</button>
-                    </form>
-                </div>
-                {/* Add the stylesheet to the CSS.*/}
-                <link rel="stylesheet" href="public/signup-form.css" />
-            </div>
-        </div>
-    )
-}
-
-export { Home, Login }
+export default Home

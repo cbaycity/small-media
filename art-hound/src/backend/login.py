@@ -1,19 +1,15 @@
 """This is a module to track if users have an account with ArtHound."""
 
-from pymongo import MongoClient
-from pymongo.database import Database
-import os
 from typing import Tuple
+from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
+import datetime
+from backend_db import DB
 
-# MongoDB Connection.
-mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
-client = MongoClient(mongo_uri)
-db = client.production  # monkey patch switch to client.testdatabase for tests.
+# Get or create a collection of usernames and passwords.
+USERS = DB["users"]
 
-# Create a collection of usernames and passwords.
-collection_list = db.list_collection_names()
-if "users" not in collection_list:
-    USERS = db.create_collection("users")
+TOKEN_LENGTH = 32  # URL Safe length for tokens.
 
 
 def login(username: str, password: str) -> bool:
@@ -24,10 +20,18 @@ def login(username: str, password: str) -> bool:
         password: The user's unhashed password.
     """
     # NOTE: need to return a cookie in the future.
-    user = db["users"].find_one({"username": username})
-    if user and user["password"] == password:
-        return True
-    return False
+    user = USERS.find_one({"username": username})
+    if user and check_password_hash(user["password"], password):
+        userToken = secrets.token_urlsafe(TOKEN_LENGTH)
+        DB["tokens"].insert_one(
+            {
+                "token": userToken,
+                "username": user["username"],
+                "init-time": datetime.datetime.now(),
+            }
+        )
+        return True, userToken
+    return False, ""
 
 
 def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
@@ -43,10 +47,34 @@ def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
         email_new: True if the provided email was uniquely new.
     """
     query = {"$or": [{"username": username}, {"email": email}]}
-    user = db["users"].find_one(query)
+    user = USERS.find_one(query)
 
     if not user:
-        newUser = {"username": username, "password": password, "email": email}
-        db["users"].insert_one(newUser)
+        newUser = {
+            "username": username,
+            "password": generate_password_hash(password),
+            "email": email,
+        }
+        USERS.insert_one(newUser)
         return True, True
     return (user["username"] != username, user["email"] != email)
+
+
+def validLogin(token: str):
+    """Checks if a login token is valid."""
+    db_entry = DB["tokens"].find_one({"token": token})
+    if db_entry and db_entry[
+        "init-time"
+    ] > datetime.datetime.now() + datetime.timedelta(days=-1):
+        return True
+    return False
+
+
+def getUser(token: str):
+    """Returns the username related to a token unless the token is invalid."""
+    db_entry = DB["tokens"].find_one({"token": token})
+    if db_entry and db_entry[
+        "init-time"
+    ] > datetime.datetime.now() + datetime.timedelta(days=-1):
+        return db_entry["username"]
+    return False

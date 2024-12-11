@@ -245,14 +245,10 @@ function AccountCreation() {
                     </form>
                 </div>
                 {/* Add the stylesheet to the CSS.*/}
-                <link rel="stylesheet" href="public/signup-form.css" />
+                <link rel="stylesheet" href="public/basic-form.css" />
             </div>
         </div>
     )
 }
 
-function ProfileCreation() {
-    return <p>In Development.</p>
-}
-
-export { AccountCreation, ProfileCreation }
+export { AccountCreation }

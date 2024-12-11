@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { LoginContext, CheckLogin } from './LoginForm'
 import { Link, useNavigate } from 'react-router-dom'
 
 function ArtHoundHeader() {
@@ -6,6 +7,22 @@ function ArtHoundHeader() {
     const routeChange = (path: string) => {
         navigate(path)
     }
+
+    const { user, storeUser, token, storeToken, logOut } =
+        useContext(LoginContext)
+
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
+    useEffect(() => {
+        const validateLogin = async () => {
+            if (token) {
+                const isValid = await CheckLogin(token)
+                setIsLoggedIn(isValid)
+            } else {
+                setIsLoggedIn(false)
+            }
+        }
+        validateLogin()
+    }, [token])
 
     return (
         <div className="container">
@@ -23,28 +40,28 @@ function ArtHoundHeader() {
                         <li>
                             {' '}
                             <Link
-                                to="/LocalArt"
+                                to="/Local"
                                 className="navigation-link px-2 link-two"
                             >
-                                Local Art
+                                Local
                             </Link>
                         </li>
                         <li>
                             {' '}
                             <Link
-                                to="/PopularArt"
+                                to="/Projects"
                                 className="navigation-link px-2 link-two"
                             >
-                                Popular Art
+                                Projects
                             </Link>
                         </li>
                         <li>
                             {' '}
                             <Link
-                                to="/MyArt"
+                                to="/Profile"
                                 className="navigation-link px-2 link-two"
                             >
-                                My Art
+                                Profile
                             </Link>
                         </li>
                         <li>
@@ -56,33 +73,47 @@ function ArtHoundHeader() {
                                 Friends
                             </Link>
                         </li>
-                        <li>
-                            {' '}
-                            <Link
-                                to="/About"
-                                className="navigation-link px-2 link-two"
-                            >
-                                About
-                            </Link>
-                        </li>
                     </ul>
                 </div>
-                <div className="login headerSection">
-                    <button
-                        type="button"
-                        className="login-button"
-                        onClick={() => routeChange('/login')}
-                    >
-                        Login
-                    </button>
-                    <button
-                        type="button"
-                        className="login-button"
-                        onClick={() => routeChange('/signup')}
-                    >
-                        Sign-Up
-                    </button>
-                </div>
+                {isLoggedIn ? (
+                    <div className="login headerSection">
+                        <button
+                            type="button"
+                            className="login-button"
+                            onClick={() => routeChange('/createPost')}
+                        >
+                            New Post
+                        </button>
+                        <button
+                            type="button"
+                            className="login-button"
+                            onClick={() => {
+                                logOut()
+                            }}
+                        >
+                            Sign-Out
+                        </button>
+                    </div>
+                ) : (
+                    <div className="login headerSection">
+                        <button
+                            type="button"
+                            className="login-button"
+                            onClick={() => {
+                                routeChange('/login')
+                            }}
+                        >
+                            Login
+                        </button>
+                        <button
+                            type="button"
+                            className="login-button"
+                            onClick={() => routeChange('/signup')}
+                        >
+                            Sign-Up
+                        </button>
+                    </div>
+                )}
             </header>
         </div>
     )

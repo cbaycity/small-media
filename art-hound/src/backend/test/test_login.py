@@ -1,9 +1,9 @@
 """Tests that the login functions work with MongoDB correctly."""
 
-from login import newUser, login
+from login import newUser, login, validLogin, getUser
 from typing import List, NamedTuple, Tuple
 import pytest
-from pymongo.database import Database
+import datetime as dt
 
 
 class TestUser(NamedTuple):
@@ -30,7 +30,8 @@ def test_new_user_login(users: List[TestUser]):
         newUser(user.username, user.email, user.password)
 
     for user in users:
-        assert login(user.username, user.password)
+        status, _ = login(user.username, user.password)
+        assert status
 
 
 @pytest.mark.parametrize(
@@ -70,3 +71,87 @@ def test_new_user_fail(testname: str, users: List[TestUser], result: Tuple[bool,
     # Check that the second user isn't added.
 
     assert newUser(users[1].username, users[1].email, users[1].password) == result
+
+
+@pytest.mark.parametrize(
+    "users",
+    [
+        [
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+            TestUser("test3", "test3@gmail.com", "Password!(#)"),
+            TestUser("test3", "test3@gmail.com", "10hgTKLN900123##$%"),
+        ]
+    ],
+)
+def test_passwords_hashed(users: List[TestUser]):
+    """Tests that the passwords are stored in a hashed form."""
+    # Add the users to the database.
+
+    for user in users:
+        newUser(user.username, user.email, user.password)
+
+    # Get the monkeypatched db.
+    # Note: This cannot be done earlier because the db value changes for each test.
+    from backend_db import DB
+
+    # Check that the password isn't stored raw.
+    for user in users:
+        db_entry = DB["users"].find({"username": user.username})
+        assert db_entry[0]["password"] != user.password
+
+
+@pytest.mark.parametrize(
+    "user, result, new_time",
+    [
+        (TestUser("test1", "test@gmail.com", "Password1"), True, dt.datetime.now()),
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            False,
+            dt.datetime(year=1950, month=1, day=1),
+        ),
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            False,
+            dt.datetime.now() + dt.timedelta(days=-2),
+        ),
+    ],
+)
+def test_validLogin(user, result, new_time):
+    """Tests that valid login works as expected."""
+    # Create and Login user
+    newUser(user.username, user.email, user.password)
+    _, token = login(user.username, user.password)
+
+    # Adjust time
+    from backend_db import DB
+
+    query = {"token": token}
+    _ = DB["tokens"].update_one(query, {"$set": {"init-time": new_time}})
+
+    # Check result
+    assert validLogin(token) == result
+
+
+@pytest.mark.parametrize(
+    "users",
+    [
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+                TestUser("test3", "test3@gmail.com", "Password3"),
+            ]
+        ),
+    ],
+)
+def test_validLogin(users):
+    """Tests that valid login works as expected."""
+    # Create and Login user
+    tokens = []
+    for user in users:
+        newUser(user.username, user.email, user.password)
+        _, token = login(user.username, user.password)
+        tokens.append(token)
+    for user, token in zip(users, tokens):
+        assert getUser(token) == user.username

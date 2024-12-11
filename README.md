@@ -11,21 +11,40 @@ The react front end was built with `npx create-react-app client --template types
 2. The front end can be started by running `npm start` in the client directory.
    Note: Once this is done, you can see that the app is delivered by the NPM server but it is requesting reasources from the Flask server. This will let us build an Apache Kafka backend database management via Flask but we'll focus on building the front end web experience using the NPM app. These two components are connected with proxy variable in the react app, which directs the traffic to the Flask server.
 3. `docker compose up --build` will start all of the services. `docker compose --profile explore up --build` will start the jupyter notebook too that can explore the database.
+4. Need to create Python requirements file
+```bash
+poetry export --without-hashes --format=requirements.txt > requirements.txt
+```
+
+## WIP
+1. Add routing for create project and create projects
+2. link projects and create projects.
+3. Redirect after posts and projects are created to myProfile.
+Note: Profile should show recent activity and projects.
+5. 
 
 ## Current to do:
 
-0. Get Docker to spin up the database and frontend. Connect the two, and process requests that way.
-1. Adjust the backend to process signup requests with a database.
-2. Figure out some form of testing for the components and for the site. Jack suggests that only testing for backend hits is needed?
-3. Add My Art feed.
-4. Add a friend's section.
-   i. Friends list
-   ii. Follow requests.
-   iii. Friend's feed.
-5. Adjust local art section to have location focused on.
-6. Containerize deployment in Docker.
-7. Setup ESLint for typescript.
-8. Add a Create Post button to replace the login button in the header.
+1. Move About to footer. (Done)
+2. Adjust headers: Local, Projects, Friends, Profile
+3. Add a projects section (Notably, let artists add each other to a project.)
+4. Add a friends page and following projects.
+5. Have posts actually paste an update to the database.
+6. Adjust signup to automatically log the user in for posts.
+7. You can add tests for routing of the main.py file. You should add these just after launching.
+8. Split profile page into two sections: activities, and projects.
+9. Add edit profile button.
+10. Fix dates not selecting in forms.
+11. Fix having a required end date to projects.
+
+Future to do:
+1. Protect against Request Forgery.
+
+Current Work Going On:
+1. Need to ensure that the function called on the login button click calls storeUser and storeToken.
+2. Need to ensure that functions which consume the token and user are typed correctly.
+3. Need to ensure that the state is being saved correctly in the brower local storage variable.
+
 
 ## Mac Environment Setup:
 
@@ -43,3 +62,15 @@ The react front end was built with `npx create-react-app client --template types
 python -m black <target>
 prettier <target: ex. ./*> --write
 ```
+
+
+### Sample Users:
+username: test
+password: Password1
+
+
+### Deploy to AWS using AWS ECR Repository
+1. Place to push and store Docker images.
+2. Use EC2 instance to just trigger ```docker run```.
+3. Put a firewall, like AWS waff, to stop bots.
+
