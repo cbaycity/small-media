@@ -3,6 +3,8 @@
 import react, { useState, useContext, useEffect } from 'react'
 import { LoginContext } from './LoginForm'
 
+var counter = 0
+
 const addFormCss = () => {
     return (
         <>
@@ -11,8 +13,10 @@ const addFormCss = () => {
     )
 }
 
-const addDateFields = () => {
+const AddDateFields = () => {
     const today = new Date().toISOString().split('T')[0] // Format date as yyyy-mm-dd
+    const [startDate, setStartDate] = useState(today)
+    const [endDate, setEndDate] = useState(today)
     return (
         <>
             <label htmlFor="start-date">
@@ -21,7 +25,8 @@ const addDateFields = () => {
                     type="date"
                     id="start-date"
                     name="start-date"
-                    value={today}
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
                     required
                 />
             </label>
@@ -31,8 +36,8 @@ const addDateFields = () => {
                     type="date"
                     id="end-date"
                     name="end-date"
-                    value={today}
-                    required
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
                 />
             </label>
         </>
@@ -44,14 +49,21 @@ function CreatePost() {
     const [projectList, setProjectList] = useState([])
     const [selectedProject, setSelectedProject] = useState('')
     useEffect(() => {
+        counter += 1
+        console.log("Call Counter at ", counter)
+        console.log("token: ", token)
+        if (!token){
+            console.log("Token not set, not calling lookup")
+            return
+        }
         const fetchData = async () => {
             try {
-                const response = await fetch('/feed', {
+                const response = await fetch('/UserProjects', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ token }),
+                    body: JSON.stringify({ token: token }),
                 })
 
                 if (!response.ok) {
@@ -90,6 +102,7 @@ function CreatePost() {
                             className="signup-form"
                             action="/createPost"
                             method="post"
+                            encType="multipart/form-data"
                         >
                             <label htmlFor="post-title">
                                 Post Title
@@ -102,7 +115,7 @@ function CreatePost() {
                                     maxLength={30}
                                 />
                             </label>
-                            {addDateFields()}
+                            {AddDateFields()}
                             <label htmlFor="description">
                                 Post Description
                                 <input
@@ -130,9 +143,10 @@ function CreatePost() {
                                     </option>
                                 ))}
                             </select>
+                            <br />
                             <label htmlFor="post-image">
                                 Post Photo:
-                                <input type="file" accept="image/*" />
+                                <input id = "post-image" name = "post-image" type="file" accept="image/*" />
                             </label>
                             {token ? (
                                 <input
@@ -164,19 +178,20 @@ function CreateProject() {
                             className="signup-form"
                             action="/createProject"
                             method="post"
+                            encType="multipart/form-data"
                         >
                             <label htmlFor="project-title">
                                 Project Title
                                 <input
                                     type="text"
-                                    id="title"
-                                    name="title"
+                                    id="project-title"
+                                    name="project-title"
                                     autoComplete="off"
                                     required
                                     maxLength={80}
                                 />
                             </label>
-                            {addDateFields()}
+                            {AddDateFields()}
                             <label htmlFor="description">
                                 Project Description
                                 <input
@@ -190,7 +205,7 @@ function CreateProject() {
                             </label>
                             <label htmlFor="project-image">
                                 Project Profile Photo:
-                                <input type="file" accept="image/*" />
+                                <input id = "project-image" name = "project-image" type="file" accept="image/*" />
                             </label>
                             {token ? (
                                 <input
@@ -222,6 +237,7 @@ function EditProfile() {
                             className="signup-form"
                             action="/editUser"
                             method="post"
+                            encType="multipart/form-data"
                         >
                             <label htmlFor="bio">
                                 Project Description

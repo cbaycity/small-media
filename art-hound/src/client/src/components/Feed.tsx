@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function GetFeed(feedType: string, userInfo: string) {
     const [data, setData] = useState([{}])
@@ -39,11 +40,40 @@ Each div should start with a <h3> for the title
 
 */
 
+const NewProjectButton = () => {
+    let navigate = useNavigate()
+    const routeChange = (path: string) => {
+        navigate(path)
+    }
+    return (
+        <button
+            type="button"
+            className="login-button"
+            onClick={() => routeChange('/createProject')}
+            style={{padding: "10px",
+                margin: "10px"
+            }}
+        >
+            New Project
+        </button>
+    )
+}
+
+const LeftBar = () => {
+    const loc = useLocation()
+    if (loc.pathname.includes('/Projects')) {
+        // Render project related features.
+        return NewProjectButton()
+    } else {
+        return <p>Seattle</p>
+    }
+}
+
 function Feed() {
     return (
         <div className="container center-body general-body-background feed-body">
             <div id="left-side-bar" className="side-bar">
-                <p>Seattle</p>
+                {LeftBar()}
             </div>
             <div id="feed" className="feed">
                 <p>{GetFeed('LOCAL', 'cbaycity')}</p>

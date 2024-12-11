@@ -78,12 +78,12 @@ def validToken():
     return jsonify({"valid": False}), 489
 
 
-@app.route("/createPost", method=["POST"])
+@app.route("/createPost", methods=["POST"])
 def processPost():
     """Processes a user's new post."""
     token = request.form.get("token")
     # Check valid token.
-    if ~validToken(token):
+    if not validLogin(token):
         return "Invalid login token.", 401
 
     title = request.form.get("post-title")
@@ -96,29 +96,31 @@ def processPost():
     return redirect("/Profile")
 
 
-@app.route("/createProject", method=["POST"])
+@app.route("/createProject", methods=["POST"])
 def processProject():
     """Processes new project requests."""
     token = request.form.get("token")
     # Check valid token.
-    if ~validToken(token):
+    if not validLogin(token):
         return "Invalid login token.", 401
     title = request.form.get("project-title")
     description = request.form.get("description")
     image = request.files["project-image"]
     user = getUser(token)
     if user:
-        createProject(user, title, description, image)
+        result = createProject(user, title, description, image)
+        app.logger.info(f"Create Project Result: {result}")
+        app.logger.info(f"User: {user}, Title: {title}, Description: {description}")
     return redirect("/Profile")
 
 
-@app.route("/UserProjects", method=["POST"])
+@app.route("/UserProjects", methods=["POST"])
 def userProjects():
     """Returns a list of a user's projects"""
     data = request.get_json()
     token = data.get("token")
     # Check valid token.
-    if ~validToken(token):
+    if not validLogin(token):
         return "Invalid login token.", 401
     user = getUser(token)
     return getUserProjects(user)

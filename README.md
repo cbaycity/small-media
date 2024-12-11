@@ -32,6 +32,10 @@ Note: Profile should show recent activity and projects.
 5. Have posts actually paste an update to the database.
 6. Adjust signup to automatically log the user in for posts.
 7. You can add tests for routing of the main.py file. You should add these just after launching.
+8. Split profile page into two sections: activities, and projects.
+9. Add edit profile button.
+10. Fix dates not selecting in forms.
+11. Fix having a required end date to projects.
 
 Future to do:
 1. Protect against Request Forgery.
