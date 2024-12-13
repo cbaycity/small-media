@@ -156,6 +156,13 @@ link {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
 .login-button:hover {
     color: #007bff;
     background-color: #fff;

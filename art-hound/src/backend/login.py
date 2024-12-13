@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 import datetime
 from backend_db import DB
+from functools import lru_cache
 
 # Get or create a collection of usernames and passwords.
 USERS = DB["users"]
@@ -70,6 +71,7 @@ def validLogin(token: str):
     return False
 
 
+@lru_cache(maxsize=16384)
 def getUser(token: str):
     """Returns the username related to a token unless the token is invalid."""
     db_entry = DB["tokens"].find_one({"token": token})

@@ -16,37 +16,30 @@ The react front end was built with `npx create-react-app client --template types
 poetry export --without-hashes --format=requirements.txt > requirements.txt
 ```
 
-## WIP
-1. Add routing for create project and create projects
-2. link projects and create projects.
-3. Redirect after posts and projects are created to myProfile.
-Note: Profile should show recent activity and projects.
-5. 
+# To Do Lists:
+## Priority:
+For multiple pages, a common feature needed is a way to retrieve lists of posts to display. You therefore need to spend time creating a "feed" frontend function that returns a list of posts and related details. This function can be called by other elements and queries can be passed to the backend to retrieve posts.
 
-## Current to do:
+## Infrastructure:
+1. You can add tests for routing of the main.py file. You should add these just after launching.
+2. Protect against Request Forgery.
+3. Add an invite token to the signup page.
+4. The login logic isn't working well. When a user signs out they need to stop seeing webpage content. 
 
-1. Move About to footer. (Done)
-2. Adjust headers: Local, Projects, Friends, Profile
-3. Add a projects section (Notably, let artists add each other to a project.)
-4. Add a friends page and following projects.
-5. Have posts actually paste an update to the database.
-6. Adjust signup to automatically log the user in for posts.
-7. You can add tests for routing of the main.py file. You should add these just after launching.
-8. Split profile page into two sections: activities, and projects.
-9. Add edit profile button.
-10. Fix dates not selecting in forms.
-11. Fix having a required end date to projects.
+## Projects: 
+1. Show projects in a list that the user has.
+2. Have a way to click into projects and see posts displayed.
 
-Future to do:
-1. Protect against Request Forgery.
+## Profile Section:
+1. Split profile page into two sections: activities, and projects.
+2. Add edit profile button.
 
-Current Work Going On:
-1. Need to ensure that the function called on the login button click calls storeUser and storeToken.
-2. Need to ensure that functions which consume the token and user are typed correctly.
-3. Need to ensure that the state is being saved correctly in the brower local storage variable.
+## Friends Section:
+1. Let artists add each other to a project.
+2. Let artists add each other as friends and see each other's accounts.
 
 
-## Mac Environment Setup:
+# Mac Environment Setup:
 
 1. Use brew to install Python
 2. install 3.12.3

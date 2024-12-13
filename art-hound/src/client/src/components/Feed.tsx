@@ -76,7 +76,7 @@ function Feed() {
             <div id="feed" className="feed">
                 <p>{GetFeed('LOCAL', 'cbaycity')}</p>
                 <div className="post">
-                    <h3>Larch Madness</h3>
+                    <h3 className="post-header"><span>Larch Madness</span><span>cbaycity</span></h3>
                     <p>March 3rd 2024</p>
                     <p>
                         Loved seeing the larches before they lost their leaves.
