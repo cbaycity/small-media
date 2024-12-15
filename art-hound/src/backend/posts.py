@@ -3,17 +3,33 @@
 from backend_db import DB, FS
 import uuid
 from werkzeug.datastructures import FileStorage
+from datetime import datetime
 
 # Get or create a collection for Posts.
 POSTS = DB["posts"]
+USERS = DB["users"]
+PROJECTS = DB["projects"]
 
 
 def createPost(
-    username: str, title: str, description: str, image: FileStorage, project: str = None
+    username: str,
+    title: str,
+    description: str,
+    startDate: str,
+    endDate: str,
+    image: FileStorage,
+    project: str = None,
 ):
     """Adds a post to the user's database and looks up related projects if needed."""
     if project is not None:
-        related_project = None  # Temp None, need to lookup related project.
+        related_project = PROJECTS.find_one(
+            {
+                "username": username,
+                "project": "project-title",
+            }
+        )["project_id"]
+    else:
+        related_project = None
 
     # Insert the image and get the image-id back.
     image_id = FS.put(image, filename=image.filename, content_type=image.content_type)
@@ -24,11 +40,45 @@ def createPost(
             "username": username,
             "title": title,
             "description": description,
+            "startDate": datetime.strptime(startDate, "%Y-%m-%d"),
+            "endDate": datetime.strptime(endDate, "%Y-%m-%d"),
             "image-id": image_id,
             "project-id": related_project,
         }
     )
     return True  # The post was added successfully.
+
+
+def singleUserFeed(user, queryUsername: str):
+    """Gets the feed for a single user."""
+
+    if user != queryUsername:
+        # Need to ensure the users are friends or the account is public.
+        user_doc = USERS.find_one({"username": user})
+        if not (user_doc["public"] or queryUsername in user_doc["friends"]):
+            return False
+
+    query = {
+        "username": queryUsername,
+    }
+    data = POSTS.find(query).sort("startDate", -1)
+    return [
+        {
+            "title": post["title"],
+            "username": post["username"],
+            "startDate": post["startDate"],
+            "endDate": post["endDate"],
+            "description": post["description"],
+            "image-id": post["image-id"],
+        }
+        for post in data
+    ]
+
+
+def multiUserFeed(username: str):
+    """Gets the feed for friends of a user."""
+    friends = USERS.find_one({})
+    return "NEED TO PROCESS FRIENDS BEFORE BUILDING THIS FEED TYPE."
 
 
 # Plan for managing access to images.

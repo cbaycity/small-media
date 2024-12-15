@@ -55,6 +55,8 @@ def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
             "username": username,
             "password": generate_password_hash(password),
             "email": email,
+            "friends": [],
+            "public": False,
         }
         USERS.insert_one(newUser)
         return True, True
@@ -80,3 +82,23 @@ def getUser(token: str):
     ] > datetime.datetime.now() + datetime.timedelta(days=-1):
         return db_entry["username"]
     return False
+
+
+def addFriend(first_user: str, second_user: str):
+    """Friendship."""
+    # Check that user and new_friend exist.
+    first_user_doc = USERS.find_one({"username": first_user})
+    second_user_doc = USERS.find_one({"username": second_user})
+    if not (first_user_doc and second_user_doc):
+        return False
+
+    # Add friends to docs.
+    USERS.update_one(
+        {"username": first_user},
+        {"$addToSet": {"friends": second_user}},
+    )
+    USERS.update_one(
+        {"username": second_user},
+        {"$addToSet": {"friends": first_user}},
+    )
+    return True

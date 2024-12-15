@@ -20,6 +20,8 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 ## Priority:
 For multiple pages, a common feature needed is a way to retrieve lists of posts to display. You therefore need to spend time creating a "feed" frontend function that returns a list of posts and related details. This function can be called by other elements and queries can be passed to the backend to retrieve posts.
 
+Start by just adding a way to collect posts. Then add a next button at the bottom of the page.
+
 ## Infrastructure:
 1. You can add tests for routing of the main.py file. You should add these just after launching.
 2. Protect against Request Forgery.

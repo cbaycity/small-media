@@ -1,6 +1,6 @@
 """Tests that the login functions work with MongoDB correctly."""
 
-from login import newUser, login, validLogin, getUser
+from login import newUser, login, validLogin, getUser, addFriend
 from typing import List, NamedTuple, Tuple
 import pytest
 import datetime as dt
@@ -155,3 +155,52 @@ def test_validLogin(users):
         tokens.append(token)
     for user, token in zip(users, tokens):
         assert getUser(token) == user.username
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_addFriend(user_one: TestUser, user_two: TestUser):
+    """Checks that friends can be established correctly."""
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    # Add the friends.
+    assert addFriend(user_one.username, user_two.username)
+
+    # Assert that they're friends.
+    from backend_db import DB
+
+    for user in DB["users"].find({}):
+        print(f"All users: {user}")
+
+    first_user = DB["users"].find_one({"username": user_one.username})
+    assert user_two.username in first_user["friends"]
+
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username in second_user["friends"]
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_addFriend_Fails(user_one, user_two):
+    """Tests that addFriend fails when one of the users doesn't exist."""
+
+    # Add the first user but assert that the function fails.
+    newUser(user_one.username, user_one.email, user_one.password)
+
+    assert addFriend(user_one.username, user_two.username) == False
+    assert addFriend(user_two.username, user_one.username) == False

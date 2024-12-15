@@ -1,7 +1,6 @@
 from flask import Flask, request, redirect, jsonify
-from feed import createFeed
 from login import newUser, login, validLogin, getUser
-from posts import createPost
+from posts import createPost, createFeed
 from projects import createProject, getUserProjects
 
 # from flask_wtf import CSRFProtect
@@ -90,9 +89,11 @@ def processPost():
     description = request.form.get("description")
     project = request.form.get("project")
     image = request.files["post-image"]
+    startDate = request.form.get("start-date")
+    endDate = request.form.get("end-date")
     user = getUser(token)
     if user:
-        createPost(user, title, description, image, project)
+        createPost(user, title, description, startDate, endDate, image, project)
     return redirect("/Profile")
 
 

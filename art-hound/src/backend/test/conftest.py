@@ -21,8 +21,10 @@ def set_test_db(monkeypatch):
     monkeypatch.setattr("backend_db.DB", test_db)
     monkeypatch.setattr("backend_db.FS", test_fs)
     monkeypatch.setattr("login.USERS", test_db["users"])
+    monkeypatch.setattr("posts.USERS", test_db["users"])
     monkeypatch.setattr("posts.POSTS", test_db["posts"])
     monkeypatch.setattr("projects.PROJECTS", test_db["projects"])
+    monkeypatch.setattr("posts.PROJECTS", test_db["projects"])
     monkeypatch.setattr("posts.FS", test_fs)
     monkeypatch.setattr("projects.FS", test_fs)
     # Need to reset manually each module that imports DB because each test needs a new import.
