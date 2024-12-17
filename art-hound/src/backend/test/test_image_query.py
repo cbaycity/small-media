@@ -1,15 +1,16 @@
 """Tests that check the internal logic of image processing functions."""
 
-from image_query import process_image
-import pytest
-from login import newUser, addFriend
 from io import BytesIO
-from werkzeug.datastructures import FileStorage
-from login import addFriend
 from typing import List, Tuple
+
+import pytest
 from test_login import TestUser
 from test_posts import ExamplePost
 from test_projects import ExampleProject
+from werkzeug.datastructures import FileStorage
+
+from image_query import process_image
+from login import addFriend, newUser
 from posts import createPost
 from projects import createProject
 

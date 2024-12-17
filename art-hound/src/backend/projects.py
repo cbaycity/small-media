@@ -1,8 +1,10 @@
 """This module contains code for creating and processing projects."""
 
-from backend_db import DB, FS
 import uuid
+
 from werkzeug.datastructures import FileStorage
+
+from backend_db import DB, FS
 
 PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""

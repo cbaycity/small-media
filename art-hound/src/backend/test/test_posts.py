@@ -1,14 +1,15 @@
 """Tests for the posts functionality."""
 
-from posts import createPost, singleUserFeed, multiUserFeed
-import pytest
-from typing import NamedTuple, Any, List, Union, Tuple
-from test_login import TestUser
-from login import newUser
-from io import BytesIO
-from werkzeug.datastructures import FileStorage
 from datetime import datetime
-from login import addFriend
+from io import BytesIO
+from typing import Any, List, NamedTuple, Tuple, Union
+
+import pytest
+from test_login import TestUser
+from werkzeug.datastructures import FileStorage
+
+from login import addFriend, newUser
+from posts import createPost, multiUserFeed, singleUserFeed
 
 
 class ExamplePost(NamedTuple):

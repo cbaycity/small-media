@@ -1,9 +1,11 @@
 """Tests that the login functions work with MongoDB correctly."""
 
-from login import newUser, login, validLogin, getUser, addFriend
-from typing import List, NamedTuple, Tuple
-import pytest
 import datetime as dt
+from typing import List, NamedTuple, Tuple
+
+import pytest
+
+from login import addFriend, getUser, login, newUser, validLogin
 
 
 class TestUser(NamedTuple):

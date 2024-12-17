@@ -1,11 +1,13 @@
 """This is a module to track if users have an account with ArtHound."""
 
-from typing import Tuple
-from werkzeug.security import generate_password_hash, check_password_hash
-import secrets
 import datetime
-from backend_db import DB
+import secrets
 from functools import lru_cache
+from typing import Tuple
+
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from backend_db import DB
 
 # Get or create a collection of usernames and passwords.
 USERS = DB["users"]

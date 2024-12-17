@@ -1,12 +1,14 @@
 """Tests that ensure that projects are successfully added and managed."""
 
-from projects import createProject, getUserProjects
-import pytest
-from typing import NamedTuple, Any, List
-from test_login import TestUser
-from login import newUser
 from io import BytesIO
+from typing import Any, List, NamedTuple
+
+import pytest
+from test_login import TestUser
 from werkzeug.datastructures import FileStorage
+
+from login import newUser
+from projects import createProject, getUserProjects
 
 
 class ExampleProject(NamedTuple):

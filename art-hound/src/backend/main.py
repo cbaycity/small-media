@@ -1,11 +1,12 @@
-from flask import Flask, request, redirect, jsonify
-from login import newUser, login, validLogin, getUser
-from posts import createPost, createFeed
-from projects import createProject, getUserProjects
+import os
 
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
-import os
+from flask import Flask, jsonify, redirect, request
+
+from login import getUser, login, newUser, validLogin
+from posts import createFeed, createPost
+from projects import createProject, getUserProjects
 
 # Load env keys
 load_dotenv()

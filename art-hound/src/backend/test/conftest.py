@@ -3,9 +3,9 @@
 The main resource needed is a mongodb client.
 """
 
-from pymongo import MongoClient
 import gridfs
 import pytest
+from pymongo import MongoClient
 
 client = MongoClient("mongodb://localhost:27017/")
 """A client using local host, encapsulates tests in the Python env."""

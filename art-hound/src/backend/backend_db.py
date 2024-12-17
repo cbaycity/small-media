@@ -1,8 +1,9 @@
 """This module sets up the backend DB."""
 
-from pymongo import MongoClient
-import gridfs
 import os
+
+import gridfs
+from pymongo import MongoClient
 
 # MongoDB Connection.
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")

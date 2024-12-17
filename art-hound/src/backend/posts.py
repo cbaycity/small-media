@@ -1,9 +1,11 @@
 """This module contains code to create posts and add them to the database."""
 
-from backend_db import DB, FS
 import uuid
-from werkzeug.datastructures import FileStorage
 from datetime import datetime
+
+from werkzeug.datastructures import FileStorage
+
+from backend_db import DB, FS
 
 # Get or create a collection for Posts.
 POSTS = DB["posts"]
