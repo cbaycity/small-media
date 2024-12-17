@@ -8,7 +8,13 @@ PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""
 
 
-def createProject(username: str, title: str, description: str, image: FileStorage):
+def createProject(
+    username: str,
+    title: str,
+    description: str,
+    image: FileStorage,
+    public: bool = False,
+):
     """Adds a post to the user's database and looks up related projects if needed."""
 
     if title is None or len(title) == 0:
@@ -35,6 +41,7 @@ def createProject(username: str, title: str, description: str, image: FileStorag
             "project-title": title,
             "description": description,
             "image-id": image_id,
+            "public": public,
         }
     )
     return True  # The project was added successfully.

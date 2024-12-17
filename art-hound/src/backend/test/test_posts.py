@@ -19,6 +19,7 @@ class ExamplePost(NamedTuple):
     project: str = None
     startDate: str = "2024-01-01"
     endDate: str = "2024-01-01"
+    public: bool = False
 
 
 @pytest.mark.parametrize(

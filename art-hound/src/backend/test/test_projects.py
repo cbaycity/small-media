@@ -14,6 +14,7 @@ class ExampleProject(NamedTuple):
     title: str
     description: str
     image: Any
+    public: bool = False
 
 
 @pytest.mark.parametrize(

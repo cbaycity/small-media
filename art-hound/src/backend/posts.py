@@ -19,6 +19,7 @@ def createPost(
     endDate: str,
     image: FileStorage,
     project: str = None,
+    public: bool = False,
 ):
     """Adds a post to the user's database and looks up related projects if needed."""
     if project is not None:
@@ -44,6 +45,7 @@ def createPost(
             "endDate": datetime.strptime(endDate, "%Y-%m-%d"),
             "image-id": image_id,
             "project-id": related_project,
+            "public": public,
         }
     )
     return True  # The post was added successfully.
@@ -78,6 +80,7 @@ def singleUserFeed(user, queryUsername: str):
 def multiUserFeed(username: str):
     """Gets the feed for friends of a user."""
     friends = USERS.find_one({})
+    # NOTE: Needs to return the same data structure as singleUserFeed so that the front end can easily process things.
     return "NEED TO PROCESS FRIENDS BEFORE BUILDING THIS FEED TYPE."
 
 
