@@ -135,9 +135,14 @@ def test_createPost(users: List[TestUser], posts: List[ExamplePost]):
                 {
                     "title": "Sample Title",
                     "username": "test",
-                    "startDate": datetime.strptime("2024-01-01", "%Y-%m-%d"),
-                    "endDate": datetime.strptime("2024-01-01", "%Y-%m-%d"),
+                    "startDate": datetime.strptime("2024-01-01", "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    ),
+                    "endDate": datetime.strptime("2024-01-01", "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    ),
                     "description": "Sample Description",
+                    "project": None,
                 }
             ],
         ),
@@ -175,16 +180,26 @@ def test_createPost(users: List[TestUser], posts: List[ExamplePost]):
                 {
                     "title": "Sample Title",
                     "username": "test",
-                    "startDate": datetime.strptime("2024-01-01", "%Y-%m-%d"),
-                    "endDate": datetime.strptime("2024-01-01", "%Y-%m-%d"),
+                    "startDate": datetime.strptime("2024-01-01", "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    ),
+                    "endDate": datetime.strptime("2024-01-01", "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    ),
                     "description": "Sample Description",
+                    "project": None,
                 },
                 {
                     "title": "Sample Title2",
                     "username": "test",
-                    "startDate": datetime.strptime("2024-01-01", "%Y-%m-%d"),
-                    "endDate": datetime.strptime("2024-01-01", "%Y-%m-%d"),
+                    "startDate": datetime.strptime("2024-01-01", "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    ),
+                    "endDate": datetime.strptime("2024-01-01", "%Y-%m-%d").strftime(
+                        "%Y-%m-%d"
+                    ),
                     "description": "Sample Description2",
+                    "project": None,
                 },
             ],
         ),
@@ -233,7 +248,7 @@ def test_singleUserFeed(
     all_images = FS.find({}).to_list()
     all_image_ids = [doc._id for doc in all_images]
     for id in image_id_found:
-        assert id in all_image_ids
+        assert id in [str(id) for id in all_image_ids]
 
 
 @pytest.mark.parametrize(

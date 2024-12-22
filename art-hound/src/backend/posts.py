@@ -74,10 +74,13 @@ def singleUserFeed(user: str, queryUsername: str):
         {
             "title": post["title"],
             "username": post["username"],
-            "startDate": post["startDate"],
-            "endDate": post["endDate"],
+            "startDate": post["startDate"].strftime("%Y-%m-%d"),
+            "endDate": post["endDate"].strftime("%Y-%m-%d"),
             "description": post["description"],
             "image-id": str(post["image-id"]),
+            "project": (
+                post["related-project"]["project"] if post["project-id"] else None
+            ),
         }
         for post in data
     ]

@@ -40,6 +40,9 @@ Start by just adding a way to collect posts. Then add a next button at the botto
 1. Let artists add each other to a project.
 2. Let artists add each other as friends and see each other's accounts.
 
+## About Section:
+1. Update the about section to include a link to my profile.
+
 ## Bugs:
 1. When you go to Projects after being on Local the front end errors.
  -> The error says something about more hooks reloading the second time. Must be an error in how state is managed. 

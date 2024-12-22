@@ -2,11 +2,13 @@ import os
 
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
-from flask import Flask, jsonify, redirect, request
+from flask import Flask, jsonify, redirect, request, Response
 
 from login import getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
 from projects import createProject, getUserProjects
+
+from backend_db import photoProcess
 
 # Load env keys
 load_dotenv()
@@ -30,10 +32,22 @@ def public(file: str):
 
 
 @app.route("/postphotos/<photofile>/<token>")
-def photoprocess(photofile: str, token: str):
+def photophotos(photofile: str, token: str):
     """Collects photos from the backend for users."""
-    # TODO: Remove the hard coding and actually process requests.
-    return app.send_static_file(f"sample-assets/bayard-post-one/{photofile}")
+
+    # Check authentication logic.
+    photo_owner = None
+
+    file = photoProcess(photofile)
+
+    if file:
+        return Response(
+            file.read(),
+            content_type=file.content_type,
+            headers={"Content-Disposition": f'inline; filename="{file.filename}"'},
+        )
+    else:
+        return jsonify({"error": "Image not found."})
 
 
 @app.route("/getUserPosts/<username>", methods=["POST"])
@@ -93,7 +107,7 @@ def processPost():
     if not validLogin(token):
         return "Invalid login token.", 401
 
-    title = request.form.get("post-title")
+    title = request.form.get("title")
     description = request.form.get("description")
     project = request.form.get("project")
     image = request.files["post-image"]

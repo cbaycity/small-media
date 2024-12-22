@@ -104,7 +104,7 @@ function CreatePost() {
                             method="post"
                             encType="multipart/form-data"
                         >
-                            <label htmlFor="post-title">
+                            <label htmlFor="title">
                                 Post Title
                                 <input
                                     type="text"
