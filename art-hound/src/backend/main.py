@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, request
 
 from login import getUser, login, newUser, validLogin
-from posts import createFeed, createPost
+from posts import createPost, singleUserFeed
 from projects import createProject, getUserProjects
 
 # Load env keys
@@ -29,17 +29,24 @@ def public(file: str):
     return app.send_static_file(f"public/{file}")
 
 
-@app.route("/feed")
-def feed():
-    """Returns a list of JSON objects"""
-    return createFeed(request.headers.get("USER_INFO"), request.headers.get("FEEDTYPE"))
-
-
-@app.route("/postphotos/<photofile>")
-def photoprocess(photofile: str):
+@app.route("/postphotos/<photofile>/<token>")
+def photoprocess(photofile: str, token: str):
     """Collects photos from the backend for users."""
     # TODO: Remove the hard coding and actually process requests.
     return app.send_static_file(f"sample-assets/bayard-post-one/{photofile}")
+
+
+@app.route("/getUserPosts/<username>", methods=["POST"])
+def getUserPosts(username: str):
+    """Returns all of the posts for a user."""
+    data = request.get_json()
+    token = data.get("token")
+    if validLogin(token):
+        user = getUser(token)
+        if not user:
+            return "Please relogin."
+        return singleUserFeed(user, username)
+    return "invalid login token."
 
 
 @app.route("/createAccount", methods=["POST"])

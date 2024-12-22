@@ -53,8 +53,12 @@ def createPost(
     return True  # The post was added successfully.
 
 
-def singleUserFeed(user, queryUsername: str):
+def singleUserFeed(user: str, queryUsername: str):
     """Gets the feed for a single user."""
+    if not (isinstance(user, str) or isinstance(queryUsername, str)):
+        raise TypeError(
+            f"Need to provide strings to this function. User: {user}, queryUsername:{queryUsername}"
+        )
 
     if user != queryUsername:
         # Need to ensure the users are friends or the account is public.
@@ -73,7 +77,7 @@ def singleUserFeed(user, queryUsername: str):
             "startDate": post["startDate"],
             "endDate": post["endDate"],
             "description": post["description"],
-            "image-id": post["image-id"],
+            "image-id": str(post["image-id"]),
         }
         for post in data
     ]

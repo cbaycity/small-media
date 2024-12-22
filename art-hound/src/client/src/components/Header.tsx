@@ -40,15 +40,6 @@ function ArtHoundHeader() {
                         <li>
                             {' '}
                             <Link
-                                to="/Local"
-                                className="navigation-link px-2 link-two"
-                            >
-                                Local
-                            </Link>
-                        </li>
-                        <li>
-                            {' '}
-                            <Link
                                 to="/Projects"
                                 className="navigation-link px-2 link-two"
                             >
@@ -89,6 +80,7 @@ function ArtHoundHeader() {
                             className="login-button"
                             onClick={() => {
                                 logOut()
+                                navigate('/login')
                             }}
                         >
                             Sign-Out

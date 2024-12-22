@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import UserFeed from './Feed'
-import { LeftBar, RightBar } from './Sidebars'
-import { LoginContext, CheckLogin } from './LoginForm'
 import { useNavigate } from 'react-router-dom'
+import { LoginContext, CheckLogin } from './LoginForm'
 
-function UserProfile() {
+function Projects() {
     const { user, token } = useContext(LoginContext)
 
     // If not valid login, redirect to Login form.
@@ -30,14 +29,28 @@ function UserProfile() {
     }, [loginValid, navigate])
 
     return (
-        <div className="container center-body general-body-background feed-body">
-            <div id="left-side-bar" className="side-bar">
-                {LeftBar()}
-            </div>
-            {UserFeed(user ? user : '', true)}
-            {RightBar()}
+        <div className="container center-body general-body-background">
+            <p>Need to build the Projects website.</p>
         </div>
     )
 }
 
-export default UserProfile
+const NewProjectButton = () => {
+    let navigate = useNavigate()
+    const routeChange = (path: string) => {
+        navigate(path)
+    }
+
+    return (
+        <button
+            type="button"
+            className="login-button"
+            onClick={() => routeChange('/createProject')}
+            style={{ padding: '10px', margin: '10px' }}
+        >
+            New Project
+        </button>
+    )
+}
+
+export { Projects, NewProjectButton }

@@ -1,121 +1,107 @@
-import React, { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { LoginContext } from './LoginForm'
 
-function GetFeed(feedType: string, userInfo: string) {
-    const [data, setData] = useState([{}])
+interface PostData {
+    title: string
+    username: string
+    startDate: string
+    endDate: string
+    description: string
+    'image-id': string
+}
+
+function UserFeed(username: string, onUserProfile: boolean = false) {
+    // Need to get data from /getUserPosts/<username>, pass the token as data.
+
+    const [postsList, setPostsList] = useState<PostData[]>([])
+    // Create a list of posts which has dictionaries of the post.
+    const { token, user } = useContext(LoginContext)
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        fetch('/feed', {
-            method: 'GET',
-            headers: {
-                USER_INFO: userInfo,
-                FEEDTYPE: feedType,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data)
-                console.log(data)
-                /* Need to convert the data into objects for the front end to review.*/
-            })
-    }, [])
+        const fetchPosts = async () => {
+            try {
+                const response = await fetch(`/getUserPosts/${username}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: token }),
+                })
 
-    var msg = ''
-    if (data !== undefined) {
-        msg = 'Still hardcoding posts, work with a DB Bayard'
-    } else {
-        msg = 'Retrieving Post Data'
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`)
+                }
+
+                const data = await response.json()
+                setPostsList(data)
+            } catch (err: any) {
+                setError(err.message || 'An error occurred.')
+            }
+        }
+
+        if (username) {
+            fetchPosts()
+        }
+    }, [username, token])
+
+    if (error) {
+        return <div>Error: {error}</div>
     }
 
-    return msg
-}
+    const today = new Date()
 
-/*
-The post should be it's own div that can be spaced out.
-Each div should start with a <h3> for the title
-<p> for the date
-<p> for the verbiage
-<img> for the image.
-
-
-*/
-
-const NewProjectButton = () => {
-    let navigate = useNavigate()
-    const routeChange = (path: string) => {
-        navigate(path)
-    }
     return (
-        <button
-            type="button"
-            className="login-button"
-            onClick={() => routeChange('/createProject')}
-            style={{ padding: '10px', margin: '10px' }}
-        >
-            New Project
-        </button>
-    )
-}
-
-const LeftBar = () => {
-    const loc = useLocation()
-    if (loc.pathname.includes('/Projects')) {
-        // Render project related features.
-        return NewProjectButton()
-    } else {
-        return <p>Seattle</p>
-    }
-}
-
-function Feed() {
-    return (
-        <div className="container center-body general-body-background feed-body">
-            <div id="left-side-bar" className="side-bar">
-                {LeftBar()}
-            </div>
+        <>
             <div id="feed" className="feed">
-                <p>{GetFeed('LOCAL', 'cbaycity')}</p>
-                <div className="post">
-                    <h3 className="post-header"><span>Larch Madness</span><span>cbaycity</span></h3>
-                    <p>March 3rd 2024</p>
-                    <p>
-                        Loved seeing the larches before they lost their leaves.
-                    </p>
-                    <img
-                        className="post-img"
-                        src="postphotos/photoOne.jpg"
-                        alt="Larch Post"
-                    />
-                </div>
-
-                <div className="post">
-                    <h3>Larch Season</h3>
-                    <p>March 3rd 2024</p>
-                    <p>Going to see the larches part two.</p>
-                    <img
-                        className="post-img"
-                        src="postphotos/photoTwo.jpg"
-                        alt="Larch Post"
-                    />
-                </div>
-
-                <div className="post">
-                    <h3>Testing Image Size.</h3>
-                    <p>October 3rd 2024</p>
-                    <p>Space Image.</p>
-                    <img
-                        className="post-img"
-                        src="postphotos/photoThree.png"
-                        alt="Planet Post"
-                    />
-                </div>
-            </div>
-            <div id="right-side-bar" className="side-bar">
-                <p>Ad</p>
+                {postsList && postsList.length > 0 ? (
+                    postsList.map((post, index) => (
+                        <div className="post" key={index}>
+                            <h3>{post['title']}</h3>
+                            <p>
+                                {post['startDate'] === post['endDate']
+                                    ? post['startDate']
+                                    : `${post['startDate']} - ${post['endDate']}`}
+                            </p>
+                            <p>{post['description']}</p>
+                            <img
+                                className="post-img"
+                                src={`/postphotos/${post['image-id']}/${token}`}
+                                alt="Photo from post."
+                            />
+                        </div>
+                    ))
+                ) : (
+                    // No Posts to display
+                    <div className="post">
+                        <h3 className="post-header">
+                            <span>No Posts to Display</span>
+                            <span>{user}</span>
+                        </h3>
+                        <p>
+                            {today.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })}
+                        </p>
+                        <p>
+                            {onUserProfile
+                                ? 'Add some of your own posts to see data here!'
+                                : `Add some friends of your own to see posts here!
+                            This website's found, username cbaycity, is public and can be a friend.`}
+                        </p>
+                        <img
+                            className="post-img"
+                            src="/public/artHoundLogoColor.svg"
+                            alt="Art Hound Logo"
+                        />
+                    </div>
+                )}
             </div>
             <link rel="stylesheet" href="public/feed.css" />
-        </div>
+        </>
     )
 }
 
-export default Feed
+export default UserFeed
