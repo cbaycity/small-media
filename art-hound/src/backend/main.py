@@ -37,6 +37,7 @@ def photophotos(photofile: str, token: str):
 
     # Check authentication logic.
     photo_owner = None
+    # AUTHENTICATION REQUIRED SO THAT PHOTOS CANNOT BE MASS EXPORTED.
 
     file = photoProcess(photofile)
 
@@ -130,8 +131,10 @@ def processProject():
     description = request.form.get("description")
     image = request.files["project-image"]
     user = getUser(token)
+    startDate = request.form.get("start-date")
+    endDate = request.form.get("end-date")
     if user:
-        result = createProject(user, title, description, image)
+        result = createProject(user, title, description, image, startDate, endDate)
         app.logger.info(f"Create Project Result: {result}")
         app.logger.info(f"User: {user}, Title: {title}, Description: {description}")
     return redirect("/Profile")

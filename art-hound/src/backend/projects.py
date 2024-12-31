@@ -6,6 +6,8 @@ from werkzeug.datastructures import FileStorage
 
 from backend_db import DB, FS
 
+import datetime
+
 PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""
 
@@ -16,6 +18,8 @@ def createProject(
     description: str,
     image: FileStorage,
     public: bool = False,
+    startDate=datetime.datetime.now(),
+    endDate=None,
 ):
     """Adds a post to the user's database and looks up related projects if needed."""
 
@@ -44,6 +48,8 @@ def createProject(
             "description": description,
             "image-id": image_id,
             "public": public,
+            "startDate": startDate,
+            "endDate": endDate,
         }
     )
     return True  # The project was added successfully.

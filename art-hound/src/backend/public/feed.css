@@ -24,7 +24,7 @@
     background-color: #f4f4f9;
 }
 
-.post {
+.post, .project {
     overflow: clip;
     display: block;
     unicode-bidi: isolate;
@@ -39,7 +39,7 @@
     text-align: left;
 }
 
-.post-img {
+.post-img, .project-image {
     object-fit: scale-down;
     max-height: 100%;
     max-width: 100%;

@@ -59,10 +59,19 @@ function ArtHoundHeader() {
                         <li>
                             {' '}
                             <Link
-                                to="/Friends"
+                                to="/Following"
                                 className="navigation-link px-2 link-two"
                             >
-                                Friends
+                                Following
+                            </Link>
+                        </li>
+                        <li>
+                            {' '}
+                            <Link
+                                to="/Search"
+                                className="navigation-link px-2 link-two"
+                            >
+                                Search
                             </Link>
                         </li>
                     </ul>
