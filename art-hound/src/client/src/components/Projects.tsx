@@ -35,22 +35,4 @@ function Projects() {
     )
 }
 
-const NewProjectButton = () => {
-    let navigate = useNavigate()
-    const routeChange = (path: string) => {
-        navigate(path)
-    }
-
-    return (
-        <button
-            type="button"
-            className="login-button"
-            onClick={() => routeChange('/createProject')}
-            style={{ padding: '10px', margin: '10px' }}
-        >
-            New Project
-        </button>
-    )
-}
-
-export { Projects, NewProjectButton }
+export { Projects }

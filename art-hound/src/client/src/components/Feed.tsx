@@ -59,7 +59,7 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
                     postsList.map((post, index) => (
                         <div className="post" key={index}>
                             <h3>{post['title']}</h3>
-                            <p>{post["project"]}</p>
+                            <p>{post['project']}</p>
                             <p>
                                 {post['startDate'] === post['endDate']
                                     ? post['startDate']

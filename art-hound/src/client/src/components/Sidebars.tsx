@@ -1,17 +1,16 @@
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { NewProjectButton } from './Projects'
+import { NewProjectButton, NewPostButton } from './PostsAndProjects'
 
-const LeftBar = () => {
-    const loc = useLocation()
-    if (loc.pathname.includes('/Projects')) {
-        // Render project related features.
-        return NewProjectButton()
-    } else {
-        return <p>Seattle</p>
-    }
+function LeftBar() {
+    return (
+        <div id="left-side-bar" className="side-bar">
+            <NewProjectButton />
+            <br />
+            <NewPostButton />
+        </div>
+    )
 }
-const RightBar = () => {
+function RightBar() {
     return (
         <div id="right-side-bar" className="side-bar">
             <p>Potential future ad?</p>

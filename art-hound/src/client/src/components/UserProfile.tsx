@@ -31,9 +31,7 @@ function UserProfile() {
 
     return (
         <div className="container center-body general-body-background feed-body">
-            <div id="left-side-bar" className="side-bar">
-                {LeftBar()}
-            </div>
+            {LeftBar()}
             {UserFeed(user ? user : '', true)}
             {RightBar()}
         </div>

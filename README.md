@@ -18,9 +18,7 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 
 # To Do Lists:
 ## Priority:
-For multiple pages, a common feature needed is a way to retrieve lists of posts to display. You therefore need to spend time creating a "feed" frontend function that returns a list of posts and related details. This function can be called by other elements and queries can be passed to the backend to retrieve posts.
-
-Start by just adding a way to collect posts. Then add a next button at the bottom of the page.
+Top priority, create a way to show list user projects. Create a way to show posts related to user projects. Create a page layout for user projects.
 
 ## Infrastructure:
 1. You can add tests for routing of the main.py file. You should add these just after launching.
@@ -33,7 +31,7 @@ Start by just adding a way to collect posts. Then add a next button at the botto
 2. Have a way to click into projects and see posts displayed.
 
 ## Profile Section:
-1. Split profile page into two sections: activities, and projects.
+1. Split profile page into three sections: profile photo and about, posts, and projects.
 2. Add edit profile button.
 
 ## Friends Section:
@@ -46,6 +44,10 @@ Start by just adding a way to collect posts. Then add a next button at the botto
 ## Bugs:
 1. When you go to Projects after being on Local the front end errors.
  -> The error says something about more hooks reloading the second time. Must be an error in how state is managed. 
+
+2. Cannot login with email, just username. 
+3. New Post requires a project right now.
+4. Where did the project button go.
 
 # Mac Environment Setup:
 

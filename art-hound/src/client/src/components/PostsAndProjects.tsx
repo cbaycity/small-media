@@ -2,6 +2,7 @@
 
 import react, { useState, useContext, useEffect } from 'react'
 import { LoginContext } from './LoginForm'
+import { useNavigate } from 'react-router-dom'
 
 var counter = 0
 
@@ -278,4 +279,45 @@ function EditProfile() {
     )
 }
 
-export { CreatePost, CreateProject, EditProfile }
+const NewPostButton = () => {
+    const navigate = useNavigate()
+
+    return (
+        <>
+            <button
+                type="button"
+                className="login-button"
+                aria-label="Create a new post"
+                onClick={() => {navigate('/createPost')}}
+            >
+                New Post
+            </button>
+        </>
+    )
+}
+
+const NewProjectButton = () => {
+    const navigate = useNavigate()
+
+    return (
+        <>
+        <button
+            type="button"
+            className="login-button"
+            aria-label="Create a new project"
+            onClick={() => {navigate('/createProject')}}
+            style={{ padding: '10px', margin: '10px' }}
+        >
+            New Project
+        </button>
+        </>
+    )
+}
+
+export {
+    CreatePost,
+    CreateProject,
+    EditProfile,
+    NewPostButton,
+    NewProjectButton,
+}

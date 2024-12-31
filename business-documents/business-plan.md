@@ -11,3 +11,11 @@ The main idea is to create a way for artists to host their content but easily co
 
 1. Have a social media feed section and run adds. Only provide users with DP numbers out though.
 2. Have a job board and a way to search artists
+
+### Idea for indie vibe, not allow sponsored content.
+
+No likes, just comments.
+
+Listen to the How I Built This regarding Hinge.
+
+Charge people for more space. 

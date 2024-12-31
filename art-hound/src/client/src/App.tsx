@@ -10,7 +10,11 @@ import Friends from './components/Friends'
 import { Projects } from './components/Projects'
 import { AccountCreation } from './components/SignupForm'
 import Footer from './components/Footer'
-import { CreatePost, CreateProject, EditProfile } from './components/PostForms'
+import {
+    CreatePost,
+    CreateProject,
+    EditProfile,
+} from './components/PostsAndProjects'
 
 function App() {
     return (

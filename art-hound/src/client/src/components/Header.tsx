@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { LoginContext, CheckLogin } from './LoginForm'
 import { Link, useNavigate } from 'react-router-dom'
+import { NewPostButton } from './PostsAndProjects'
 
 function ArtHoundHeader() {
     let navigate = useNavigate()
@@ -68,13 +69,7 @@ function ArtHoundHeader() {
                 </div>
                 {isLoggedIn ? (
                     <div className="login headerSection">
-                        <button
-                            type="button"
-                            className="login-button"
-                            onClick={() => routeChange('/createPost')}
-                        >
-                            New Post
-                        </button>
+                        <NewPostButton />
                         <button
                             type="button"
                             className="login-button"
