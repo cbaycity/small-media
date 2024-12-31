@@ -293,6 +293,21 @@ def test_getUserProjects(
         )
 
     result = getUserProjects(users[0].username)
-    # Always check the projects of the first user.
+
+    # Checks that each project returned has the required fields.
+    for project in result:
+        for field in [
+            "title",
+            "username",
+            "startDate",
+            "endDate",
+            "description",
+            "image-id",
+        ]:
+            assert field in project
+
+    project_names = set([project["title"] for project in result])
+
+    # Checks that the first user has all of thier projects.
     for name in expectedProjectNames:
-        assert name in result
+        assert name in project_names

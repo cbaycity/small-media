@@ -58,4 +58,14 @@ def createProject(
 def getUserProjects(username: str):
     """Returns a list of all of the project titles associated with a user."""
     projects = PROJECTS.find({"username": username}).to_list()
-    return [project["project-title"] for project in projects]
+    return [
+        {
+            "title": project["project-title"] if "project-title" in project else None,
+            "username": project["username"] if "username" in project else None,
+            "startDate": project["startDate"] if "startDate" in project else None,
+            "endDate": project["endDate"] if "endDate" in project else None,
+            "description": project["description"] if "description" in project else None,
+            "image-id": str(project["image-id"]) if "image-id" in project else None,
+        }
+        for project in projects
+    ]

@@ -25,7 +25,7 @@ function DisplayProject(project: Project, token: string | null, index: number) {
             <p>{project['description']}</p>
             {project['image-id'] && token ? (
                 <img
-                    className="project-img"
+                    className="project-image"
                     src={`/postphotos/${project['image-id']}/${token}`}
                     alt="Main project photo."
                 />

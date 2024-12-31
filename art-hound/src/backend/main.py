@@ -134,9 +134,7 @@ def processProject():
     startDate = request.form.get("start-date")
     endDate = request.form.get("end-date")
     if user:
-        result = createProject(user, title, description, image, startDate, endDate)
-        app.logger.info(f"Create Project Result: {result}")
-        app.logger.info(f"User: {user}, Title: {title}, Description: {description}")
+        createProject(user, title, description, image, startDate, endDate)
     return redirect("/Profile")
 
 
