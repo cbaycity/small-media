@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import UserFeed from './Feed'
 import { useNavigate } from 'react-router-dom'
 import { LoginContext, CheckLogin } from './LoginForm'
+import { LeftBar, RightBar } from './Sidebars'
 
 function Projects() {
     const { user, token } = useContext(LoginContext)
@@ -29,9 +30,16 @@ function Projects() {
     }, [loginValid, navigate])
 
     return (
-        <div className="container center-body general-body-background">
-            <p>Need to build the Projects website.</p>
-        </div>
+        <>
+            <link rel="stylesheet" href="public/feed.css" />
+            <div className="center-body general-body-background feed-body">
+                <LeftBar />
+                <div className="container center-body general-body-background">
+                    <p>Need to build the Projects website.</p>
+                </div>
+                <RightBar />
+            </div>
+        </>
     )
 }
 

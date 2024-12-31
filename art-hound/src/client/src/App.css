@@ -69,6 +69,14 @@ body {
     padding: 1rem; /* Optional padding */
 }
 
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .navigation {
     display: flex;
     flex-wrap: wrap;
@@ -222,4 +230,14 @@ link {
 
 form h3 {
     color: red;
+}
+
+.left-justify {
+    justify-self: left;
+    flex-basis: 30%;
+}
+
+.right-justify {
+    justify-self: right;
+    flex-basis: 30%;
 }

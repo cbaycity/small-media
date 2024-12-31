@@ -30,10 +30,10 @@ function UserProfile() {
     }, [loginValid, navigate])
 
     return (
-        <div className="container center-body general-body-background feed-body">
-            {LeftBar()}
+        <div className="center-body general-body-background feed-body">
+            <LeftBar />
             {UserFeed(user ? user : '', true)}
-            {RightBar()}
+            <RightBar />
         </div>
     )
 }

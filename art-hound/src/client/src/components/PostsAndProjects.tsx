@@ -288,7 +288,9 @@ const NewPostButton = () => {
                 type="button"
                 className="login-button"
                 aria-label="Create a new post"
-                onClick={() => {navigate('/createPost')}}
+                onClick={() => {
+                    navigate('/createPost')
+                }}
             >
                 New Post
             </button>
@@ -301,15 +303,17 @@ const NewProjectButton = () => {
 
     return (
         <>
-        <button
-            type="button"
-            className="login-button"
-            aria-label="Create a new project"
-            onClick={() => {navigate('/createProject')}}
-            style={{ padding: '10px', margin: '10px' }}
-        >
-            New Project
-        </button>
+            <button
+                type="button"
+                className="login-button"
+                aria-label="Create a new project"
+                onClick={() => {
+                    navigate('/createProject')
+                }}
+                style={{ padding: '10px', margin: '10px' }}
+            >
+                New Project
+            </button>
         </>
     )
 }
