@@ -141,7 +141,7 @@ function LoginForm() {
     const [invalidLogin, setInvalidLogin] = useState(false)
 
     return (
-        <div className="container full-height general-body-background">
+        <div className="full-height general-body-background">
             <div className="form-container">
                 <div id="form-one-block">
                     <form
