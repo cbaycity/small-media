@@ -7,7 +7,7 @@ import { LoginProvider } from './components/LoginForm'
 import About from './components/About'
 import UserProfile from './components/UserProfile'
 import Following from './components/Following'
-import { Projects } from './components/Projects'
+import { Projects, SingleProject } from './components/Projects'
 import { AccountCreation } from './components/SignupForm'
 import Footer from './components/Footer'
 import {
@@ -36,6 +36,7 @@ function App() {
                     <Route path="/createPost" element={<CreatePost />} />
                     <Route path="/createProject" element={<CreateProject />} />
                     <Route path="/Search" element={<Search />} />
+                    <Route path="/projects/:projectTitle" element={<SingleProject />} />
                 </Routes>
                 <Footer />
             </div>

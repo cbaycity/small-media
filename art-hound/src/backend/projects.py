@@ -1,15 +1,16 @@
 """This module contains code for creating and processing projects."""
 
+import datetime
 import uuid
 
 from werkzeug.datastructures import FileStorage
 
 from backend_db import DB, FS
 
-import datetime
-
 PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""
+
+POSTS = DB["posts"]
 
 
 def createProject(
@@ -68,4 +69,27 @@ def getUserProjects(username: str):
             "image-id": str(project["image-id"]) if "image-id" in project else None,
         }
         for project in projects
+    ]
+
+
+def getProjectPosts(title: str):
+    """Returns a list of all of the project titles associated with a user."""
+    project = PROJECTS.find_one({"project-title": title})
+    if project:
+        project_id = project["project_id"]
+    else:
+        return [{"Error": "No Project with this title."}]
+    print(f"project id: {project_id} : type: {type(project_id)}")
+    posts = POSTS.find({"project-id": project_id}).sort("startDate", -1)
+    return [
+        {
+            "title": post["title"],
+            "username": post["username"],
+            "startDate": post["startDate"].strftime("%Y-%m-%d"),
+            "endDate": post["endDate"].strftime("%Y-%m-%d"),
+            "description": post["description"],
+            "image-id": str(post["image-id"]),
+            "project": (post["related-project"] if post["project-id"] else None),
+        }
+        for post in posts
     ]

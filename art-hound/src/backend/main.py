@@ -2,13 +2,12 @@ import os
 
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
-from flask import Flask, jsonify, redirect, request, Response
+from flask import Flask, Response, jsonify, redirect, request
 
+from backend_db import photoProcess
 from login import getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
 from projects import createProject, getUserProjects
-
-from backend_db import photoProcess
 
 # Load env keys
 load_dotenv()
@@ -148,6 +147,13 @@ def userProjects():
         return "Invalid login token.", 401
     user = getUser(token)
     return getUserProjects(user)
+
+
+@app.route("/project/<project_title>", methods=["POST"])
+def projectPage(project_title: str):
+    """This function returns data related to single projects."""
+
+    return [{}]
 
 
 if __name__ == "__main__":

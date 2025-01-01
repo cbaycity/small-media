@@ -20,15 +20,17 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 ## Priority:
 Top priority, create a way to show list user projects. Create a way to show posts related to user projects. Create a page layout for user projects.
 
+# Do you need to nuke the production database and change the naming convention for how things are stored?
+
 ## Infrastructure:
 1. You can add tests for routing of the main.py file. You should add these just after launching.
 2. Protect against Request Forgery.
 3. Add an invite token to the signup page.
-4. The login logic isn't working well. When a user signs out they need to stop seeing webpage content. 
+4. The current photo process function doesn't do any user authentication. You need to perform security on this.
 
 ## Projects: 
-1. Show projects in a list that the user has.
-2. Have a way to click into projects and see posts displayed.
+1. Create Project Pages, pages that show posts associated with a project and basic info.
+2. Need to update projects list display to have links to project pages.
 
 ## Profile Section:
 1. Split profile page into three sections: profile photo and about, posts, and projects.
@@ -40,6 +42,7 @@ Top priority, create a way to show list user projects. Create a way to show post
 
 ## About Section:
 1. Update the about section to include a link to my profile.
+2. Update the About to discuss a little bit about using the website focusing on projects.
 
 ## Bugs:
 1. When you go to Projects after being on Local the front end errors.

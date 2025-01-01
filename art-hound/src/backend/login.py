@@ -22,7 +22,6 @@ def login(username: str, password: str) -> bool:
         username: The user's username.
         password: The user's unhashed password.
     """
-    # NOTE: need to return a cookie in the future.
     user = USERS.find_one({"username": username})
     if user and check_password_hash(user["password"], password):
         userToken = secrets.token_urlsafe(TOKEN_LENGTH)

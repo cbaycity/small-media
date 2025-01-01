@@ -1,14 +1,16 @@
 """Tests that ensure that projects are successfully added and managed."""
 
 from io import BytesIO
-from typing import Any, List, NamedTuple
+from typing import Any, Dict, List, NamedTuple
 
 import pytest
 from test_login import TestUser
+from test_posts import ExamplePost
 from werkzeug.datastructures import FileStorage
 
 from login import newUser
-from projects import createProject, getUserProjects
+from posts import createPost
+from projects import createProject, getProjectPosts, getUserProjects
 
 
 class ExampleProject(NamedTuple):
@@ -311,3 +313,88 @@ def test_getUserProjects(
     # Checks that the first user has all of thier projects.
     for name in expectedProjectNames:
         assert name in project_names
+
+
+@pytest.mark.parametrize(
+    "users,project,posts,expected_posts",
+    [
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+            ],
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            [
+                ExamplePost(
+                    "test1",
+                    "Sample Title",
+                    "Sample Description",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                    "sample one",
+                ),
+            ],
+            [
+                {
+                    "title": "Sample Title",
+                    "username": "test1",
+                    "startDate": "2024-01-01",
+                }
+            ],
+        )
+    ],
+)
+def test_getProjectPosts(
+    users: List[TestUser],
+    project: List[ExampleProject],
+    posts: List[ExamplePost],
+    expected_posts: List[Dict[str, Any]],
+):
+    """Tests that a created project can have it's posts collected."""
+    for user in users:
+        newUser(user.username, user.email, user.password)
+
+    assert createProject(
+        project.username, project.title, project.description, project.image
+    )
+
+    # Add posts to the database.
+    for post in posts:
+        assert createPost(
+            post.username,
+            post.title,
+            post.description,
+            post.startDate,
+            post.endDate,
+            post.image,
+            post.project,
+        )
+
+    # Check the end dict of posts.
+    result = getProjectPosts(project.title)
+
+    from backend_db import DB
+
+    all_posts = DB["posts"].find({})
+    for post in all_posts:
+        print(post)
+
+    # Check that the same number of posts is correct.
+    assert len(result) == len(expected_posts)
+
+    # Check that the right elements are there.
+    for result, expected in zip(result, expected_posts):
+        for key, val in expected.items():
+            assert result[key] == val

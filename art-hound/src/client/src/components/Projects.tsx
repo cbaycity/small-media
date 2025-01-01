@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { LoginContext, CheckLogin } from './LoginForm'
 import { LeftBar, RightBar } from './Sidebars'
 
@@ -127,4 +127,23 @@ function Projects() {
     )
 }
 
-export { Projects }
+function SingleProject(){
+    const {projectTitle} = useParams();
+    
+    return (<>
+    
+    <div>
+        {/*This is the header for the projects page.*/}
+        <h3>{projectTitle}</h3>
+        <p>Owner: FILL THIS IN DEVS.</p>
+        <p>Add project image here, if it exists.</p>
+    </div>
+    <div>
+        <h3>Activity:</h3>
+        <p>Map posts here.</p>
+    </div>
+    
+    </>)
+}
+
+export { Projects, SingleProject}

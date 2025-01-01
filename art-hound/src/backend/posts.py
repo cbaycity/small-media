@@ -28,11 +28,15 @@ def createPost(
         related_project = PROJECTS.find_one(
             {
                 "username": username,
-                "project": "project-title",
+                "project-title": project,
             }
-        )["project_id"]
+        )
+        if related_project:
+            related_project_id = related_project["project_id"]
+        else:
+            related_project_id = None
     else:
-        related_project = None
+        related_project_id = None
 
     # Insert the image and get the image-id back.
     image_id = FS.put(image, filename=image.filename, content_type=image.content_type)
@@ -46,7 +50,10 @@ def createPost(
             "startDate": datetime.strptime(startDate, "%Y-%m-%d"),
             "endDate": datetime.strptime(endDate, "%Y-%m-%d"),
             "image-id": image_id,
-            "project-id": related_project,
+            "project-id": related_project_id,
+            "related-project": (
+                related_project["project-title"] if related_project else None
+            ),
             "public": public,
         }
     )
@@ -78,9 +85,7 @@ def singleUserFeed(user: str, queryUsername: str):
             "endDate": post["endDate"].strftime("%Y-%m-%d"),
             "description": post["description"],
             "image-id": str(post["image-id"]),
-            "project": (
-                post["related-project"]["project"] if post["project-id"] else None
-            ),
+            "project": (post["related-project"] if post["project-id"] else None),
         }
         for post in data
     ]
@@ -91,20 +96,3 @@ def multiUserFeed(username: str):
     friends = USERS.find_one({})
     # NOTE: Needs to return the same data structure as singleUserFeed so that the front end can easily process things.
     return "NEED TO PROCESS FRIENDS BEFORE BUILDING THIS FEED TYPE."
-
-
-# Plan for managing access to images.
-# When the user requests a feed, they get back post info.
-# In that post info, the original user will be included.
-# So the query then sends a request to get the image.
-# This request has a token and the original user.
-# So query the users table to check that the image is from that user
-# Check that the two users are friends.
-
-# This is efficient because querying the token is fast
-# and query the user's table by user can be quick.
-# The last query to the file service for the image should be fast.
-# Note: when processing friends,
-# you need to ensure that each user document includes the full friends list.
-
-# Should start with the process for a user to query for their own images.

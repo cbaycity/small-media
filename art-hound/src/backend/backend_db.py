@@ -3,9 +3,8 @@
 import os
 
 import gridfs
-from pymongo import MongoClient
 from bson import ObjectId
-
+from pymongo import MongoClient
 
 # MongoDB Connection.
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
