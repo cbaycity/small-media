@@ -37,6 +37,7 @@ def createPost(
             related_project_id = None
     else:
         related_project_id = None
+        related_project = None
 
     # Insert the image and get the image-id back.
     image_id = FS.put(image, filename=image.filename, content_type=image.content_type)
