@@ -1,16 +1,17 @@
 """Tests that ensure that projects are successfully added and managed."""
 
 from io import BytesIO
-from typing import Any, Dict, List, NamedTuple
+from typing import Any, Dict, List, NamedTuple, Tuple
 
 import pytest
 from test_login import TestUser
 from test_posts import ExamplePost
 from werkzeug.datastructures import FileStorage
 
-from login import newUser
+from login import addFriend, newUser
 from posts import createPost
-from projects import createProject, getProjectPosts, getUserProjects
+from projects import (createProject, getProjectPosts, getUserProjects,
+                      projectAccessCheck)
 
 
 class ExampleProject(NamedTuple):
@@ -398,3 +399,167 @@ def test_getProjectPosts(
     for result, expected in zip(result, expected_posts):
         for key, val in expected.items():
             assert result[key] == val
+
+
+@pytest.mark.parametrize(
+    "users,projects,searchProject,test_user,friends,expected_result",
+    [
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+            ],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            TestUser("test1", "test@gmail.com", "Password1"),
+            None,
+            True,
+        ),
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+            ],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                "Not Found",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            TestUser("test1", "test@gmail.com", "Password1"),
+            None,
+            False,
+        ),
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+            ],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            TestUser("test2", "test@gmail.com", "Password1"),
+            None,
+            False,
+        ),
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+            ],
+            [
+                ExampleProject(
+                    "test1",
+                    "sample one",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+                ExampleProject(
+                    "test2",
+                    "sample two",
+                    "test case",
+                    FileStorage(
+                        stream=BytesIO(b"Sample File"),
+                        filename="testFile",
+                        content_type="test/plain",
+                    ),
+                ),
+            ],
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+            ("test1", "test2"),
+            True,
+        ),
+    ],
+)
+def test_getProjectOwner(
+    users: List[TestUser],
+    projects: List[ExampleProject],
+    searchProject: ExampleProject,
+    test_user: TestUser,
+    friends: Tuple[str, str],
+    expected_result: str,
+):
+    """Tests that get project owner works as expected."""
+    for user in users:
+        newUser(user.username, user.email, user.password)
+
+    for project in projects:
+        assert createProject(
+            project.username, project.title, project.description, project.image
+        )
+
+    if friends:
+        addFriend(friends[0], friends[1])
+
+    assert (
+        projectAccessCheck(
+            searchProject.title, searchProject.username, test_user.username
+        )
+        == expected_result
+    )

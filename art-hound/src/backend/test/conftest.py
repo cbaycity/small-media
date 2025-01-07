@@ -25,6 +25,7 @@ def set_test_db(monkeypatch):
     monkeypatch.setattr("posts.POSTS", test_db["posts"])
     monkeypatch.setattr("projects.PROJECTS", test_db["projects"])
     monkeypatch.setattr("projects.POSTS", test_db["posts"])
+    monkeypatch.setattr("projects.USERS", test_db["users"])
     monkeypatch.setattr("posts.PROJECTS", test_db["projects"])
     monkeypatch.setattr("image_query.USERS", test_db["users"])
     monkeypatch.setattr("image_query.POSTS", test_db["posts"])

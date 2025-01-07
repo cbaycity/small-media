@@ -11,6 +11,7 @@ PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""
 
 POSTS = DB["posts"]
+USERS = DB["users"]
 
 
 def createProject(
@@ -79,7 +80,6 @@ def getProjectPosts(title: str):
         project_id = project["project_id"]
     else:
         return [{"Error": "No Project with this title."}]
-    print(f"project id: {project_id} : type: {type(project_id)}")
     posts = POSTS.find({"project-id": project_id}).sort("startDate", -1)
     return [
         {
@@ -93,3 +93,21 @@ def getProjectPosts(title: str):
         }
         for post in posts
     ]
+
+
+def projectAccessCheck(title: str, projectOwner: str, searchUser: str):
+    """Returns the username of a project owner."""
+    project = PROJECTS.find_one({"project-title": title, "username": projectOwner})
+    if not project:
+        return False
+
+    owner_user = USERS.find_one({"username": project["username"]})
+    if not owner_user:
+        return False
+    if (
+        owner_user["public"]
+        or searchUser in owner_user["friends"]
+        or searchUser == owner_user["username"]
+    ):
+        return True
+    return False

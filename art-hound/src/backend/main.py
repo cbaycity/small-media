@@ -7,7 +7,7 @@ from flask import Flask, Response, jsonify, redirect, request
 from backend_db import photoProcess
 from login import getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
-from projects import createProject, getUserProjects
+from projects import createProject, getProjectPosts, getUserProjects, projectAccessCheck
 
 # Load env keys
 load_dotenv()
@@ -149,11 +149,24 @@ def userProjects():
     return getUserProjects(user)
 
 
-@app.route("/project/<project_title>", methods=["POST"])
-def projectPage(project_title: str):
+@app.route("/project/<username>/<project_title>", methods=["POST"])
+def projectPage(username: str, project_title: str):
     """This function returns data related to single projects."""
+    data = request.get_json()
+    token = data.get("token")
+    # Check valid token.
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    search_user = getUser(token)
 
-    return [{}]
+    if not projectAccessCheck(
+        project_title,
+        username,
+        search_user,
+    ):
+        return "Not valid access to view the page.", 401
+
+    return jsonify(getProjectPosts(project_title))
 
 
 if __name__ == "__main__":
