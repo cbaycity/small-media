@@ -30,11 +30,13 @@ Top priority, create a way to show list user projects. Create a way to show post
 
 ## Projects: 
 1. Create Project Pages, pages that show posts associated with a project and basic info.
-2. Need to update projects list display to have links to project pages.
+  a. Deal with the project titles having spaces that don't work in links.
 
 ## Profile Section:
 1. Split profile page into three sections: profile photo and about, posts, and projects.
 2. Add edit profile button.
+3. Update the display of posts to have the Project Title and link if applicable.
+4. Also, the Activity should be labelled as activity.
 
 ## Friends Section:
 1. Let artists add each other to a project.
@@ -47,10 +49,7 @@ Top priority, create a way to show list user projects. Create a way to show post
 ## Bugs:
 1. When you go to Projects after being on Local the front end errors.
  -> The error says something about more hooks reloading the second time. Must be an error in how state is managed. 
-
 2. Cannot login with email, just username. 
-3. New Post requires a project right now.
-4. Where did the project button go.
 
 # Mac Environment Setup:
 

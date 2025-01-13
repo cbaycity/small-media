@@ -91,7 +91,7 @@ def test_createPost(users: List[TestUser], posts: List[ExamplePost]):
         post_entry = DB["posts"].find_one({"title": post.title})
         assert post_entry["username"] == post.username
         # Check that the posts match up.
-        file_ids.append(post_entry["image-id"])
+        file_ids.append(post_entry["image_id"])
 
     # Check that each image was added to the FS.
     from backend_db import FS
@@ -240,7 +240,9 @@ def test_singleUserFeed(
     result = singleUserFeed(test_user, query_user)
     image_id_found = []
     for result_dict in result:
-        image_id_found.append(result_dict.pop("image-id"))
+        # Remove project ID and image ID, which aren't really tested.
+        image_id_found.append(result_dict.pop("image_id"))
+        result_dict.pop("project_id")
     assert result == expectation
 
     from backend_db import FS

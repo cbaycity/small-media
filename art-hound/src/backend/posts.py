@@ -28,7 +28,7 @@ def createPost(
         related_project = PROJECTS.find_one(
             {
                 "username": username,
-                "project-title": project,
+                "project_title": project,
             }
         )
         if related_project:
@@ -39,7 +39,7 @@ def createPost(
         related_project_id = None
         related_project = None
 
-    # Insert the image and get the image-id back.
+    # Insert the image and get the image_id back.
     image_id = FS.put(image, filename=image.filename, content_type=image.content_type)
 
     POSTS.insert_one(
@@ -50,10 +50,10 @@ def createPost(
             "description": description,
             "startDate": datetime.strptime(startDate, "%Y-%m-%d"),
             "endDate": datetime.strptime(endDate, "%Y-%m-%d"),
-            "image-id": image_id,
-            "project-id": related_project_id,
-            "related-project": (
-                related_project["project-title"] if related_project else None
+            "image_id": image_id,
+            "project_id": related_project_id,
+            "related_project": (
+                related_project["project_title"] if related_project else None
             ),
             "public": public,
         }
@@ -85,8 +85,9 @@ def singleUserFeed(user: str, queryUsername: str):
             "startDate": post["startDate"].strftime("%Y-%m-%d"),
             "endDate": post["endDate"].strftime("%Y-%m-%d"),
             "description": post["description"],
-            "image-id": str(post["image-id"]),
-            "project": (post["related-project"] if post["project-id"] else None),
+            "image_id": str(post["image_id"]),
+            "project": (post["related_project"] if post["project_id"] else None),
+            "project_id": (post["project_id"] if post["project_id"] else None),
         }
         for post in data
     ]

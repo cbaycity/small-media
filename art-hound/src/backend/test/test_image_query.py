@@ -96,7 +96,7 @@ def test_process_image_posts(
             "title": post.title,
             "description": post.description,
         }
-    )["image-id"]
+    )["image_id"]
 
     # Create friends if needed.
     for pair in friends:
@@ -182,10 +182,10 @@ def test_process_image_projects(
     image_id = DB["projects"].find_one(
         {
             "username": project.username,
-            "project-title": project.title,
+            "project_title": project.title,
             "description": project.description,
         }
-    )["image-id"]
+    )["image_id"]
 
     # Image-Found
     result = process_image(username, image_id)
@@ -272,7 +272,7 @@ def test_process_image_unauthorized(
                 "title": post.title,
                 "description": post.description,
             }
-        )["image-id"]
+        )["image_id"]
         assert process_image(username, image_id) == "Not authorized to view this image."
 
     if project:
@@ -287,14 +287,14 @@ def test_process_image_unauthorized(
         image_id = DB["projects"].find_one(
             {
                 "username": project.username,
-                "project-title": project.title,
+                "project_title": project.title,
                 "description": project.description,
             }
-        )["image-id"]
+        )["image_id"]
         assert process_image(username, image_id) == "Not authorized to view this image."
 
 
 def test_process_image_not_found():
     """Tests that process_image gets images from projects."""
     # Nothing inserted into the DB, this should always fail.
-    assert process_image("test", "fake-image-id") == "Image not found."
+    assert process_image("test", "fake-image_id") == "Image not found."

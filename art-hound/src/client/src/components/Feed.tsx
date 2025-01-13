@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { LoginContext } from './LoginForm'
 
-interface PostData {
+export interface PostData {
     title: string
     username: string
     startDate: string
     endDate: string
     description: string
-    'image-id': string
+    image_id: string
     project: string
+    project_id: string
 }
 
 function UserFeed(username: string, onUserProfile: boolean = false) {
@@ -68,7 +69,7 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
                             <p>{post['description']}</p>
                             <img
                                 className="post-img"
-                                src={`/postphotos/${post['image-id']}/${token}`}
+                                src={`/postphotos/${post['image_id']}/${token}`}
                                 alt="Photo from post."
                             />
                         </div>

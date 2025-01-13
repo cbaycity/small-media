@@ -10,8 +10,8 @@ PROJECTS = DB["projects"]
 def process_image(username, requested_image):
     """Determine if the image can be viewed by the user requesting it, if so, return the image."""
     # Check if image is in projects or posts.
-    post_doc = POSTS.find_one({"image-id": requested_image})
-    projects_doc = PROJECTS.find_one({"image-id": requested_image})
+    post_doc = POSTS.find_one({"image_id": requested_image})
+    projects_doc = PROJECTS.find_one({"image_id": requested_image})
 
     image_doc = post_doc if post_doc else projects_doc
     if image_doc is None:

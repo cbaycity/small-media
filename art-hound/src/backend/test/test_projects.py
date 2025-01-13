@@ -10,8 +10,14 @@ from werkzeug.datastructures import FileStorage
 
 from login import addFriend, newUser
 from posts import createPost
-from projects import (createProject, getProjectPosts, getUserProjects,
-                      projectAccessCheck)
+from projects import (
+    createProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+    getProject,
+)
+import datetime as datetime
 
 
 class ExampleProject(NamedTuple):
@@ -79,10 +85,10 @@ def test_createProject(users: List[TestUser], projects: List[ExampleProject]):
     from backend_db import DB
 
     for project in projects:
-        project_entry = DB["projects"].find_one({"project-title": project.title})
+        project_entry = DB["projects"].find_one({"project_title": project.title})
         assert project_entry["username"] == project.username
         # Check that the posts match up.
-        file_ids.append(project_entry["image-id"])
+        file_ids.append(project_entry["image_id"])
 
     # Check that each image was added to the FS.
     from backend_db import FS
@@ -305,7 +311,7 @@ def test_getUserProjects(
             "startDate",
             "endDate",
             "description",
-            "image-id",
+            "image_id",
         ]:
             assert field in project
 
@@ -384,7 +390,7 @@ def test_getProjectPosts(
         )
 
     # Check the end dict of posts.
-    result = getProjectPosts(project.title)
+    result = getProjectPosts(project.username, project.title)
 
     from backend_db import DB
 
@@ -563,3 +569,103 @@ def test_getProjectOwner(
         )
         == expected_result
     )
+
+
+@pytest.mark.parametrize(
+    "project,searchProject,expectation",
+    [
+        (
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            {
+                "username": "test1",
+                "project_title": "sample one",
+                "description": "test case",
+            },
+        ),
+        (
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            ExampleProject(
+                "testNone",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            False,
+        ),
+        (
+            ExampleProject(
+                "test1",
+                "sample one",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            ExampleProject(
+                "test1",
+                "None",
+                "test case",
+                FileStorage(
+                    stream=BytesIO(b"Sample File"),
+                    filename="testFile",
+                    content_type="test/plain",
+                ),
+            ),
+            False,
+        ),
+    ],
+)
+def test_getProject(project, searchProject, expectation):
+    """Tests that get project returns the expected object."""
+    assert createProject(
+        project.username, project.title, project.description, project.image
+    )
+    from backend_db import DB
+
+    project_record = DB["projects"].find_one(
+        {"username": searchProject.username, "project_title": searchProject.title}
+    )
+    project_id = project_record["project_id"] if project_record else "notInDB"
+    result = getProject(searchProject.username, project_id)
+    if expectation:
+        # Pop not tested attributes of project.
+        result.pop("project_id")
+        result.pop("image_id")
+        result.pop("public")
+        result.pop("startDate")
+        result.pop("endDate")
+    assert expectation == result

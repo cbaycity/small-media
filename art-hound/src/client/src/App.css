@@ -241,3 +241,11 @@ form h3 {
     justify-self: right;
     flex-basis: 30%;
 }
+
+.project-link {
+    color: #2888ee;
+}
+
+.space-between {
+    justify-content: space-between;
+}

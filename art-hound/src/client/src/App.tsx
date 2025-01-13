@@ -36,7 +36,10 @@ function App() {
                     <Route path="/createPost" element={<CreatePost />} />
                     <Route path="/createProject" element={<CreateProject />} />
                     <Route path="/Search" element={<Search />} />
-                    <Route path="/projects/:projectTitle" element={<SingleProject />} />
+                    <Route
+                        path="/projects/:username/:project_id/"
+                        element={<SingleProject />}
+                    />
                 </Routes>
                 <Footer />
             </div>

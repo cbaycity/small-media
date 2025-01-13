@@ -6,14 +6,6 @@ import { useNavigate } from 'react-router-dom'
 
 var counter = 0
 
-const addFormCss = () => {
-    return (
-        <>
-            <link rel="stylesheet" href="public/basic-form.css" />
-        </>
-    )
-}
-
 const AddDateFields = () => {
     const today = new Date().toISOString().split('T')[0] // Format date as yyyy-mm-dd
     const [startDate, setStartDate] = useState(today)
@@ -95,7 +87,7 @@ function CreatePost() {
 
     return (
         <>
-            {addFormCss()}
+            <link rel="stylesheet" href="public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
@@ -140,7 +132,7 @@ function CreatePost() {
                                 </option>
                                 {projectList.map((project, index) => (
                                     <option key={index} value={project}>
-                                        {project}
+                                        {project['title']}
                                     </option>
                                 ))}
                             </select>
@@ -176,7 +168,7 @@ function CreateProject() {
     const { token } = useContext(LoginContext)
     return (
         <>
-            {addFormCss()}
+            <link rel="stylesheet" href="public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
@@ -186,12 +178,12 @@ function CreateProject() {
                             method="post"
                             encType="multipart/form-data"
                         >
-                            <label htmlFor="project-title">
+                            <label htmlFor="project_title">
                                 Project Title
                                 <input
                                     type="text"
-                                    id="project-title"
-                                    name="project-title"
+                                    id="project_title"
+                                    name="project_title"
                                     autoComplete="off"
                                     required
                                     maxLength={80}
@@ -240,7 +232,7 @@ function EditProfile() {
     const { token } = useContext(LoginContext)
     return (
         <>
-            {addFormCss()}
+            <link rel="stylesheet" href="public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">

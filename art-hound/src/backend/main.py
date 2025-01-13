@@ -7,7 +7,13 @@ from flask import Flask, Response, jsonify, redirect, request
 from backend_db import photoProcess
 from login import getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
-from projects import createProject, getProjectPosts, getUserProjects, projectAccessCheck
+from projects import (
+    createProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+    getProject,
+)
 
 # Load env keys
 load_dotenv()
@@ -126,7 +132,7 @@ def processProject():
     # Check valid token.
     if not validLogin(token):
         return "Invalid login token.", 401
-    title = request.form.get("project-title")
+    title = request.form.get("project_title")
     description = request.form.get("description")
     image = request.files["project-image"]
     user = getUser(token)
@@ -139,7 +145,7 @@ def processProject():
 
 @app.route("/UserProjects", methods=["POST"])
 def userProjects():
-    """Returns a list of a user's projects"""
+    """Returns a list of mappings with the user's project information."""
     data = request.get_json()
     token = data.get("token")
     # Check valid token.
@@ -149,8 +155,8 @@ def userProjects():
     return getUserProjects(user)
 
 
-@app.route("/project/<username>/<project_title>", methods=["POST"])
-def projectPage(username: str, project_title: str):
+@app.route("/project/<username>/<project_id>", methods=["POST"])
+def projectPage(username: str, project_id: str):
     """This function returns data related to single projects."""
     data = request.get_json()
     token = data.get("token")
@@ -158,7 +164,8 @@ def projectPage(username: str, project_title: str):
     if not validLogin(token):
         return "Invalid login token.", 401
     search_user = getUser(token)
-
+    project = getProject(username, project_id)
+    project_title = project["project_title"] if project else None
     if not projectAccessCheck(
         project_title,
         username,
@@ -166,7 +173,8 @@ def projectPage(username: str, project_title: str):
     ):
         return "Not valid access to view the page.", 401
 
-    return jsonify(getProjectPosts(project_title))
+    project["posts"] = getProjectPosts(username, project_title)
+    return jsonify(project)
 
 
 if __name__ == "__main__":
