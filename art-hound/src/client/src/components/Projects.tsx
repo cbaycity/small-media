@@ -85,7 +85,10 @@ const AddPostsForProject: React.FC<AddPostsForProjectProps> = ({
                     </div>
                 )}
             </div>
-            <link rel="stylesheet" href="public/feed.css" />
+            <link
+                rel="stylesheet"
+                href={`${process.env.PUBLIC_URL}/public/feed.css`}
+            />
         </>
     )
 }
@@ -196,7 +199,10 @@ function Projects() {
 
     return (
         <>
-            <link rel="stylesheet" href="public/feed.css" />
+            <link
+                rel="stylesheet"
+                href={`${process.env.PUBLIC_URL}/public/feed.css`}
+            />
             <div className="center-body general-body-background feed-body">
                 <LeftBar />
                 <div className="container center-body general-body-background space-between">
@@ -257,37 +263,33 @@ function SingleProject() {
 
     if (project)
         return (
-            <>
+            <div className="center-body general-body-background feed-body">
                 <div>
-                    <h3>{project['title']}</h3>
-                    <p>Owner: {project['username']}</p>
-                    <p>Description: {project['description']}</p>
+                    <div>
+                        <h3>{project['title']}</h3>
+                        <p>Owner: {project['username']}</p>
+                        <p>Description: {project['description']}</p>
+                    </div>
+                    <div>
+                        {project['image_id'] && token ? (
+                            <img
+                                className="project-image"
+                                src={`/postphotos/${project['image_id']}/${token}`}
+                                alt="Main project photo."
+                            />
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                 </div>
-                <div>
-                    {project['image_id'] && token ? (
-                        <img
-                            className="project-image"
-                            src={`/postphotos/${project['image_id']}/${token}`}
-                            alt="Main project photo."
-                        />
-                    ) : (
-                        <></>
-                    )}
+                <div id="feed" className="feed">
                     <h3>Activity:</h3>
                     <AddPostsForProject postsList={project['posts']} />
                 </div>
-            </>
+                <RightBar />
+            </div>
         )
     return <></>
 }
 
 export { Projects, SingleProject }
-
-/*
-To solve the issue where project titles cannot be used in links, maybe link using project id?
-Questions:
-1. Do the ids have URL safe characters and format? Yes.
-2. Do you need to change the backend functions to search for project ID? Yes.
-3. Do you need to change the front end interfaces to accept project id? Yes.
-4. Should you use project ID or database id? project_id
-*/

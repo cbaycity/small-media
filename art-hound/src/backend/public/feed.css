@@ -22,6 +22,7 @@
     align-items: center;
     text-align: center;
     background-color: #f4f4f9;
+    flex-basis: 60%;
 }
 
 .post, .project {
@@ -47,4 +48,9 @@
     margin: auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left-bar-projects {
+    margin-left: 20px;
+    background-color: skyblue;
 }
