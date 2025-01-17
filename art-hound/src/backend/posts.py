@@ -3,9 +3,8 @@
 import uuid
 from datetime import datetime
 
-from werkzeug.datastructures import FileStorage
-
 from backend_db import DB, FS
+from werkzeug.datastructures import FileStorage
 
 # Get or create a collection for Posts.
 POSTS = DB["posts"]
