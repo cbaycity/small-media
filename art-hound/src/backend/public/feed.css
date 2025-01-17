@@ -51,6 +51,6 @@
 }
 
 .left-bar-projects {
-    margin-left: 20px;
-    background-color: skyblue;
+    padding: 10px;
+    max-width: 20%;
 }

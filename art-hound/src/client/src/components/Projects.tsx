@@ -271,7 +271,7 @@ function SingleProject() {
     if (project)
         return (
             <div className="center-body general-body-background feed-body">
-                <div>
+                <div className="side-bar left-bar-projects">
                     <div>
                         <h3>{project['title']}</h3>
                         <p>Owner: {project['username']}</p>
