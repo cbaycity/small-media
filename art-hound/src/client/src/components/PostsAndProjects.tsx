@@ -120,22 +120,28 @@ function CreatePost() {
                                     maxLength={160}
                                 />
                             </label>
-                            <label htmlFor="project">Related Project</label>
-                            <select
-                                id="project"
-                                value={selectedProject}
-                                onChange={handleSelectionChange}
-                                required
-                            >
-                                <option value="" disabled>
-                                    -- Select a Project --
-                                </option>
-                                {projectList.map((project, index) => (
-                                    <option key={index} value={project}>
-                                        {project['title']}
+                            <label htmlFor="project">
+                                Related Project
+                                <select
+                                    id="project"
+                                    name="project"
+                                    value={selectedProject}
+                                    onChange={handleSelectionChange}
+                                    required
+                                >
+                                    <option value="" disabled>
+                                        -- Select a Project --
                                     </option>
-                                ))}
-                            </select>
+                                    {projectList.map((project, index) => (
+                                        <option
+                                            key={index}
+                                            value={project['title']}
+                                        >
+                                            {project['title']}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
                             <br />
                             <label htmlFor="post-image">
                                 Post Photo:

@@ -113,9 +113,16 @@ def processPost():
     if not validLogin(token):
         return "Invalid login token.", 401
 
+    app.logger.info(f"PRINTING WHOLE POST")
+    app.logger.warning(f"{request.form}")
+
+    app.logger.warning(f"FORM PROJECT TYPE {type(request.form.get("project"))}")
+    app.logger.warning(f"PROJECT AS STR {str(request.form.get("project"))}")
+
     title = request.form.get("title")
     description = request.form.get("description")
     project = request.form.get("project")
+    app.logger.info(f"Project: {project}")
     image = request.files["post-image"]
     startDate = request.form.get("start-date")
     endDate = request.form.get("end-date")
