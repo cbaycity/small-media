@@ -45,7 +45,14 @@ const AddPostsForProject: React.FC<AddPostsForProjectProps> = ({
                     postsList.map((post, index) => (
                         <div className="post" key={index}>
                             <h3>{post['title']}</h3>
-                            <p>{post['project']}</p>
+                            <p>
+                                <Link
+                                    to={`/projects/${post['username']}/${post['project_id']}`}
+                                    className="project-link"
+                                >
+                                    {post['title']}
+                                </Link>
+                            </p>
                             <p>
                                 {post['startDate'] === post['endDate']
                                     ? post['startDate']

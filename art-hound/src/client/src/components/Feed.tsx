@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { LoginContext } from './LoginForm'
+import { Link } from 'react-router-dom'
 
 export interface PostData {
     title: string
@@ -60,7 +61,14 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
                     postsList.map((post, index) => (
                         <div className="post" key={index}>
                             <h3>{post['title']}</h3>
-                            <p>{post['project']}</p>
+                            <p>
+                                <Link
+                                    to={`/projects/${post['username']}/${post['project_id']}`}
+                                    className="project-link"
+                                >
+                                    {post['project']}
+                                </Link>
+                            </p>
                             <p>
                                 {post['startDate'] === post['endDate']
                                     ? post['startDate']
