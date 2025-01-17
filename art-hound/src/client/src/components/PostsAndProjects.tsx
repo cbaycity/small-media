@@ -2,16 +2,9 @@
 
 import react, { useState, useContext, useEffect } from 'react'
 import { LoginContext } from './LoginForm'
+import { useNavigate } from 'react-router-dom'
 
 var counter = 0
-
-const addFormCss = () => {
-    return (
-        <>
-            <link rel="stylesheet" href="public/basic-form.css" />
-        </>
-    )
-}
 
 const AddDateFields = () => {
     const today = new Date().toISOString().split('T')[0] // Format date as yyyy-mm-dd
@@ -94,7 +87,7 @@ function CreatePost() {
 
     return (
         <>
-            {addFormCss()}
+            <link rel="stylesheet" href="public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
@@ -104,7 +97,7 @@ function CreatePost() {
                             method="post"
                             encType="multipart/form-data"
                         >
-                            <label htmlFor="post-title">
+                            <label htmlFor="title">
                                 Post Title
                                 <input
                                     type="text"
@@ -139,7 +132,7 @@ function CreatePost() {
                                 </option>
                                 {projectList.map((project, index) => (
                                     <option key={index} value={project}>
-                                        {project}
+                                        {project['title']}
                                     </option>
                                 ))}
                             </select>
@@ -175,7 +168,7 @@ function CreateProject() {
     const { token } = useContext(LoginContext)
     return (
         <>
-            {addFormCss()}
+            <link rel="stylesheet" href="public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
@@ -185,12 +178,12 @@ function CreateProject() {
                             method="post"
                             encType="multipart/form-data"
                         >
-                            <label htmlFor="project-title">
+                            <label htmlFor="project_title">
                                 Project Title
                                 <input
                                     type="text"
-                                    id="project-title"
-                                    name="project-title"
+                                    id="project_title"
+                                    name="project_title"
                                     autoComplete="off"
                                     required
                                     maxLength={80}
@@ -239,7 +232,7 @@ function EditProfile() {
     const { token } = useContext(LoginContext)
     return (
         <>
-            {addFormCss()}
+            <link rel="stylesheet" href="public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
@@ -278,4 +271,49 @@ function EditProfile() {
     )
 }
 
-export { CreatePost, CreateProject, EditProfile }
+const NewPostButton = () => {
+    const navigate = useNavigate()
+
+    return (
+        <>
+            <button
+                type="button"
+                className="login-button"
+                aria-label="Create a new post"
+                onClick={() => {
+                    navigate('/createPost')
+                }}
+            >
+                New Post
+            </button>
+        </>
+    )
+}
+
+const NewProjectButton = () => {
+    const navigate = useNavigate()
+
+    return (
+        <>
+            <button
+                type="button"
+                className="login-button"
+                aria-label="Create a new project"
+                onClick={() => {
+                    navigate('/createProject')
+                }}
+                style={{ padding: '10px', margin: '10px' }}
+            >
+                New Project
+            </button>
+        </>
+    )
+}
+
+export {
+    CreatePost,
+    CreateProject,
+    EditProfile,
+    NewPostButton,
+    NewProjectButton,
+}

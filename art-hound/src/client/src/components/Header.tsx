@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { LoginContext, CheckLogin } from './LoginForm'
 import { Link, useNavigate } from 'react-router-dom'
+import { NewPostButton } from './PostsAndProjects'
 
 function ArtHoundHeader() {
     let navigate = useNavigate()
@@ -40,15 +41,6 @@ function ArtHoundHeader() {
                         <li>
                             {' '}
                             <Link
-                                to="/Local"
-                                className="navigation-link px-2 link-two"
-                            >
-                                Local
-                            </Link>
-                        </li>
-                        <li>
-                            {' '}
-                            <Link
                                 to="/Projects"
                                 className="navigation-link px-2 link-two"
                             >
@@ -67,28 +59,32 @@ function ArtHoundHeader() {
                         <li>
                             {' '}
                             <Link
-                                to="/Friends"
+                                to="/Following"
                                 className="navigation-link px-2 link-two"
                             >
-                                Friends
+                                Following
+                            </Link>
+                        </li>
+                        <li>
+                            {' '}
+                            <Link
+                                to="/Search"
+                                className="navigation-link px-2 link-two"
+                            >
+                                Search
                             </Link>
                         </li>
                     </ul>
                 </div>
                 {isLoggedIn ? (
                     <div className="login headerSection">
-                        <button
-                            type="button"
-                            className="login-button"
-                            onClick={() => routeChange('/createPost')}
-                        >
-                            New Post
-                        </button>
+                        <NewPostButton />
                         <button
                             type="button"
                             className="login-button"
                             onClick={() => {
                                 logOut()
+                                navigate('/login')
                             }}
                         >
                             Sign-Out

@@ -16,37 +16,42 @@ The react front end was built with `npx create-react-app client --template types
 poetry export --without-hashes --format=requirements.txt > requirements.txt
 ```
 
-## WIP
-1. Add routing for create project and create projects
-2. link projects and create projects.
-3. Redirect after posts and projects are created to myProfile.
-Note: Profile should show recent activity and projects.
-5. 
+# To Do Lists:
+## Priority:
+Top priority, create a way to show list user projects. Create a way to show posts related to user projects. Create a page layout for user projects.
 
-## Current to do:
+# Do you need to nuke the production database and change the naming convention for how things are stored?
 
-1. Move About to footer. (Done)
-2. Adjust headers: Local, Projects, Friends, Profile
-3. Add a projects section (Notably, let artists add each other to a project.)
-4. Add a friends page and following projects.
-5. Have posts actually paste an update to the database.
-6. Adjust signup to automatically log the user in for posts.
-7. You can add tests for routing of the main.py file. You should add these just after launching.
-8. Split profile page into two sections: activities, and projects.
-9. Add edit profile button.
-10. Fix dates not selecting in forms.
-11. Fix having a required end date to projects.
+## Infrastructure:
+1. You can add tests for routing of the main.py file. You should add these just after launching.
+2. Protect against Request Forgery.
+3. Add an invite token to the signup page.
+4. The current photo process function doesn't do any user authentication. You need to perform security on this.
 
-Future to do:
-1. Protect against Request Forgery.
+## Projects: 
+1. Create Project Pages, pages that show posts associated with a project and basic info.
+  a. Deal with the project titles having spaces that don't work in links.
 
-Current Work Going On:
-1. Need to ensure that the function called on the login button click calls storeUser and storeToken.
-2. Need to ensure that functions which consume the token and user are typed correctly.
-3. Need to ensure that the state is being saved correctly in the brower local storage variable.
+## Profile Section:
+1. Split profile page into three sections: profile photo and about, posts, and projects.
+2. Add edit profile button.
+3. Update the display of posts to have the Project Title and link if applicable.
+4. Also, the Activity should be labelled as activity.
 
+## Friends Section:
+1. Let artists add each other to a project.
+2. Let artists add each other as friends and see each other's accounts.
 
-## Mac Environment Setup:
+## About Section:
+1. Update the about section to include a link to my profile.
+2. Update the About to discuss a little bit about using the website focusing on projects.
+
+## Bugs:
+1. When you go to Projects after being on Local the front end errors.
+ -> The error says something about more hooks reloading the second time. Must be an error in how state is managed. 
+2. Cannot login with email, just username. 
+
+# Mac Environment Setup:
 
 1. Use brew to install Python
 2. install 3.12.3

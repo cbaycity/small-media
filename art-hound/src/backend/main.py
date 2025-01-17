@@ -1,12 +1,19 @@
-from flask import Flask, request, redirect, jsonify
-from feed import createFeed
-from login import newUser, login, validLogin, getUser
-from posts import createPost
-from projects import createProject, getUserProjects
+import os
 
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
-import os
+from flask import Flask, Response, jsonify, redirect, request
+
+from backend_db import photoProcess
+from login import getUser, login, newUser, validLogin
+from posts import createPost, singleUserFeed
+from projects import (
+    createProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+    getProject,
+)
 
 # Load env keys
 load_dotenv()
@@ -29,17 +36,37 @@ def public(file: str):
     return app.send_static_file(f"public/{file}")
 
 
-@app.route("/feed")
-def feed():
-    """Returns a list of JSON objects"""
-    return createFeed(request.headers.get("USER_INFO"), request.headers.get("FEEDTYPE"))
-
-
-@app.route("/postphotos/<photofile>")
-def photoprocess(photofile: str):
+@app.route("/postphotos/<photofile>/<token>")
+def photophotos(photofile: str, token: str):
     """Collects photos from the backend for users."""
-    # TODO: Remove the hard coding and actually process requests.
-    return app.send_static_file(f"sample-assets/bayard-post-one/{photofile}")
+
+    # Check authentication logic.
+    photo_owner = None
+    # AUTHENTICATION REQUIRED SO THAT PHOTOS CANNOT BE MASS EXPORTED.
+
+    file = photoProcess(photofile)
+
+    if file:
+        return Response(
+            file.read(),
+            content_type=file.content_type,
+            headers={"Content-Disposition": f'inline; filename="{file.filename}"'},
+        )
+    else:
+        return jsonify({"error": "Image not found."})
+
+
+@app.route("/getUserPosts/<username>", methods=["POST"])
+def getUserPosts(username: str):
+    """Returns all of the posts for a user."""
+    data = request.get_json()
+    token = data.get("token")
+    if validLogin(token):
+        user = getUser(token)
+        if not user:
+            return "Please relogin."
+        return singleUserFeed(user, username)
+    return "invalid login token."
 
 
 @app.route("/createAccount", methods=["POST"])
@@ -86,13 +113,15 @@ def processPost():
     if not validLogin(token):
         return "Invalid login token.", 401
 
-    title = request.form.get("post-title")
+    title = request.form.get("title")
     description = request.form.get("description")
     project = request.form.get("project")
     image = request.files["post-image"]
+    startDate = request.form.get("start-date")
+    endDate = request.form.get("end-date")
     user = getUser(token)
     if user:
-        createPost(user, title, description, image, project)
+        createPost(user, title, description, startDate, endDate, image, project)
     return redirect("/Profile")
 
 
@@ -103,20 +132,20 @@ def processProject():
     # Check valid token.
     if not validLogin(token):
         return "Invalid login token.", 401
-    title = request.form.get("project-title")
+    title = request.form.get("project_title")
     description = request.form.get("description")
     image = request.files["project-image"]
     user = getUser(token)
+    startDate = request.form.get("start-date")
+    endDate = request.form.get("end-date")
     if user:
-        result = createProject(user, title, description, image)
-        app.logger.info(f"Create Project Result: {result}")
-        app.logger.info(f"User: {user}, Title: {title}, Description: {description}")
+        createProject(user, title, description, image, startDate, endDate)
     return redirect("/Profile")
 
 
 @app.route("/UserProjects", methods=["POST"])
 def userProjects():
-    """Returns a list of a user's projects"""
+    """Returns a list of mappings with the user's project information."""
     data = request.get_json()
     token = data.get("token")
     # Check valid token.
@@ -124,6 +153,28 @@ def userProjects():
         return "Invalid login token.", 401
     user = getUser(token)
     return getUserProjects(user)
+
+
+@app.route("/project/<username>/<project_id>", methods=["POST"])
+def projectPage(username: str, project_id: str):
+    """This function returns data related to single projects."""
+    data = request.get_json()
+    token = data.get("token")
+    # Check valid token.
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    search_user = getUser(token)
+    project = getProject(username, project_id)
+    project_title = project["project_title"] if project else None
+    if not projectAccessCheck(
+        project_title,
+        username,
+        search_user,
+    ):
+        return "Not valid access to view the page.", 401
+
+    project["posts"] = getProjectPosts(username, project_title)
+    return jsonify(project)
 
 
 if __name__ == "__main__":

@@ -6,19 +6,15 @@ body {
     font-family: 'Comic Sans MS', cursive;
     font-size: 16px;
     height: auto; /* Full viewport height */
+    overflow-x: hidden;
 }
-html,
-body {
+html {
     width: 100%;
     margin: 0;
     padding: 0;
 }
 
 .div-body {
-    height: 100%;
-}
-
-.root {
     height: 100%;
 }
 
@@ -67,6 +63,14 @@ body {
     align-items: center; /* Center vertically if necessary */
     margin: 0 auto; /* Center the container itself */
     padding: 1rem; /* Optional padding */
+}
+
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .navigation {
@@ -156,6 +160,12 @@ link {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .login-button:hover {
     color: #007bff;
     background-color: #fff;
@@ -216,4 +226,22 @@ link {
 
 form h3 {
     color: red;
+}
+
+.left-justify {
+    justify-self: left;
+    flex-basis: 30%;
+}
+
+.right-justify {
+    justify-self: right;
+    flex-basis: 30%;
+}
+
+.project-link {
+    color: #2888ee;
+}
+
+.space-between {
+    justify-content: space-between;
 }

@@ -1,9 +1,12 @@
 """This is a module to track if users have an account with ArtHound."""
 
-from typing import Tuple
-from werkzeug.security import generate_password_hash, check_password_hash
-import secrets
 import datetime
+import secrets
+from functools import lru_cache
+from typing import Tuple
+
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from backend_db import DB
 
 # Get or create a collection of usernames and passwords.
@@ -19,7 +22,6 @@ def login(username: str, password: str) -> bool:
         username: The user's username.
         password: The user's unhashed password.
     """
-    # NOTE: need to return a cookie in the future.
     user = USERS.find_one({"username": username})
     if user and check_password_hash(user["password"], password):
         userToken = secrets.token_urlsafe(TOKEN_LENGTH)
@@ -54,6 +56,8 @@ def newUser(username: str, email: str, password: str) -> Tuple[bool, bool]:
             "username": username,
             "password": generate_password_hash(password),
             "email": email,
+            "friends": [],
+            "public": False,
         }
         USERS.insert_one(newUser)
         return True, True
@@ -70,6 +74,7 @@ def validLogin(token: str):
     return False
 
 
+@lru_cache(maxsize=16384)
 def getUser(token: str):
     """Returns the username related to a token unless the token is invalid."""
     db_entry = DB["tokens"].find_one({"token": token})
@@ -78,3 +83,23 @@ def getUser(token: str):
     ] > datetime.datetime.now() + datetime.timedelta(days=-1):
         return db_entry["username"]
     return False
+
+
+def addFriend(first_user: str, second_user: str):
+    """Friendship."""
+    # Check that user and new_friend exist.
+    first_user_doc = USERS.find_one({"username": first_user})
+    second_user_doc = USERS.find_one({"username": second_user})
+    if not (first_user_doc and second_user_doc):
+        return False
+
+    # Add friends to docs.
+    USERS.update_one(
+        {"username": first_user},
+        {"$addToSet": {"friends": second_user}},
+    )
+    USERS.update_one(
+        {"username": second_user},
+        {"$addToSet": {"friends": first_user}},
+    )
+    return True
