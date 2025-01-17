@@ -1,19 +1,13 @@
 import os
 
+from backend_db import photoProcess
 # from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, redirect, request
-
-from backend_db import photoProcess
 from login import getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
-from projects import (
-    createProject,
-    getProjectPosts,
-    getUserProjects,
-    projectAccessCheck,
-    getProject,
-)
+from projects import (createProject, getProject, getProjectPosts,
+                      getUserProjects, projectAccessCheck)
 
 # Load env keys
 load_dotenv()
