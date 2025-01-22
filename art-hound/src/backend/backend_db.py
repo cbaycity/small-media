@@ -19,3 +19,14 @@ FS = gridfs.GridFS(DB)
 def photoProcess(image_id: str):
     """Returns an image from the FS assuming that authentication has occured."""
     return FS.get(ObjectId(image_id))
+
+
+def getPhotoUser(image_id: str):
+    """Returns the user associated with a specific photo.
+
+    Checks for the photo in the posts and projects collections.
+    """
+    post = DB["posts"].find_one({"image_id": image_id})
+    project = DB["projects"].find_one({"image_id": image_id})
+    document = post if post else project
+    return document["username"]

@@ -77,7 +77,7 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
                             <p>{post['description']}</p>
                             <img
                                 className="post-img"
-                                src={`/postphotos/${post['image_id']}/${token}`}
+                                src={`/postphotos/${post['image_id']}`}
                                 alt="Photo from post."
                             />
                         </div>

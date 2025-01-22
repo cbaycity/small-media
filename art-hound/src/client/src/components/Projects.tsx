@@ -61,7 +61,7 @@ const AddPostsForProject: React.FC<AddPostsForProjectProps> = ({
                             <p>{post['description']}</p>
                             <img
                                 className="post-img"
-                                src={`/postphotos/${post['image_id']}/${token}`}
+                                src={`/postphotos/${post['image_id']}`}
                                 alt="Photo from post."
                             />
                         </div>
@@ -121,7 +121,7 @@ function DisplayProject(project: Project, token: string | null, index: number) {
             {project['image_id'] && token ? (
                 <img
                     className="project-image"
-                    src={`/postphotos/${project['image_id']}/${token}`}
+                    src={`/postphotos/${project['image_id']}`}
                     alt="Main project photo."
                 />
             ) : (
@@ -281,7 +281,7 @@ function SingleProject() {
                         {project['image_id'] && token ? (
                             <img
                                 className="project-image"
-                                src={`/postphotos/${project['image_id']}/${token}`}
+                                src={`/postphotos/${project['image_id']}`}
                                 alt="Main project photo."
                             />
                         ) : (

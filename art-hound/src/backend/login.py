@@ -5,8 +5,9 @@ import secrets
 from functools import lru_cache
 from typing import Tuple
 
-from backend_db import DB
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from backend_db import DB
 
 # Get or create a collection of usernames and passwords.
 USERS = DB["users"]

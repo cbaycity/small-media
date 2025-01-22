@@ -1,9 +1,9 @@
 import os
 
-from backend_db import photoProcess
-# from flask_wtf import CSRFProtect
 from dotenv import load_dotenv
-from flask import Flask, Response, jsonify, redirect, request
+from flask import Flask, Response, jsonify, make_response, redirect, request
+
+from backend_db import photoProcess
 from login import getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
 from projects import (createProject, getProject, getProjectPosts,
@@ -15,9 +15,6 @@ load_dotenv()
 app = Flask(__name__, static_folder="/", static_url_path="/")
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-# Need to protect against Cross-site request forgery.
-# Ignoring this for now.
-# CSRFProtect(app)
 
 
 @app.route("/")
@@ -30,13 +27,17 @@ def public(file: str):
     return app.send_static_file(f"public/{file}")
 
 
-@app.route("/postphotos/<photofile>/<token>")
-def photophotos(photofile: str, token: str):
+@app.route("/postphotos/<photofile>")
+def photophotos(photofile: str):
     """Collects photos from the backend for users."""
+    user_cookie = request.cookies.get("auth_token")
+    if validLogin(user_cookie):
+        user = getUser(user_cookie)
 
     # Check authentication logic.
     photo_owner = None
     # AUTHENTICATION REQUIRED SO THAT PHOTOS CANNOT BE MASS EXPORTED.
+    # NEEDS TO BE A POST REQUEST WITH THE TOKEN IN THE HEADER.
 
     file = photoProcess(photofile)
 
@@ -83,7 +84,15 @@ def userLogin():
     pwd = data["password"]
     status, token = login(username_or_email, pwd)
     if status:
-        return jsonify({"token": token}), 200
+        response = make_response(jsonify({"token": token}), 200)
+        response.set_cookie(
+            "auth_token",
+            value=token,
+            httponly=True,
+            secure=True,
+            samesite="Strict",
+        )
+        return response
     return jsonify({"token": ""}), 401
 
 
