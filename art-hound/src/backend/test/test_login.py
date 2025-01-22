@@ -4,7 +4,9 @@ import datetime as dt
 from typing import List, NamedTuple, Tuple
 
 import pytest
-from login import addFriend, getUser, login, newUser, validLogin
+
+from login import (addFriend, checkUserAccess, getUser, login, newUser,
+                   validLogin)
 
 
 class TestUser(NamedTuple):
@@ -205,3 +207,30 @@ def test_addFriend_Fails(user_one, user_two):
 
     assert addFriend(user_one.username, user_two.username) == False
     assert addFriend(user_two.username, user_one.username) == False
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_checkUserAccess(user_one, user_two):
+    """Tests that addFriend fails when one of the users doesn't exist."""
+
+    # Add the users
+    newUser(user_one.username, user_one.email, user_one.password)
+    newUser(user_two.username, user_two.email, user_two.password)
+
+    # Assert that checkUserAccess fails when they aren't friends.
+    assert checkUserAccess(user_one.username, user_two.username) == False
+
+    # Asser that checkUserAccess passes for a user on itself.
+    assert checkUserAccess(user_one.username, user_one.username)
+
+    # Assert that checkUserAccess passes when they are friends.
+    addFriend(user_one.username, user_two.username)
+    assert checkUserAccess(user_one.username, user_two.username)

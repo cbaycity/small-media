@@ -5,10 +5,11 @@ from io import BytesIO
 from typing import Any, List, NamedTuple, Tuple, Union
 
 import pytest
-from login import addFriend, newUser
-from posts import createPost, multiUserFeed, singleUserFeed
 from test_login import TestUser
 from werkzeug.datastructures import FileStorage
+
+from login import addFriend, newUser
+from posts import createPost, multiUserFeed, singleUserFeed
 
 
 class ExamplePost(NamedTuple):

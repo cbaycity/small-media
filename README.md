@@ -24,13 +24,9 @@ Top priority, create a way to show list user projects. Create a way to show post
 
 ## Infrastructure:
 1. You can add tests for routing of the main.py file. You should add these just after launching.
-2. Protect against Request Forgery.
+2. Protect against Request Forgery. Every POST request needs to check that there is a valid user token in the header.
 3. Add an invite token to the signup page.
 4. The current photo process function doesn't do any user authentication. You need to perform security on this.
-
-## Projects: 
-1. Create Project Pages, pages that show posts associated with a project and basic info.
-  a. Deal with the project titles having spaces that don't work in links.
 
 ## Profile Section:
 1. Split profile page into three sections: profile photo and about, posts, and projects.
@@ -47,9 +43,7 @@ Top priority, create a way to show list user projects. Create a way to show post
 2. Update the About to discuss a little bit about using the website focusing on projects.
 
 ## Bugs:
-1. When you go to Projects after being on Local the front end errors.
- -> The error says something about more hooks reloading the second time. Must be an error in how state is managed. 
-2. Cannot login with email, just username. 
+1. Cannot login with email, just username. 
 
 # Mac Environment Setup:
 

@@ -5,13 +5,14 @@ from io import BytesIO
 from typing import Any, Dict, List, NamedTuple, Tuple
 
 import pytest
+from test_login import TestUser
+from test_posts import ExamplePost
+from werkzeug.datastructures import FileStorage
+
 from login import addFriend, newUser
 from posts import createPost
 from projects import (createProject, getProject, getProjectPosts,
                       getUserProjects, projectAccessCheck)
-from test_login import TestUser
-from test_posts import ExamplePost
-from werkzeug.datastructures import FileStorage
 
 
 class ExampleProject(NamedTuple):

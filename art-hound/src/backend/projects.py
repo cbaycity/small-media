@@ -3,8 +3,9 @@
 import datetime
 import uuid
 
-from backend_db import DB, FS
 from werkzeug.datastructures import FileStorage
+
+from backend_db import DB, FS
 
 PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""
