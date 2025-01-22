@@ -26,7 +26,7 @@ def getPhotoUser(image_id: str):
 
     Checks for the photo in the posts and projects collections.
     """
-    post = DB["posts"].find_one({"image_id": image_id})
-    project = DB["projects"].find_one({"image_id": image_id})
+    post = DB["posts"].find_one({"image_id": ObjectId(image_id)})
+    project = DB["projects"].find_one({"image_id": ObjectId(image_id)})
     document = post if post else project
     return document["username"]

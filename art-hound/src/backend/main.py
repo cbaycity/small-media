@@ -3,8 +3,8 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
-from backend_db import photoProcess
-from login import getUser, login, newUser, validLogin
+from backend_db import getPhotoUser, photoProcess
+from login import checkUserAccess, getUser, login, newUser, validLogin
 from posts import createPost, singleUserFeed
 from projects import (createProject, getProject, getProjectPosts,
                       getUserProjects, projectAccessCheck)
@@ -33,11 +33,14 @@ def photophotos(photofile: str):
     user_cookie = request.cookies.get("auth_token")
     if validLogin(user_cookie):
         user = getUser(user_cookie)
+    else:
+        return "Invalid Login Token", 401
 
     # Check authentication logic.
-    photo_owner = None
-    # AUTHENTICATION REQUIRED SO THAT PHOTOS CANNOT BE MASS EXPORTED.
-    # NEEDS TO BE A POST REQUEST WITH THE TOKEN IN THE HEADER.
+    photo_owner = getPhotoUser(photofile)
+
+    if not checkUserAccess(user, photo_owner):
+        return "Not authorized to view this photo.", 401
 
     file = photoProcess(photofile)
 

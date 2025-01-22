@@ -103,3 +103,16 @@ def addFriend(first_user: str, second_user: str):
         {"$addToSet": {"friends": first_user}},
     )
     return True
+
+
+def checkUserAccess(first_user: str, second_user: str):
+    """Returns True if two users are friends and false otherwise."""
+    if first_user == second_user:
+        return True
+    first_friends = USERS.find_one({"username": first_user})["friends"]
+    if second_user not in first_friends:
+        return False
+    second_friends = USERS.find_one({"username": second_user})["friends"]
+    if first_user not in second_friends:
+        return False
+    return True
