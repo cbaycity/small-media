@@ -18,21 +18,15 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 
 # To Do Lists:
 ## Priority:
-Top priority, create a way to show list user projects. Create a way to show posts related to user projects. Create a page layout for user projects.
-
-# Do you need to nuke the production database and change the naming convention for how things are stored?
+Top priority, create a way to add friends on the platform. Need to also create a way to see friend's activity. You also need to launch soon.
 
 ## Infrastructure:
 1. You can add tests for routing of the main.py file. You should add these just after launching.
-2. Protect against Request Forgery. Every POST request needs to check that there is a valid user token in the header.
-3. Add an invite token to the signup page.
-4. The current photo process function doesn't do any user authentication. You need to perform security on this.
+2. Add an invite token to the signup page.
 
 ## Profile Section:
 1. Split profile page into three sections: profile photo and about, posts, and projects.
 2. Add edit profile button.
-3. Update the display of posts to have the Project Title and link if applicable.
-4. Also, the Activity should be labelled as activity.
 
 ## Friends Section:
 1. Let artists add each other to a project.
