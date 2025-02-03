@@ -90,7 +90,7 @@ def addFriend(first_user: str, second_user: str):
     # Check that user and new_friend exist.
     first_user_doc = USERS.find_one({"username": first_user})
     second_user_doc = USERS.find_one({"username": second_user})
-    if not (first_user_doc and second_user_doc):
+    if not (first_user_doc and second_user_doc) or first_user == second_user:
         return False
 
     # Add friends to docs.
@@ -116,3 +116,11 @@ def checkUserAccess(first_user: str, second_user: str):
     if first_user not in second_friends:
         return False
     return True
+
+
+def userExists(username: str):
+    """Returns True if the user exists."""
+    user = USERS.find_one({"username": username})
+    if user:
+        return True
+    return False

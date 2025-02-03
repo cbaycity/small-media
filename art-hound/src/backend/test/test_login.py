@@ -5,8 +5,15 @@ from typing import List, NamedTuple, Tuple
 
 import pytest
 
-from login import (addFriend, checkUserAccess, getUser, login, newUser,
-                   validLogin)
+from login import (
+    addFriend,
+    checkUserAccess,
+    getUser,
+    login,
+    newUser,
+    validLogin,
+    userExists,
+)
 
 
 class TestUser(NamedTuple):
@@ -234,3 +241,25 @@ def test_checkUserAccess(user_one, user_two):
     # Assert that checkUserAccess passes when they are friends.
     addFriend(user_one.username, user_two.username)
     assert checkUserAccess(user_one.username, user_two.username)
+
+
+@pytest.mark.parametrize(
+    "users,search_user,expectation",
+    [
+        (
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            TestUser("test1", "test@gmail.com", "Password1"),
+            True,
+        ),
+        (
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            TestUser("test2", "test2@gmail.com", "Password2"),
+            False,
+        ),
+    ],
+)
+def test_userExists(users: List[TestUser], search_user: TestUser, expectation: bool):
+    """Tests that the user exists or doesn't correctly."""
+    for user in users:
+        newUser(user.username, user.email, user.password)
+    assert userExists(search_user.username) == expectation

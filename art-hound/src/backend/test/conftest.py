@@ -37,3 +37,13 @@ def set_test_db(monkeypatch):
     yield test_db, test_fs
     for collection in test_db.list_collection_names():
         test_db[collection].delete_many({})  # Remove all records from the database.
+
+
+@pytest.fixture
+def website():
+    """Sets up a client for testing the main application."""
+    from main import app
+
+    app.config.update({"TESTING": True})
+    with app.test_client() as app:
+        yield app

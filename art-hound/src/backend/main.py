@@ -4,10 +4,15 @@ from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
 from backend_db import getPhotoUser, photoProcess
-from login import checkUserAccess, getUser, login, newUser, validLogin
+from login import checkUserAccess, getUser, login, newUser, validLogin, userExists
 from posts import createPost, singleUserFeed
-from projects import (createProject, getProject, getProjectPosts,
-                      getUserProjects, projectAccessCheck)
+from projects import (
+    createProject,
+    getProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+)
 
 # Load env keys
 load_dotenv()
@@ -181,6 +186,22 @@ def projectPage(username: str, project_id: str):
 
     project["posts"] = getProjectPosts(username, project_title)
     return jsonify(project)
+
+
+@app.route("/find_user/<username>", methods=["GET", "POST"])
+def searchFriends(username: str):
+    data = request.get_json()
+    token = data.get("token")
+    if not validLogin(token):
+        return "Invalid login token.", 401
+
+    loggedInUser = getUser(token)
+    if loggedInUser == username:
+        return jsonify({"UserExists": True, "SameUser": True})
+
+    if userExists(username):
+        return jsonify({"UserExists": True})
+    return jsonify({"UserExists": False})
 
 
 if __name__ == "__main__":
