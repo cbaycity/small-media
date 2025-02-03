@@ -21,6 +21,7 @@ poetry export --without-hashes --format=requirements.txt > requirements.txt
 Top priority, create a way to add friends on the platform. Need to also create a way to see friend's activity. You also need to launch soon.
 
 ## Infrastructure:
+0. Add hot reloading to the docker files.
 1. You can add tests for routing of the main.py file. You should add these just after launching.
 2. Add an invite token to the signup page.
 

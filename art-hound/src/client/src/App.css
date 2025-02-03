@@ -245,3 +245,7 @@ form h3 {
 .space-between {
     justify-content: space-between;
 }
+
+h2 {
+    margin-left: 20px;
+}

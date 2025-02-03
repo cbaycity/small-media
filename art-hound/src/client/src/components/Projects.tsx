@@ -213,11 +213,19 @@ function Projects() {
             <div className="center-body general-body-background feed-body">
                 <LeftBar />
                 <div className="container center-body general-body-background space-between">
-                    <div className="UserProjects">
-                        {DisplayListProjects(userProjects, token)}
+                    <div>
+                        <h2>Your Projects:</h2>
+                        <div className="UserProjects">
+                            {DisplayListProjects(userProjects, token)}
+                        </div>
                     </div>
-                    <div className="OtherProjects">
-                        <p>Other users projects feed is under development.</p>
+                    <div>
+                        <h2>Friend's Projects:</h2>
+                        <div className="OtherProjects">
+                            <p>
+                                Other users projects feed is under development.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <RightBar />
