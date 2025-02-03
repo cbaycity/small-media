@@ -62,7 +62,6 @@ python -m black <target>
 prettier <target: ex. ./*> --write
 ```
 
-
 ### Sample Users:
 username: test
 password: Password1
