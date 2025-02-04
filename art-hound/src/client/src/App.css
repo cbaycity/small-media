@@ -180,6 +180,15 @@ link {
     margin: auto;
 }
 
+.general-center-body {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+}
+
 .general-body-background {
     background-color: #f4f4f9;
 }
