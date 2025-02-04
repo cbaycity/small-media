@@ -190,8 +190,7 @@ def projectPage(username: str, project_id: str):
 
 @app.route("/find_user/<username>", methods=["GET", "POST"])
 def searchFriends(username: str):
-    data = request.get_json()
-    token = data.get("token")
+    token = request.cookies.get("auth_token")
     if not validLogin(token):
         return "Invalid login token.", 401
 
@@ -200,7 +199,10 @@ def searchFriends(username: str):
         return jsonify({"UserExists": True, "SameUser": True})
 
     if userExists(username):
-        return jsonify({"UserExists": True})
+        # Logic to check if friends and add friend or return other stuff.
+        return jsonify(
+            {"UserExists": True, "AlreadyFriend": False, "AddedFriend": True}
+        )
     return jsonify({"UserExists": False})
 
 

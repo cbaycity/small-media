@@ -183,7 +183,7 @@ link {
 .general-center-body {
     display: flex;
     flex-grow: 1;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
     align-self: center;
