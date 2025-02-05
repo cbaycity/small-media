@@ -212,7 +212,7 @@ function Projects() {
             />
             <div className="center-body general-body-background feed-body">
                 <LeftBar />
-                <div className="container center-body general-body-background space-between">
+                <div className="container center-body general-body-background space-between basic-padding">
                     <div>
                         <h2>Your Projects:</h2>
                         <div className="UserProjects">

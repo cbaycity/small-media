@@ -46,7 +46,7 @@ function Search() {
     return (
         <div className="container center-body general-center-body general-body-background">
             <LeftBar />
-            <div className="general-center-body">
+            <div className="general-center-body basic-padding column-flex">
                 {(() => {
                     if (!submitSuccess && madeSubmission) {
                         return <p>Invalid username, exact spelling required.</p>

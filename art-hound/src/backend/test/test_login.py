@@ -13,6 +13,9 @@ from login import (
     newUser,
     validLogin,
     userExists,
+    areFriends,
+    sendFriendRequest,
+    getFriendRequests,
 )
 
 
@@ -262,4 +265,54 @@ def test_userExists(users: List[TestUser], search_user: TestUser, expectation: b
     """Tests that the user exists or doesn't correctly."""
     for user in users:
         newUser(user.username, user.email, user.password)
-    assert userExists(search_user.username) == expectation
+    if expectation:
+        assert userExists(search_user.username) is not False
+    else:
+        assert userExists(search_user.username) is False
+
+
+def test_areFriends():
+    """Tests that the are friends returns correct values."""
+    user_one = TestUser("test1", "test@gmail.com", "Password1")
+    user_two = TestUser("test2", "test2@gmail.com", "Password2")
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    assert areFriends(user_one.username, user_two.username) == False
+
+    addFriend(user_one.username, user_two.username)
+
+    assert areFriends(user_one.username, user_two.username)
+
+
+def test_sendFriendRequest():
+    """Tests that the friend request is sent correctly."""
+    user_one = TestUser("test1", "test@gmail.com", "Password1")
+    user_two = TestUser("test2", "test2@gmail.com", "Password2")
+
+    newUser(user_one.username, user_one.email, user_one.password)
+
+    # Checks that sendFriendRequest fails when the second user doesn't exist.
+    assert sendFriendRequest(user_one.username, user_two.username) == False
+
+    newUser(user_two.username, user_two.email, user_two.password)
+
+    # Checks that sendFriendRequest succeeds.
+    assert sendFriendRequest(user_one.username, user_two.username)
+    from login import USERS
+
+    user_two_doc = USERS.find_one({"username": user_two.username})
+    assert user_one.username in user_two_doc["friend_requests"]
+
+
+def test_getFriendRequests():
+    """Tests that get friend requests works well."""
+    user_one = TestUser("test1", "test@gmail.com", "Password1")
+    user_two = TestUser("test2", "test2@gmail.com", "Password2")
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    # Assert that user_one doesn't have any requests yet.
+    assert getFriendRequests(user_one.username) == []
+    assert sendFriendRequest(user_two.username, user_one.username)
+    assert [user_two.username] == getFriendRequests(user_one.username)

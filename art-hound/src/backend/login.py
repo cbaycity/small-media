@@ -105,6 +105,40 @@ def addFriend(first_user: str, second_user: str):
     return True
 
 
+def areFriends(first_user: str, second_user: str):
+    """Checks if two users are friends."""
+    first_user_doc = USERS.find_one({"username": first_user})
+    if second_user in first_user_doc["friends"]:
+        return True
+    return False
+
+
+def sendFriendRequest(first_user: str, second_user: str) -> bool:
+    """Sends a friend request from the first user to the second user.
+
+    Returns True if successfully sent a request and false otherwise.
+    """
+    # Check that the second user exists.
+    second_user_doc = USERS.find_one({"username": second_user})
+
+    if not second_user_doc:
+        return False
+
+    USERS.update_one(
+        {"_id": second_user_doc["_id"]}, {"$addToSet": {"friend_requests": first_user}}
+    )
+    return True
+
+
+def getFriendRequests(username: str):
+    """Returns the usernames of people that have sent friend requests."""
+    user_doc = USERS.find_one({"username": username})
+    if not user_doc or "friend_requests" not in user_doc:
+        return []
+    else:
+        return user_doc["friend_requests"]
+
+
 def checkUserAccess(first_user: str, second_user: str):
     """Returns True if two users are friends and false otherwise."""
     if first_user == second_user:
@@ -122,5 +156,5 @@ def userExists(username: str):
     """Returns True if the user exists."""
     user = USERS.find_one({"username": username})
     if user:
-        return True
+        return user
     return False

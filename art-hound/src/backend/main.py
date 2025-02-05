@@ -196,10 +196,10 @@ def searchFriends(username: str):
 
     loggedInUser = getUser(token)
     if loggedInUser == username:
-        return jsonify({"UserExists": True, "SameUser": True})
+        return jsonify({"UserExists": True, "AddedFriend": False, "SameUser": True})
 
     if userExists(username):
-        # Logic to check if friends and add friend or return other stuff.
+
         return jsonify(
             {"UserExists": True, "AlreadyFriend": False, "AddedFriend": True}
         )

@@ -16,7 +16,7 @@ import {
     EditProfile,
 } from './components/PostsAndProjects'
 
-import Search from './components/Search'
+import Search from './components/Friends'
 
 function App() {
     return (

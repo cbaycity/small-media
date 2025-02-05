@@ -258,3 +258,11 @@ form h3 {
 h2 {
     margin-left: 20px;
 }
+
+.basic-padding{
+    padding: 20px;
+}
+
+.column-flex {
+    flex-flow: column;
+}

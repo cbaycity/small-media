@@ -53,11 +53,12 @@ def test_friendSearch(
 ):
     """Ensures that friendSearch functionality works as expected."""
     newUser(user.username, user.email, user.password)
-    _, token = login(user.username, user.password)
+    valid_user, token = login(user.username, user.password)
+    assert valid_user
+    website.set_cookie("auth_token", token)
     response = website.get(
         f"/find_user/{search_user.username}",
         content_type="application/json",
-        data=json.dumps({"token": token}),
     )
     data = json.loads(response.data.decode("utf-8"))
     data["UserExists"] == expectation
