@@ -4,23 +4,11 @@ from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
 from backend_db import getPhotoUser, photoProcess
-from login import (
-    checkUserAccess,
-    getUser,
-    login,
-    newUser,
-    validLogin,
-    userExists,
-    sendFriendRequest,
-)
+from login import (checkUserAccess, getUser, login, newUser, sendFriendRequest,
+                   userExists, validLogin)
 from posts import createPost, singleUserFeed
-from projects import (
-    createProject,
-    getProject,
-    getProjectPosts,
-    getUserProjects,
-    projectAccessCheck,
-)
+from projects import (createProject, getProject, getProjectPosts,
+                      getUserProjects, projectAccessCheck)
 
 # Load env keys
 load_dotenv()
@@ -235,6 +223,18 @@ def returnFriendRequests():
     if not user_doc:
         return "Invalid login", 401
     requests = user_doc["friend_requests"] if "friend_requests" in user_doc else []
+    return jsonify(requests)
+
+
+@app.route("/friendlist", methods=["GET", "POST"])
+def friendList():
+    token = request.cookies.get("auth_token")
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+    if not user_doc:
+        return "Invalid login", 401
+    requests = user_doc["friends"] if "friends" in user_doc else []
     return jsonify(requests)
 
 

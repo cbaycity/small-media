@@ -5,18 +5,9 @@ from typing import List, NamedTuple, Tuple
 
 import pytest
 
-from login import (
-    addFriend,
-    checkUserAccess,
-    getUser,
-    login,
-    newUser,
-    validLogin,
-    userExists,
-    areFriends,
-    sendFriendRequest,
-    getFriendRequests,
-)
+from login import (addFriend, areFriends, checkUserAccess, getFriendRequests,
+                   getUser, login, newUser, sendFriendRequest, userExists,
+                   validLogin)
 
 
 class TestUser(NamedTuple):

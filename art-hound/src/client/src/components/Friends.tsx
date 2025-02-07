@@ -16,7 +16,10 @@ function Search() {
         const username = htmlUsername.value.trim()
 
         try {
-            const response = await fetch(`/find_user/${username}`, {method: "GET", credentials:"include"})
+            const response = await fetch(`/find_user/${username}`, {
+                method: 'GET',
+                credentials: 'include',
+            })
             if (response.ok) {
                 const data = await response.json()
                 if (data['AddedFriend']) {

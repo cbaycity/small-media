@@ -1,9 +1,11 @@
 """This file contains all of the tests for each route in main.py."""
 
+import json
+
 import pytest
 from test_login import TestUser
-from login import newUser, login, addFriend, sendFriendRequest, userExists
-import json
+
+from login import addFriend, login, newUser, sendFriendRequest, userExists
 
 
 def test_public(website):
@@ -82,6 +84,32 @@ def test_returnFriendRequests(website):
     assert sendFriendRequest(friend.username, user.username)
     next_response = website.get(
         f"/friend_requests",
+        content_type="application/json",
+    )
+    assert (
+        next_response.data.decode("utf-8")
+        == str([f"{friend.username}"]).replace("'", '"') + "\n"
+    )
+
+
+def test_returnFriendList(website):
+    """Tests that returnFriendRequests returns a list of friends."""
+    user = TestUser("test1", "test@gmail.com", "Password1")
+    friend = TestUser("test2", "test2@gmail.com", "Password2")
+
+    newUser(user.username, user.email, user.password)
+    newUser(friend.username, friend.email, friend.password)
+    valid_user, token = login(user.username, user.password)
+    assert valid_user
+    website.set_cookie("auth_token", token)
+    response = website.get(
+        f"/friendlist",
+        content_type="application/json",
+    )
+    assert response.data.decode("utf-8") == str([]) + "\n"
+    assert addFriend(friend.username, user.username)
+    next_response = website.get(
+        f"/friendlist",
         content_type="application/json",
     )
     assert (

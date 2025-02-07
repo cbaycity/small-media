@@ -2,7 +2,7 @@
 
 import datetime
 import secrets
-from typing import Tuple, Dict, Union, Any
+from typing import Any, Dict, Tuple, Union
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
