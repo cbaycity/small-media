@@ -1,7 +1,89 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { LeftBar, RightBar } from './Sidebars'
+import { Link } from 'react-router-dom'
 
-function Search() {
+function FriendsSection() {
+    const [friends, setFriends] = useState([])
+    useEffect(() => {
+        const query_friends = async () => {
+            try {
+                const response = await fetch('/friendlist', {
+                    method: 'GET',
+                    credentials: 'include',
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    setFriends(data)
+                } else {
+                    setFriends([])
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error(
+                        'Failed to fetch Friend List. ',
+                        error.message
+                    )
+                } else {
+                    console.error('Failed to get Friend List.', error)
+                }
+            }
+        }
+        query_friends()
+    }, [])
+
+    return (
+        <div>
+            {friends.map((friend) => (
+                <Link to={`/Profile/${friend}`} className="project-link">
+                    <p>{friend}</p>
+                </Link>
+            ))}
+        </div>
+    )
+}
+
+function GetRequests() {
+    const [requests, setRequests] = useState([])
+    useEffect(() => {
+        const getFriendRequests = async () => {
+            try {
+                const response = await fetch('/friend_requests', {
+                    method: 'GET',
+                    credentials: 'include',
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    setRequests(data)
+                } else {
+                    setRequests([])
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error(
+                        'Failed to fetch Friend Requests. ',
+                        error.message
+                    )
+                } else {
+                    console.error('Failed to fetch friend requests.', error)
+                }
+            }
+        }
+        getFriendRequests()
+    }, [])
+
+    // return friend requests and a button to click add friend.
+    return (
+        <div>
+            {requests.map((request) => (
+                <div className="friend-request">
+                    <p>{request}</p> <button>Add Friend</button>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+function Friends() {
     const [submitSuccess, setSubmitSuccess] = useState(false)
     const [madeSubmission, setMadeSubmission] = useState(false)
     const [alreadyFriends, setAlreadyFriends] = useState(false)
@@ -79,10 +161,18 @@ function Search() {
                         />
                     </label>
                 </form>
+                <div>
+                    <h2>Friend Requests:</h2>
+                    <GetRequests />
+                </div>
+                <div>
+                    <h2>Current Friends:</h2>
+                    {<FriendsSection />}
+                </div>
             </div>
             <RightBar />
         </div>
     )
 }
 
-export default Search
+export default Friends
