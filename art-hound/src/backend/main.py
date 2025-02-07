@@ -4,7 +4,15 @@ from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
 from backend_db import getPhotoUser, photoProcess
-from login import checkUserAccess, getUser, login, newUser, validLogin, userExists
+from login import (
+    checkUserAccess,
+    getUser,
+    login,
+    newUser,
+    validLogin,
+    userExists,
+    sendFriendRequest,
+)
 from posts import createPost, singleUserFeed
 from projects import (
     createProject,
@@ -206,11 +214,28 @@ def searchFriends(username: str):
         return jsonify({"UserExists": True, "AddedFriend": False, "SameUser": True})
 
     if userExists(username):
-        # Need to send the friend request and check if it has already been sent.
-        return jsonify(
-            {"UserExists": True, "AlreadyFriend": False, "AddedFriend": True}
-        )
+        if username in user_doc["friends"]:
+            return jsonify(
+                {"UserExists": True, "AlreadyFriend": True, "AddedFriend": False}
+            )
+        request_sent = sendFriendRequest(loggedInUser, username)
+        if request_sent:
+            return jsonify(
+                {"UserExists": True, "AlreadyFriend": False, "AddedFriend": True}
+            )
     return jsonify({"UserExists": False})
+
+
+@app.route("/friend_requests", methods=["GET", "POST"])
+def returnFriendRequests():
+    token = request.cookies.get("auth_token")
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+    if not user_doc:
+        return "Invalid login", 401
+    requests = user_doc["friend_requests"] if "friend_requests" in user_doc else []
+    return jsonify(requests)
 
 
 if __name__ == "__main__":

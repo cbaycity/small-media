@@ -2,7 +2,7 @@
 
 import pytest
 from test_login import TestUser
-from login import newUser, login
+from login import newUser, login, addFriend, sendFriendRequest, userExists
 import json
 
 
@@ -48,7 +48,7 @@ def test_public(website):
         ),
     ],
 )
-def test_friendSearch(
+def test_searchFriends(
     website, user: TestUser, search_user: TestUser, expectation: bool
 ):
     """Ensures that friendSearch functionality works as expected."""
@@ -62,3 +62,29 @@ def test_friendSearch(
     )
     data = json.loads(response.data.decode("utf-8"))
     data["UserExists"] == expectation
+
+
+def test_returnFriendRequests(website):
+    """Tests that returnFriendRequests returns a list of friends."""
+    user = TestUser("test1", "test@gmail.com", "Password1")
+    friend = TestUser("test2", "test2@gmail.com", "Password2")
+
+    newUser(user.username, user.email, user.password)
+    newUser(friend.username, friend.email, friend.password)
+    valid_user, token = login(user.username, user.password)
+    assert valid_user
+    website.set_cookie("auth_token", token)
+    response = website.get(
+        f"/friend_requests",
+        content_type="application/json",
+    )
+    assert response.data.decode("utf-8") == str([]) + "\n"
+    assert sendFriendRequest(friend.username, user.username)
+    next_response = website.get(
+        f"/friend_requests",
+        content_type="application/json",
+    )
+    assert (
+        next_response.data.decode("utf-8")
+        == str([f"{friend.username}"]).replace("'", '"') + "\n"
+    )

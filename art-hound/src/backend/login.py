@@ -2,7 +2,6 @@
 
 import datetime
 import secrets
-from functools import lru_cache
 from typing import Tuple, Dict, Union, Any
 
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -74,14 +73,14 @@ def validLogin(token: str):
     return False
 
 
-@lru_cache(maxsize=16384)
 def getUser(token: str) -> Union[bool, Dict[Any, Any]]:
     """Returns the token's related user record as a dict unless the token is invalid."""
     db_entry = DB["tokens"].find_one({"token": token})
     if db_entry and db_entry[
         "init-time"
     ] > datetime.datetime.now() + datetime.timedelta(days=-1):
-        return dict(db_entry)
+        user_doc = USERS.find_one({"username": db_entry["username"]})
+        return dict(user_doc) if user_doc else False
     return False
 
 
@@ -124,10 +123,10 @@ def sendFriendRequest(first_user: str, second_user: str) -> bool:
     if not second_user_doc:
         return False
 
-    USERS.update_one(
+    update = USERS.update_one(
         {"_id": second_user_doc["_id"]}, {"$addToSet": {"friend_requests": first_user}}
     )
-    return True
+    return True if update.modified_count == 1 else False
 
 
 def getFriendRequests(username: str):
@@ -156,5 +155,5 @@ def userExists(username: str):
     """Returns True if the user exists."""
     user = USERS.find_one({"username": username})
     if user:
-        return user
+        return dict(user)
     return False
