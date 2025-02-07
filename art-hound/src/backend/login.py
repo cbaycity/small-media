@@ -3,7 +3,7 @@
 import datetime
 import secrets
 from functools import lru_cache
-from typing import Tuple
+from typing import Tuple, Dict, Union, Any
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -75,13 +75,13 @@ def validLogin(token: str):
 
 
 @lru_cache(maxsize=16384)
-def getUser(token: str):
-    """Returns the username related to a token unless the token is invalid."""
+def getUser(token: str) -> Union[bool, Dict[Any, Any]]:
+    """Returns the token's related user record as a dict unless the token is invalid."""
     db_entry = DB["tokens"].find_one({"token": token})
     if db_entry and db_entry[
         "init-time"
     ] > datetime.datetime.now() + datetime.timedelta(days=-1):
-        return db_entry["username"]
+        return dict(db_entry)
     return False
 
 

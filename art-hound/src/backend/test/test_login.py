@@ -167,7 +167,7 @@ def test_validLogin(users):
         _, token = login(user.username, user.password)
         tokens.append(token)
     for user, token in zip(users, tokens):
-        assert getUser(token) == user.username
+        assert getUser(token)["username"] == user.username
 
 
 @pytest.mark.parametrize(

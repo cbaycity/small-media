@@ -37,7 +37,8 @@ def photophotos(photofile: str):
     """Collects photos from the backend for users."""
     user_cookie = request.cookies.get("auth_token")
     if validLogin(user_cookie):
-        user = getUser(user_cookie)
+        user_doc = getUser(user_cookie)
+        user = user_doc["username"] if user_doc else False
     else:
         return "Invalid Login Token", 401
 
@@ -65,7 +66,8 @@ def getUserPosts(username: str):
     data = request.get_json()
     token = data.get("token")
     if validLogin(token):
-        user = getUser(token)
+        user_doc = getUser(token)
+        user = user_doc["username"] if user_doc else False
         if not user:
             return "Please relogin."
         return singleUserFeed(user, username)
@@ -130,7 +132,8 @@ def processPost():
     image = request.files["post-image"]
     startDate = request.form.get("start-date")
     endDate = request.form.get("end-date")
-    user = getUser(token)
+    user_doc = getUser(token)
+    user = user_doc["username"] if user_doc else False
     if user:
         createPost(user, title, description, startDate, endDate, image, project)
     return redirect("/Profile")
@@ -146,7 +149,8 @@ def processProject():
     title = request.form.get("project_title")
     description = request.form.get("description")
     image = request.files["project-image"]
-    user = getUser(token)
+    user_doc = getUser(token)
+    user = user_doc["username"] if user_doc else False
     startDate = request.form.get("start-date")
     endDate = request.form.get("end-date")
     if user:
@@ -162,7 +166,8 @@ def userProjects():
     # Check valid token.
     if not validLogin(token):
         return "Invalid login token.", 401
-    user = getUser(token)
+    user_doc = getUser(token)
+    user = user_doc["username"] if user_doc else False
     return getUserProjects(user)
 
 
@@ -174,7 +179,8 @@ def projectPage(username: str, project_id: str):
     # Check valid token.
     if not validLogin(token):
         return "Invalid login token.", 401
-    search_user = getUser(token)
+    user_doc = getUser(token)
+    search_user = user_doc["username"] if user_doc else False
     project = getProject(username, project_id)
     project_title = project["project_title"] if project else None
     if not projectAccessCheck(
@@ -194,12 +200,13 @@ def searchFriends(username: str):
     if not validLogin(token):
         return "Invalid login token.", 401
 
-    loggedInUser = getUser(token)
+    user_doc = getUser(token)
+    loggedInUser = user_doc["username"] if user_doc else False
     if loggedInUser == username:
         return jsonify({"UserExists": True, "AddedFriend": False, "SameUser": True})
 
     if userExists(username):
-
+        # Need to send the friend request and check if it has already been sent.
         return jsonify(
             {"UserExists": True, "AlreadyFriend": False, "AddedFriend": True}
         )
