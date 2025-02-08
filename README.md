@@ -5,6 +5,10 @@
 
 The react front end was built with `npx create-react-app client --template typescript`. By adding a `proxy` to `package.json`, the front end is connected to the backend. By connect, I mean that when react requests a file using a relative path, it will prepend the proxy to get the end path.
 
+
+## RENAME:
+Rename to badmedia?
+
 ## Useful commands:
 
 1. The command `flask --app main run` can be from from the backend directory to start up a development server. You need the poetry environment to be runnning and setup correctly.

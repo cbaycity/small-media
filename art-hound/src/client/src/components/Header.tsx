@@ -71,7 +71,7 @@ function ArtHoundHeader() {
                                 to="/Search"
                                 className="navigation-link px-2 link-two"
                             >
-                                Search
+                                Friends
                             </Link>
                         </li>
                     </ul>

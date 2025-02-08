@@ -266,3 +266,24 @@ h2 {
 .column-flex {
     flex-flow: column;
 }
+
+.friend-block {
+    overflow: clip;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    unicode-bidi: isolate;
+    height: auto;
+    width: 80%;
+    background-color: rgb(60, 60, 60);
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    margin: 15px;
+    padding: 10px;
+    text-align: left;
+}
+
+.friend-button {
+    height: 50%;
+}

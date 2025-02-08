@@ -33,10 +33,12 @@ function FriendsSection() {
 
     return (
         <div>
-            {friends.map((friend) => (
-                <Link to={`/Profile/${friend}`} className="project-link">
-                    <p>{friend}</p>
-                </Link>
+            {friends.map((friend, i) => (
+                <div className="friend-block" key={i}>
+                    <Link to={`/Profile/${friend}`} className="project-link">
+                        <p>{friend}</p>
+                    </Link>
+                </div>
             ))}
         </div>
     )
@@ -74,9 +76,9 @@ function GetRequests() {
     // return friend requests and a button to click add friend.
     return (
         <div>
-            {requests.map((request) => (
-                <div className="friend-request">
-                    <p>{request}</p> <button>Add Friend</button>
+            {requests.map((request, i) => (
+                <div className="friend-block" key={i}>
+                    <p>{request}</p> <button className="login-button friend-button">Add Friend</button>
                 </div>
             ))}
         </div>
