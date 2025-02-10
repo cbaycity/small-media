@@ -5,9 +5,18 @@ from typing import List, NamedTuple, Tuple
 
 import pytest
 
-from login import (addFriend, areFriends, checkUserAccess, getFriendRequests,
-                   getUser, login, newUser, sendFriendRequest, userExists,
-                   validLogin)
+from login import (
+    addFriend,
+    areFriends,
+    checkUserAccess,
+    getFriendRequests,
+    getUser,
+    login,
+    newUser,
+    sendFriendRequest,
+    userExists,
+    validLogin,
+)
 
 
 class TestUser(NamedTuple):
@@ -138,24 +147,36 @@ def test_validLogin(user, result, new_time):
 
 
 @pytest.mark.parametrize(
-    "users",
+    "users,use_email",
     [
         (
             [
                 TestUser("test1", "test@gmail.com", "Password1"),
                 TestUser("test2", "test2@gmail.com", "Password2"),
                 TestUser("test3", "test3@gmail.com", "Password3"),
-            ]
+            ],
+            False,
+        ),
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+                TestUser("test3", "test3@gmail.com", "Password3"),
+            ],
+            True,
         ),
     ],
 )
-def test_validLogin(users):
+def test_validLogin(users: List[TestUser], use_email: bool):
     """Tests that valid login works as expected."""
     # Create and Login user
     tokens = []
     for user in users:
         newUser(user.username, user.email, user.password)
-        _, token = login(user.username, user.password)
+        if not use_email:
+            _, token = login(user.username, user.password)
+        else:
+            _, token = login(user.email, user.password)
         tokens.append(token)
     for user, token in zip(users, tokens):
         assert getUser(token)["username"] == user.username

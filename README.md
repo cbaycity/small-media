@@ -7,7 +7,7 @@ The react front end was built with `npx create-react-app client --template types
 
 
 ## RENAME:
-Rename to badmedia?
+New Name: Ghost Hound Haven
 
 ## Useful commands:
 

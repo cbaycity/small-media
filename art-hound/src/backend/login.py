@@ -22,6 +22,8 @@ def login(username: str, password: str) -> bool:
         password: The user's unhashed password.
     """
     user = USERS.find_one({"username": username})
+    if not user:
+        user = USERS.find_one({"email": username})
     if user and check_password_hash(user["password"], password):
         userToken = secrets.token_urlsafe(TOKEN_LENGTH)
         DB["tokens"].insert_one(
