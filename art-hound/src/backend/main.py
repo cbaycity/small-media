@@ -100,9 +100,9 @@ def userLogin():
     data = request.get_json()
     username_or_email = data["username"]
     pwd = data["password"]
-    status, token = login(username_or_email, pwd)
-    if status:
-        response = make_response(jsonify({"token": token}), 200)
+    username, token = login(username_or_email, pwd)
+    if username != False:
+        response = make_response(jsonify({"username": username, "token": token}), 200)
         response.set_cookie(
             "auth_token",
             value=token,
@@ -111,7 +111,7 @@ def userLogin():
             samesite="Strict",
         )
         return response
-    return jsonify({"token": ""}), 401
+    return jsonify({"username": "", "token": ""}), 401
 
 
 @app.route("/validLogin", methods=["GET", "POST"])

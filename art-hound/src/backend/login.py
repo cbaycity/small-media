@@ -33,7 +33,7 @@ def login(username: str, password: str) -> bool:
                 "init-time": datetime.datetime.now(),
             }
         )
-        return True, userToken
+        return user["username"], userToken
     return False, ""
 
 

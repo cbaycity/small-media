@@ -117,7 +117,7 @@ const FormSubmit = async (
         if (response.ok) {
             const data = await response.json()
             if (data.token) {
-                storeUser(formData.username)
+                storeUser(data.username)
                 storeToken(data.token)
             } else {
                 console.error('Failed login. Status: ', response.status)
