@@ -4,23 +4,12 @@ from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
 from backend_db import getPhotoUser, photoProcess
-from login import (
-    checkUserAccess,
-    getUser,
-    login,
-    newUser,
-    sendFriendRequest,
-    userExists,
-    validLogin,
-)
+from login import (addFriend, checkUserAccess, getUser, login, newUser,
+                   removeFriend, removeFriendRequest, sendFriendRequest,
+                   userExists, validLogin)
 from posts import createPost, singleUserFeed
-from projects import (
-    createProject,
-    getProject,
-    getProjectPosts,
-    getUserProjects,
-    projectAccessCheck,
-)
+from projects import (createProject, getProject, getProjectPosts,
+                      getUserProjects, projectAccessCheck)
 
 # Load env keys
 load_dotenv()
@@ -204,6 +193,7 @@ def projectPage(username: str, project_id: str):
 
 @app.route("/find_user/<username>", methods=["GET", "POST"])
 def searchFriends(username: str):
+    # NOTE: Need to switch to getting the token from the data not the cookies to avoid CORS.
     token = request.cookies.get("auth_token")
     if not validLogin(token):
         return "Invalid login token.", 401
@@ -248,6 +238,34 @@ def friendList():
         return "Invalid login", 401
     requests = user_doc["friends"] if "friends" in user_doc else []
     return jsonify(requests)
+
+
+@app.route("/process_friend_request", methods=["GET", "POST"])
+def processFriendRequest():
+    """This helps users add friends."""
+    data = request.get_json()
+    token = data.get("token")
+
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+
+    target_user = data.get("target_user")
+    add_or_remove = data.get("add_or_remove")
+
+    app.logger.info(
+        f"Info: User: {user_doc['username']}, add_or_remove: {add_or_remove}, target_user: {target_user}"
+    )
+
+    if add_or_remove == "add" and target_user in user_doc["friend_requests"]:
+        addFriend(user_doc["username"], target_user)
+        removeFriendRequest(user_doc["username"], target_user)
+        return "success", 200
+    elif add_or_remove == "remove" and target_user in user_doc["friends"]:
+        removeFriend(user_doc["username"], target_user)
+        return "success", 200
+
+    return "Doesn't make sense", 400
 
 
 if __name__ == "__main__":

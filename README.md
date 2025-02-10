@@ -41,9 +41,6 @@ Top priority, create a way to add friends on the platform. Need to also create a
 1. Update the about section to include a link to my profile.
 2. Update the About to discuss a little bit about using the website focusing on projects.
 
-## Bugs:
-1. Cannot login with email, just username. 
-
 # Mac Environment Setup:
 
 1. Use brew to install Python

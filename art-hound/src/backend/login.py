@@ -106,6 +106,26 @@ def addFriend(first_user: str, second_user: str):
     return True
 
 
+def removeFriend(first_user: str, second_user: str):
+    """Removes a friend between the two users."""
+    # Check that user and new_friend exist.
+    first_user_doc = USERS.find_one({"username": first_user})
+    second_user_doc = USERS.find_one({"username": second_user})
+    if not (first_user_doc and second_user_doc) or first_user == second_user:
+        return False
+
+    # Add friends to docs.
+    USERS.update_one(
+        {"username": first_user},
+        {"$pullAll": {"friends": [second_user]}},
+    )
+    USERS.update_one(
+        {"username": second_user},
+        {"$pullAll": {"friends": [first_user]}},
+    )
+    return True
+
+
 def areFriends(first_user: str, second_user: str):
     """Checks if two users are friends."""
     first_user_doc = USERS.find_one({"username": first_user})
@@ -138,6 +158,13 @@ def getFriendRequests(username: str):
         return []
     else:
         return user_doc["friend_requests"]
+
+
+def removeFriendRequest(username: str, target_user: str):
+    """Removes a user's request to friend another."""
+    USERS.update_one(
+        {"username": target_user}, {"$pullAll": {"friend_requests": [username]}}
+    )
 
 
 def checkUserAccess(first_user: str, second_user: str):

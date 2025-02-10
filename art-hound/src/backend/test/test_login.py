@@ -5,18 +5,9 @@ from typing import List, NamedTuple, Tuple
 
 import pytest
 
-from login import (
-    addFriend,
-    areFriends,
-    checkUserAccess,
-    getFriendRequests,
-    getUser,
-    login,
-    newUser,
-    sendFriendRequest,
-    userExists,
-    validLogin,
-)
+from login import (addFriend, areFriends, checkUserAccess, getFriendRequests,
+                   getUser, login, newUser, removeFriend, removeFriendRequest,
+                   sendFriendRequest, userExists, validLogin)
 
 
 class TestUser(NamedTuple):
@@ -202,14 +193,63 @@ def test_addFriend(user_one: TestUser, user_two: TestUser):
     # Assert that they're friends.
     from backend_db import DB
 
-    for user in DB["users"].find({}):
-        print(f"All users: {user}")
-
     first_user = DB["users"].find_one({"username": user_one.username})
     assert user_two.username in first_user["friends"]
 
     second_user = DB["users"].find_one({"username": user_two.username})
     assert user_one.username in second_user["friends"]
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_removeFriend(user_one: TestUser, user_two: TestUser):
+    """Tests that remove friend works as expected."""
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    # Add the friends.
+    assert addFriend(user_one.username, user_two.username)
+    assert removeFriend(user_one.username, user_two.username)
+
+    # Assert that they're friends.
+    from backend_db import DB
+
+    first_user = DB["users"].find_one({"username": user_one.username})
+    assert user_two.username not in first_user["friends"]
+
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username not in second_user["friends"]
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_removeFriendRequest(user_one: TestUser, user_two: TestUser):
+    """Tests that remove friend request processes correctly."""
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+    sendFriendRequest(user_one.username, user_two.username)
+    from backend_db import DB
+
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username in second_user["friend_requests"]
+
+    removeFriendRequest(user_one.username, user_two.username)
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username not in second_user["friend_requests"]
 
 
 @pytest.mark.parametrize(

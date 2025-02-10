@@ -44,6 +44,21 @@ function FriendsSection() {
     )
 }
 
+function _FriendButton(curr_status: boolean){
+    const [ friendBool, setFriendBool ] = useState(curr_status)
+
+    const click = (status) => {
+        if (status == true){
+            // If friends, call the backend to not be friends.
+
+        }
+        else {
+            // They're not friends, so add friend.
+        }
+    }
+
+}
+
 function GetRequests() {
     const [requests, setRequests] = useState([])
     useEffect(() => {

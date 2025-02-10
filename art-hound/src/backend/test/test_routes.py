@@ -116,3 +116,50 @@ def test_returnFriendList(website):
         next_response.data.decode("utf-8")
         == str([f"{friend.username}"]).replace("'", '"') + "\n"
     )
+
+
+def test_processFriendRequest(website):
+    """Tests that the processFriendRequest can add and remove friends."""
+    user = TestUser("test1", "test@gmail.com", "Password1")
+    friend = TestUser("test2", "test2@gmail.com", "Password2")
+
+    newUser(user.username, user.email, user.password)
+    newUser(friend.username, friend.email, friend.password)
+    valid_user, token = login(user.username, user.password)
+    assert valid_user
+
+    assert sendFriendRequest(friend.username, user.username)
+
+    # Ensures that the friends are added.
+    response = website.get(
+        f"/process_friend_request",
+        content_type="application/json",
+        data=json.dumps(
+            {
+                "token": token,
+                "target_user": friend.username,
+                "add_or_remove": "add",
+            }
+        ),
+    )
+    assert response.status_code == 200
+    from backend_db import DB
+
+    user_doc = DB["users"].find_one({"username": user.username})
+    assert friend.username in user_doc["friends"]
+
+    # Tests removing a friend.
+    response = website.get(
+        f"/process_friend_request",
+        content_type="application/json",
+        data=json.dumps(
+            {
+                "token": token,
+                "target_user": friend.username,
+                "add_or_remove": "remove",
+            }
+        ),
+    )
+    assert response.status_code == 200
+    user_doc = DB["users"].find_one({"username": user.username})
+    assert friend.username not in user_doc["friends"]
