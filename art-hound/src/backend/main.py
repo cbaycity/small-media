@@ -4,12 +4,26 @@ from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
 from backend_db import getPhotoUser, photoProcess
-from login import (addFriend, checkUserAccess, getUser, login, newUser,
-                   removeFriend, removeFriendRequest, sendFriendRequest,
-                   userExists, validLogin)
+from login import (
+    addFriend,
+    checkUserAccess,
+    getUser,
+    login,
+    newUser,
+    removeFriend,
+    removeFriendRequest,
+    sendFriendRequest,
+    userExists,
+    validLogin,
+)
 from posts import createPost, singleUserFeed
-from projects import (createProject, getProject, getProjectPosts,
-                      getUserProjects, projectAccessCheck)
+from projects import (
+    createProject,
+    getProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+)
 
 # Load env keys
 load_dotenv()
@@ -255,6 +269,10 @@ def processFriendRequest():
 
     app.logger.info(
         f"Info: User: {user_doc['username']}, add_or_remove: {add_or_remove}, target_user: {target_user}"
+    )
+
+    app.logger.info(
+        f"user_doc friends: {user_doc["friends"]}, target_user in test: {target_user in user_doc["friends"]}"
     )
 
     if add_or_remove == "add" and target_user in user_doc["friend_requests"]:

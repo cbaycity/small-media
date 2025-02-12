@@ -1,6 +1,56 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { LoginContext } from './LoginForm'
 import { LeftBar, RightBar } from './Sidebars'
 import { Link } from 'react-router-dom'
+
+function FriendButton({curr_status, target_user}: {curr_status: boolean, target_user: string}) {
+    const [friendBool, setFriendBool] = useState(curr_status)
+    const [addOrRemove, setAddOrRemove] = useState('')
+    const { token } = useContext(LoginContext)
+
+    useEffect(() => {
+        if (friendBool == true) {
+            setAddOrRemove('remove')
+        } else {
+            setAddOrRemove('add')
+        }
+    }, [])
+
+    const click = () => {
+        const update_friend = async () => {
+            // If friends, call the backend to not be friends.
+            try {
+                const response = await fetch(`process_friend_request`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: token,
+                        target_user: target_user,
+                        add_or_remove: addOrRemove,
+                    }),
+                })
+                if (response.ok) {
+                    setFriendBool(!friendBool)
+                }
+            } catch (err: any) {
+                console.error(err.message || 'Backend Call Issue.')
+            }
+        }
+        update_friend()
+    }
+    return (
+        <button
+            className="login-button friend-button"
+            style={friendBool ? { backgroundColor: '#B22222' } : {}}
+            onClick={click}
+        >
+            {friendBool ? 'Remove Friend' : 'Add Friend'}
+        </button>
+    )
+}
+
 
 function FriendsSection() {
     const [friends, setFriends] = useState([])
@@ -38,25 +88,11 @@ function FriendsSection() {
                     <Link to={`/Profile/${friend}`} className="project-link">
                         <p>{friend}</p>
                     </Link>
+                    <FriendButton curr_status = {true} target_user = {friend}/>
                 </div>
             ))}
         </div>
     )
-}
-
-function _FriendButton(curr_status: boolean){
-    const [ friendBool, setFriendBool ] = useState(curr_status)
-
-    const click = (status) => {
-        if (status == true){
-            // If friends, call the backend to not be friends.
-
-        }
-        else {
-            // They're not friends, so add friend.
-        }
-    }
-
 }
 
 function GetRequests() {
@@ -91,9 +127,10 @@ function GetRequests() {
     // return friend requests and a button to click add friend.
     return (
         <div>
-            {requests.map((request, i) => (
+            {requests.map((requester_name, i) => (
                 <div className="friend-block" key={i}>
-                    <p>{request}</p> <button className="login-button friend-button">Add Friend</button>
+                    <p>{requester_name}</p>{' '}
+                    <FriendButton curr_status = {false} target_user = {requester_name}/>
                 </div>
             ))}
         </div>
