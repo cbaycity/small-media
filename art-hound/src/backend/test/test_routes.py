@@ -3,9 +3,8 @@
 import json
 
 import pytest
-from test_login import TestUser
-
 from login import addFriend, login, newUser, sendFriendRequest, userExists
+from test_login import TestUser
 
 
 def test_public(website):
@@ -14,25 +13,6 @@ def test_public(website):
     assert response.status_code == 200
     assert "text/css" in response.headers["Content-Type"]
     assert ".feed-body" in response.text
-
-
-# Add Tests for PhotoFiles
-
-# Add tests for getUserPosts
-
-# Add tests for AccountCreation
-
-# Add tests for userLogin
-
-# Add tests for ValidLogin
-
-# Add tests for ProcessPost
-
-# Add tests for ProcessProject
-
-# Add tests for UserProjects
-
-# Add tests for ProjectPage
 
 
 @pytest.mark.parametrize(
@@ -147,6 +127,10 @@ def test_processFriendRequest(website):
 
     user_doc = DB["users"].find_one({"username": user.username})
     assert friend.username in user_doc["friends"]
+    # Tests that the friend was added.
+
+    assert friend.username not in user_doc["friend_requests"]
+    # Tests that the friend request was removed.
 
     # Tests removing a friend.
     response = website.get(
@@ -163,3 +147,22 @@ def test_processFriendRequest(website):
     assert response.status_code == 200
     user_doc = DB["users"].find_one({"username": user.username})
     assert friend.username not in user_doc["friends"]
+
+
+# Add Tests for PhotoFiles
+
+# Add tests for getUserPosts
+
+# Add tests for AccountCreation
+
+# Add tests for userLogin
+
+# Add tests for ValidLogin
+
+# Add tests for ProcessPost
+
+# Add tests for ProcessProject
+
+# Add tests for UserProjects
+
+# Add tests for ProjectPage

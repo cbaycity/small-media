@@ -4,15 +4,14 @@ from io import BytesIO
 from typing import List, Tuple
 
 import pytest
-from test_login import TestUser
-from test_posts import ExamplePost
-from test_projects import ExampleProject
-from werkzeug.datastructures import FileStorage
-
 from image_query import process_image
 from login import addFriend, newUser
 from posts import createPost
 from projects import createProject
+from test_login import TestUser
+from test_posts import ExamplePost
+from test_projects import ExampleProject
+from werkzeug.datastructures import FileStorage
 
 
 @pytest.mark.parametrize(

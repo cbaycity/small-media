@@ -5,15 +5,14 @@ from io import BytesIO
 from typing import List
 
 import pytest
-from test_login import TestUser
-from test_posts import ExamplePost
-from test_projects import ExampleProject
-from werkzeug.datastructures import FileStorage
-
 from backend_db import getPhotoUser
 from login import newUser
 from posts import createPost
 from projects import createProject
+from test_login import TestUser
+from test_posts import ExamplePost
+from test_projects import ExampleProject
+from werkzeug.datastructures import FileStorage
 
 
 @pytest.mark.parametrize(

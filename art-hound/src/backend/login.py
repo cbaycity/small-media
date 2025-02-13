@@ -4,9 +4,8 @@ import datetime
 import secrets
 from typing import Any, Dict, Tuple, Union
 
-from werkzeug.security import check_password_hash, generate_password_hash
-
 from backend_db import DB
+from werkzeug.security import check_password_hash, generate_password_hash
 
 # Get or create a collection of usernames and passwords.
 USERS = DB["users"]
@@ -160,10 +159,10 @@ def getFriendRequests(username: str):
         return user_doc["friend_requests"]
 
 
-def removeFriendRequest(username: str, target_user: str):
+def removeFriendRequest(username: str, target_request: str):
     """Removes a user's request to friend another."""
     USERS.update_one(
-        {"username": target_user}, {"$pullAll": {"friend_requests": [username]}}
+        {"username": username}, {"$pullAll": {"friend_requests": [target_request]}}
     )
 
 

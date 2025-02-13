@@ -4,7 +4,6 @@ import datetime as dt
 from typing import List, NamedTuple, Tuple
 
 import pytest
-
 from login import (addFriend, areFriends, checkUserAccess, getFriendRequests,
                    getUser, login, newUser, removeFriend, removeFriendRequest,
                    sendFriendRequest, userExists, validLogin)
@@ -247,7 +246,7 @@ def test_removeFriendRequest(user_one: TestUser, user_two: TestUser):
     second_user = DB["users"].find_one({"username": user_two.username})
     assert user_one.username in second_user["friend_requests"]
 
-    removeFriendRequest(user_one.username, user_two.username)
+    removeFriendRequest(user_two.username, user_one.username)
     second_user = DB["users"].find_one({"username": user_two.username})
     assert user_one.username not in second_user["friend_requests"]
 

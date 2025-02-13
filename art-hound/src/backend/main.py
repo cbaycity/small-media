@@ -1,29 +1,14 @@
 import os
 
+from backend_db import getPhotoUser, photoProcess
 from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
-
-from backend_db import getPhotoUser, photoProcess
-from login import (
-    addFriend,
-    checkUserAccess,
-    getUser,
-    login,
-    newUser,
-    removeFriend,
-    removeFriendRequest,
-    sendFriendRequest,
-    userExists,
-    validLogin,
-)
+from login import (addFriend, checkUserAccess, getUser, login, newUser,
+                   removeFriend, removeFriendRequest, sendFriendRequest,
+                   userExists, validLogin)
 from posts import createPost, singleUserFeed
-from projects import (
-    createProject,
-    getProject,
-    getProjectPosts,
-    getUserProjects,
-    projectAccessCheck,
-)
+from projects import (createProject, getProject, getProjectPosts,
+                      getUserProjects, projectAccessCheck)
 
 # Load env keys
 load_dotenv()

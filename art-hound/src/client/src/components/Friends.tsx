@@ -3,7 +3,13 @@ import { LoginContext } from './LoginForm'
 import { LeftBar, RightBar } from './Sidebars'
 import { Link } from 'react-router-dom'
 
-function FriendButton({curr_status, target_user}: {curr_status: boolean, target_user: string}) {
+function FriendButton({
+    curr_status,
+    target_user,
+}: {
+    curr_status: boolean
+    target_user: string
+}) {
     const [friendBool, setFriendBool] = useState(curr_status)
     const [addOrRemove, setAddOrRemove] = useState('')
     const { token } = useContext(LoginContext)
@@ -51,7 +57,6 @@ function FriendButton({curr_status, target_user}: {curr_status: boolean, target_
     )
 }
 
-
 function FriendsSection() {
     const [friends, setFriends] = useState([])
     useEffect(() => {
@@ -88,7 +93,7 @@ function FriendsSection() {
                     <Link to={`/Profile/${friend}`} className="project-link">
                         <p>{friend}</p>
                     </Link>
-                    <FriendButton curr_status = {true} target_user = {friend}/>
+                    <FriendButton curr_status={true} target_user={friend} />
                 </div>
             ))}
         </div>
@@ -130,7 +135,10 @@ function GetRequests() {
             {requests.map((requester_name, i) => (
                 <div className="friend-block" key={i}>
                     <p>{requester_name}</p>{' '}
-                    <FriendButton curr_status = {false} target_user = {requester_name}/>
+                    <FriendButton
+                        curr_status={false}
+                        target_user={requester_name}
+                    />
                 </div>
             ))}
         </div>
