@@ -16,7 +16,7 @@ import {
     EditProfile,
 } from './components/PostsAndProjects'
 
-import Search from './components/Search'
+import Friends from './components/Friends'
 
 function App() {
     return (
@@ -35,7 +35,7 @@ function App() {
                     <Route path="/editProfile" element={<EditProfile />} />
                     <Route path="/createPost" element={<CreatePost />} />
                     <Route path="/createProject" element={<CreateProject />} />
-                    <Route path="/Search" element={<Search />} />
+                    <Route path="/Search" element={<Friends />} />
                     <Route
                         path="/projects/:username/:project_id/"
                         element={<SingleProject />}

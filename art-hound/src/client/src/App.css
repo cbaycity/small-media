@@ -180,6 +180,15 @@ link {
     margin: auto;
 }
 
+.general-center-body {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+}
+
 .general-body-background {
     background-color: #f4f4f9;
 }
@@ -244,4 +253,50 @@ form h3 {
 
 .space-between {
     justify-content: space-between;
+}
+
+h2 {
+    margin-left: 20px;
+}
+
+.basic-padding {
+    padding: 20px;
+}
+
+.column-flex {
+    flex-flow: column;
+}
+
+.friend-block {
+    overflow: clip;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    unicode-bidi: isolate;
+    height: auto;
+    width: 80%;
+    background-color: rgb(60, 60, 60);
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    margin: 15px;
+    padding: 10px;
+    text-align: left;
+}
+
+.friend-button {
+    height: 50%;
+}
+
+.userProjects{
+    flex: 1;
+}
+.userProjects img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.max-width {
+    width: 100% !important;
 }

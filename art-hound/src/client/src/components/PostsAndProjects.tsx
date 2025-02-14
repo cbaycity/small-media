@@ -51,7 +51,7 @@ function CreatePost() {
         }
         const fetchData = async () => {
             try {
-                const response = await fetch('/UserProjects', {
+                const response = await fetch('/api/UserProjects', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -87,13 +87,13 @@ function CreatePost() {
 
     return (
         <>
-            <link rel="stylesheet" href="public/basic-form.css" />
+            <link rel="stylesheet" href="/api/public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
                         <form
                             className="signup-form"
-                            action="/createPost"
+                            action="/api/createPost"
                             method="post"
                             encType="multipart/form-data"
                         >
@@ -174,13 +174,13 @@ function CreateProject() {
     const { token } = useContext(LoginContext)
     return (
         <>
-            <link rel="stylesheet" href="public/basic-form.css" />
+            <link rel="stylesheet" href="/api/public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
                         <form
                             className="signup-form"
-                            action="/createProject"
+                            action="/api/createProject"
                             method="post"
                             encType="multipart/form-data"
                         >
@@ -238,13 +238,13 @@ function EditProfile() {
     const { token } = useContext(LoginContext)
     return (
         <>
-            <link rel="stylesheet" href="public/basic-form.css" />
+            <link rel="stylesheet" href="/api/public/basic-form.css" />
             <div className="container full-height general-body-background">
                 <div className="form-container full-height">
                     <div id="form-one-block">
                         <form
                             className="signup-form"
-                            action="/editUser"
+                            action="/api/editUser"
                             method="post"
                             encType="multipart/form-data"
                         >

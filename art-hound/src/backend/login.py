@@ -2,8 +2,7 @@
 
 import datetime
 import secrets
-from functools import lru_cache
-from typing import Tuple
+from typing import Any, Dict, Tuple, Union
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -23,6 +22,8 @@ def login(username: str, password: str) -> bool:
         password: The user's unhashed password.
     """
     user = USERS.find_one({"username": username})
+    if not user:
+        user = USERS.find_one({"email": username})
     if user and check_password_hash(user["password"], password):
         userToken = secrets.token_urlsafe(TOKEN_LENGTH)
         DB["tokens"].insert_one(
@@ -32,7 +33,7 @@ def login(username: str, password: str) -> bool:
                 "init-time": datetime.datetime.now(),
             }
         )
-        return True, userToken
+        return user["username"], userToken
     return False, ""
 
 
@@ -74,14 +75,14 @@ def validLogin(token: str):
     return False
 
 
-@lru_cache(maxsize=16384)
-def getUser(token: str):
-    """Returns the username related to a token unless the token is invalid."""
+def getUser(token: str) -> Union[bool, Dict[Any, Any]]:
+    """Returns the token's related user record as a dict unless the token is invalid."""
     db_entry = DB["tokens"].find_one({"token": token})
     if db_entry and db_entry[
         "init-time"
     ] > datetime.datetime.now() + datetime.timedelta(days=-1):
-        return db_entry["username"]
+        user_doc = USERS.find_one({"username": db_entry["username"]})
+        return dict(user_doc) if user_doc else False
     return False
 
 
@@ -90,7 +91,7 @@ def addFriend(first_user: str, second_user: str):
     # Check that user and new_friend exist.
     first_user_doc = USERS.find_one({"username": first_user})
     second_user_doc = USERS.find_one({"username": second_user})
-    if not (first_user_doc and second_user_doc):
+    if not (first_user_doc and second_user_doc) or first_user == second_user:
         return False
 
     # Add friends to docs.
@@ -105,6 +106,67 @@ def addFriend(first_user: str, second_user: str):
     return True
 
 
+def removeFriend(first_user: str, second_user: str):
+    """Removes a friend between the two users."""
+    # Check that user and new_friend exist.
+    first_user_doc = USERS.find_one({"username": first_user})
+    second_user_doc = USERS.find_one({"username": second_user})
+    if not (first_user_doc and second_user_doc) or first_user == second_user:
+        return False
+
+    # Add friends to docs.
+    USERS.update_one(
+        {"username": first_user},
+        {"$pullAll": {"friends": [second_user]}},
+    )
+    USERS.update_one(
+        {"username": second_user},
+        {"$pullAll": {"friends": [first_user]}},
+    )
+    return True
+
+
+def areFriends(first_user: str, second_user: str):
+    """Checks if two users are friends."""
+    first_user_doc = USERS.find_one({"username": first_user})
+    if second_user in first_user_doc["friends"]:
+        return True
+    return False
+
+
+def sendFriendRequest(first_user: str, second_user: str) -> bool:
+    """Sends a friend request from the first user to the second user.
+
+    Returns True if successfully sent a request and false otherwise.
+    """
+    # Check that the second user exists.
+    second_user_doc = USERS.find_one({"username": second_user})
+
+    if not second_user_doc:
+        return False
+
+    update = USERS.update_one(
+        {"_id": second_user_doc["_id"]}, {"$addToSet": {"friend_requests": first_user}}
+    )
+    return True if update.modified_count == 1 else False
+
+
+def getFriendRequests(username: str):
+    """Returns the usernames of people that have sent friend requests."""
+    user_doc = USERS.find_one({"username": username})
+    if not user_doc or "friend_requests" not in user_doc:
+        return []
+    else:
+        return user_doc["friend_requests"]
+
+
+def removeFriendRequest(username: str, target_request: str):
+    """Removes a user's request to friend another."""
+    USERS.update_one(
+        {"username": username}, {"$pullAll": {"friend_requests": [target_request]}}
+    )
+
+
 def checkUserAccess(first_user: str, second_user: str):
     """Returns True if two users are friends and false otherwise."""
     if first_user == second_user:
@@ -116,3 +178,11 @@ def checkUserAccess(first_user: str, second_user: str):
     if first_user not in second_friends:
         return False
     return True
+
+
+def userExists(username: str):
+    """Returns True if the user exists."""
+    user = USERS.find_one({"username": username})
+    if user:
+        return dict(user)
+    return False

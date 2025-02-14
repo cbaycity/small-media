@@ -3,6 +3,9 @@
 The main resource needed is a mongodb client.
 """
 
+import logging
+import tempfile
+
 import gridfs
 import pytest
 from pymongo import MongoClient
@@ -37,3 +40,23 @@ def set_test_db(monkeypatch):
     yield test_db, test_fs
     for collection in test_db.list_collection_names():
         test_db[collection].delete_many({})  # Remove all records from the database.
+
+
+@pytest.fixture
+def website():
+    """Sets up a client for testing the main application."""
+    from main import app
+
+    log_file = tempfile.TemporaryFile()
+    logging.basicConfig(
+        filename=log_file.name,
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+    )
+
+    with app.test_client() as app:
+        yield app
+
+    # print the log.
+    with open(log_file.name, "r") as file:
+        print(file.read())

@@ -99,7 +99,7 @@ function AccountCreation() {
                     {/*The below p object displays error messages*/}
                     <form
                         className="signup-form"
-                        action="/createAccount"
+                        action="/api/createAccount"
                         method="post"
                     >
                         {email_taken && (
@@ -245,7 +245,7 @@ function AccountCreation() {
                     </form>
                 </div>
                 {/* Add the stylesheet to the CSS.*/}
-                <link rel="stylesheet" href="public/basic-form.css" />
+                <link rel="stylesheet" href="/api/public/basic-form.css" />
             </div>
         </div>
     )

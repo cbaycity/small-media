@@ -4,10 +4,27 @@ from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
 
 from backend_db import getPhotoUser, photoProcess
-from login import checkUserAccess, getUser, login, newUser, validLogin
+from login import (
+    addFriend,
+    checkUserAccess,
+    getUser,
+    login,
+    newUser,
+    removeFriend,
+    removeFriendRequest,
+    sendFriendRequest,
+    userExists,
+    validLogin,
+)
 from posts import createPost, singleUserFeed
-from projects import (createProject, getProject, getProjectPosts,
-                      getUserProjects, projectAccessCheck)
+from projects import (
+    createProject,
+    getFriendProjects,
+    getProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+)
 
 # Load env keys
 load_dotenv()
@@ -32,7 +49,8 @@ def photophotos(photofile: str):
     """Collects photos from the backend for users."""
     user_cookie = request.cookies.get("auth_token")
     if validLogin(user_cookie):
-        user = getUser(user_cookie)
+        user_doc = getUser(user_cookie)
+        user = user_doc["username"] if user_doc else False
     else:
         return "Invalid Login Token", 401
 
@@ -60,7 +78,8 @@ def getUserPosts(username: str):
     data = request.get_json()
     token = data.get("token")
     if validLogin(token):
-        user = getUser(token)
+        user_doc = getUser(token)
+        user = user_doc["username"] if user_doc else False
         if not user:
             return "Please relogin."
         return singleUserFeed(user, username)
@@ -85,9 +104,9 @@ def userLogin():
     data = request.get_json()
     username_or_email = data["username"]
     pwd = data["password"]
-    status, token = login(username_or_email, pwd)
-    if status:
-        response = make_response(jsonify({"token": token}), 200)
+    username, token = login(username_or_email, pwd)
+    if username != False:
+        response = make_response(jsonify({"username": username, "token": token}), 200)
         response.set_cookie(
             "auth_token",
             value=token,
@@ -96,7 +115,7 @@ def userLogin():
             samesite="Strict",
         )
         return response
-    return jsonify({"token": ""}), 401
+    return jsonify({"username": "", "token": ""}), 401
 
 
 @app.route("/validLogin", methods=["GET", "POST"])
@@ -125,7 +144,8 @@ def processPost():
     image = request.files["post-image"]
     startDate = request.form.get("start-date")
     endDate = request.form.get("end-date")
-    user = getUser(token)
+    user_doc = getUser(token)
+    user = user_doc["username"] if user_doc else False
     if user:
         createPost(user, title, description, startDate, endDate, image, project)
     return redirect("/Profile")
@@ -141,7 +161,8 @@ def processProject():
     title = request.form.get("project_title")
     description = request.form.get("description")
     image = request.files["project-image"]
-    user = getUser(token)
+    user_doc = getUser(token)
+    user = user_doc["username"] if user_doc else False
     startDate = request.form.get("start-date")
     endDate = request.form.get("end-date")
     if user:
@@ -157,8 +178,23 @@ def userProjects():
     # Check valid token.
     if not validLogin(token):
         return "Invalid login token.", 401
-    user = getUser(token)
+    user_doc = getUser(token)
+    user = user_doc["username"] if user_doc else False
     return getUserProjects(user)
+
+
+@app.route("/FriendProjects", methods=["GET", "POST"])
+def friendsProjects():
+    """Returns a list of mappings with the project information from friends."""
+    data = request.get_json()
+    token = data.get("token")
+
+    # Check if valid login
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+    friends = user_doc["friends"] if "friends" in user_doc else []
+    return getFriendProjects(friends)
 
 
 @app.route("/project/<username>/<project_id>", methods=["POST"])
@@ -169,7 +205,8 @@ def projectPage(username: str, project_id: str):
     # Check valid token.
     if not validLogin(token):
         return "Invalid login token.", 401
-    search_user = getUser(token)
+    user_doc = getUser(token)
+    search_user = user_doc["username"] if user_doc else False
     project = getProject(username, project_id)
     project_title = project["project_title"] if project else None
     if not projectAccessCheck(
@@ -181,6 +218,87 @@ def projectPage(username: str, project_id: str):
 
     project["posts"] = getProjectPosts(username, project_title)
     return jsonify(project)
+
+
+@app.route("/find_user/<username>", methods=["GET", "POST"])
+def searchFriends(username: str):
+    data = request.get_json()
+    token = data.get("token")
+    if not validLogin(token):
+        return "Invalid login token.", 401
+
+    user_doc = getUser(token)
+    loggedInUser = user_doc["username"] if user_doc else False
+    if loggedInUser == username:
+        return jsonify({"UserExists": True, "AddedFriend": False, "SameUser": True})
+
+    if userExists(username):
+        if username in user_doc["friends"]:
+            return jsonify(
+                {"UserExists": True, "AlreadyFriend": True, "AddedFriend": False}
+            )
+        request_sent = sendFriendRequest(loggedInUser, username)
+        if request_sent:
+            return jsonify(
+                {"UserExists": True, "AlreadyFriend": False, "AddedFriend": True}
+            )
+    return jsonify({"UserExists": False})
+
+
+@app.route("/friend_requests", methods=["GET", "POST"])
+def returnFriendRequests():
+    token = request.cookies.get("auth_token")
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+    if not user_doc:
+        return "Invalid login", 401
+    requests = user_doc["friend_requests"] if "friend_requests" in user_doc else []
+    return jsonify(requests)
+
+
+@app.route("/friendlist", methods=["GET", "POST"])
+def friendList():
+    token = request.cookies.get("auth_token")
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+    if not user_doc:
+        return "Invalid login", 401
+    requests = user_doc["friends"] if "friends" in user_doc else []
+    return jsonify(requests)
+
+
+@app.route("/process_friend_request", methods=["GET", "POST"])
+def processFriendRequest():
+    """This helps users add friends."""
+    data = request.get_json()
+    token = data.get("token")
+
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+
+    target_user = data.get("target_user")
+    add_or_remove = data.get("add_or_remove")
+
+    app.logger.info(
+        f"Info: User: {user_doc['username']}, add_or_remove: {add_or_remove}, target_user: {target_user}"
+    )
+
+    app.logger.info(
+        f"user_doc friends: {user_doc["friends"]}, target_user in test: {target_user in user_doc["friends"]}"
+    )
+
+    if add_or_remove == "add" and target_user in user_doc["friend_requests"]:
+        addFriend(user_doc["username"], target_user)
+        removeFriendRequest(user_doc["username"], target_user)
+        return "success", 200
+    elif add_or_remove == "remove" and target_user in user_doc["friends"]:
+        removeFriend(user_doc["username"], target_user)
+        return "success", 200
+
+    return "Doesn't make sense", 400
 
 
 if __name__ == "__main__":

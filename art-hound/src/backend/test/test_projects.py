@@ -11,8 +11,13 @@ from werkzeug.datastructures import FileStorage
 
 from login import addFriend, newUser
 from posts import createPost
-from projects import (createProject, getProject, getProjectPosts,
-                      getUserProjects, projectAccessCheck)
+from projects import (
+    createProject,
+    getProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+)
 
 
 class ExampleProject(NamedTuple):

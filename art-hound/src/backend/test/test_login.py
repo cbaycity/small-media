@@ -5,8 +5,9 @@ from typing import List, NamedTuple, Tuple
 
 import pytest
 
-from login import (addFriend, checkUserAccess, getUser, login, newUser,
-                   validLogin)
+from login import (addFriend, areFriends, checkUserAccess, getFriendRequests,
+                   getUser, login, newUser, removeFriend, removeFriendRequest,
+                   sendFriendRequest, userExists, validLogin)
 
 
 class TestUser(NamedTuple):
@@ -137,27 +138,39 @@ def test_validLogin(user, result, new_time):
 
 
 @pytest.mark.parametrize(
-    "users",
+    "users,use_email",
     [
         (
             [
                 TestUser("test1", "test@gmail.com", "Password1"),
                 TestUser("test2", "test2@gmail.com", "Password2"),
                 TestUser("test3", "test3@gmail.com", "Password3"),
-            ]
+            ],
+            False,
+        ),
+        (
+            [
+                TestUser("test1", "test@gmail.com", "Password1"),
+                TestUser("test2", "test2@gmail.com", "Password2"),
+                TestUser("test3", "test3@gmail.com", "Password3"),
+            ],
+            True,
         ),
     ],
 )
-def test_validLogin(users):
+def test_validLogin(users: List[TestUser], use_email: bool):
     """Tests that valid login works as expected."""
     # Create and Login user
     tokens = []
     for user in users:
         newUser(user.username, user.email, user.password)
-        _, token = login(user.username, user.password)
+        if not use_email:
+            _, token = login(user.username, user.password)
+        else:
+            _, token = login(user.email, user.password)
         tokens.append(token)
     for user, token in zip(users, tokens):
-        assert getUser(token) == user.username
+        assert getUser(token)["username"] == user.username
 
 
 @pytest.mark.parametrize(
@@ -180,14 +193,63 @@ def test_addFriend(user_one: TestUser, user_two: TestUser):
     # Assert that they're friends.
     from backend_db import DB
 
-    for user in DB["users"].find({}):
-        print(f"All users: {user}")
-
     first_user = DB["users"].find_one({"username": user_one.username})
     assert user_two.username in first_user["friends"]
 
     second_user = DB["users"].find_one({"username": user_two.username})
     assert user_one.username in second_user["friends"]
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_removeFriend(user_one: TestUser, user_two: TestUser):
+    """Tests that remove friend works as expected."""
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    # Add the friends.
+    assert addFriend(user_one.username, user_two.username)
+    assert removeFriend(user_one.username, user_two.username)
+
+    # Assert that they're friends.
+    from backend_db import DB
+
+    first_user = DB["users"].find_one({"username": user_one.username})
+    assert user_two.username not in first_user["friends"]
+
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username not in second_user["friends"]
+
+
+@pytest.mark.parametrize(
+    "user_one, user_two",
+    [
+        (
+            TestUser("test1", "test@gmail.com", "Password1"),
+            TestUser("test2", "test2@gmail.com", "Password2"),
+        )
+    ],
+)
+def test_removeFriendRequest(user_one: TestUser, user_two: TestUser):
+    """Tests that remove friend request processes correctly."""
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+    sendFriendRequest(user_one.username, user_two.username)
+    from backend_db import DB
+
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username in second_user["friend_requests"]
+
+    removeFriendRequest(user_two.username, user_one.username)
+    second_user = DB["users"].find_one({"username": user_two.username})
+    assert user_one.username not in second_user["friend_requests"]
 
 
 @pytest.mark.parametrize(
@@ -234,3 +296,75 @@ def test_checkUserAccess(user_one, user_two):
     # Assert that checkUserAccess passes when they are friends.
     addFriend(user_one.username, user_two.username)
     assert checkUserAccess(user_one.username, user_two.username)
+
+
+@pytest.mark.parametrize(
+    "users,search_user,expectation",
+    [
+        (
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            TestUser("test1", "test@gmail.com", "Password1"),
+            True,
+        ),
+        (
+            [TestUser("test1", "test@gmail.com", "Password1")],
+            TestUser("test2", "test2@gmail.com", "Password2"),
+            False,
+        ),
+    ],
+)
+def test_userExists(users: List[TestUser], search_user: TestUser, expectation: bool):
+    """Tests that the user exists or doesn't correctly."""
+    for user in users:
+        newUser(user.username, user.email, user.password)
+    if expectation:
+        assert userExists(search_user.username) is not False
+    else:
+        assert userExists(search_user.username) is False
+
+
+def test_areFriends():
+    """Tests that the are friends returns correct values."""
+    user_one = TestUser("test1", "test@gmail.com", "Password1")
+    user_two = TestUser("test2", "test2@gmail.com", "Password2")
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    assert areFriends(user_one.username, user_two.username) == False
+
+    addFriend(user_one.username, user_two.username)
+
+    assert areFriends(user_one.username, user_two.username)
+
+
+def test_sendFriendRequest():
+    """Tests that the friend request is sent correctly."""
+    user_one = TestUser("test1", "test@gmail.com", "Password1")
+    user_two = TestUser("test2", "test2@gmail.com", "Password2")
+
+    newUser(user_one.username, user_one.email, user_one.password)
+
+    # Checks that sendFriendRequest fails when the second user doesn't exist.
+    assert sendFriendRequest(user_one.username, user_two.username) == False
+
+    newUser(user_two.username, user_two.email, user_two.password)
+
+    # Checks that sendFriendRequest succeeds.
+    assert sendFriendRequest(user_one.username, user_two.username)
+    from login import USERS
+
+    user_two_doc = USERS.find_one({"username": user_two.username})
+    assert user_one.username in user_two_doc["friend_requests"]
+
+
+def test_getFriendRequests():
+    """Tests that get friend requests works well."""
+    user_one = TestUser("test1", "test@gmail.com", "Password1")
+    user_two = TestUser("test2", "test2@gmail.com", "Password2")
+    for user in [user_one, user_two]:
+        newUser(user.username, user.email, user.password)
+
+    # Assert that user_one doesn't have any requests yet.
+    assert getFriendRequests(user_one.username) == []
+    assert sendFriendRequest(user_two.username, user_one.username)
+    assert [user_two.username] == getFriendRequests(user_one.username)
