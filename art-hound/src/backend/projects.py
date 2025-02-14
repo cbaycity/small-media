@@ -2,15 +2,31 @@
 
 import datetime
 import uuid
+from typing import List
+
+from werkzeug.datastructures import FileStorage
 
 from backend_db import DB, FS
-from werkzeug.datastructures import FileStorage
 
 PROJECTS = DB["projects"]
 """Gets or creates a collection for projects."""
 
 POSTS = DB["posts"]
 USERS = DB["users"]
+
+
+def _map_projects(project):
+    """Maps a mongo db project doc to a dictionary."""
+    result = {
+        "title": (project["project_title"] if "project_title" in project else None),
+        "username": project["username"] if "username" in project else None,
+        "startDate": (project["startDate"] if "startDate" in project else None),
+        "endDate": project["endDate"] if "endDate" in project else None,
+        "description": (project["description"] if "description" in project else None),
+        "image_id": (str(project["image_id"]) if "image_id" in project else None),
+        "project_id": str(project["project_id"]),
+    }
+    return result
 
 
 def createProject(
@@ -59,18 +75,7 @@ def createProject(
 def getUserProjects(username: str):
     """Returns a list of all of the project titles associated with a user."""
     projects = PROJECTS.find({"username": username}).to_list()
-    return [
-        {
-            "title": project["project_title"] if "project_title" in project else None,
-            "username": project["username"] if "username" in project else None,
-            "startDate": project["startDate"] if "startDate" in project else None,
-            "endDate": project["endDate"] if "endDate" in project else None,
-            "description": project["description"] if "description" in project else None,
-            "image_id": str(project["image_id"]) if "image_id" in project else None,
-            "project_id": str(project["project_id"]),
-        }
-        for project in projects
-    ]
+    return [_map_projects(project) for project in projects]
 
 
 def getProjectPosts(username: str, title: str):
@@ -125,3 +130,13 @@ def getProject(username: str, project_id: str):
         project["project_id"] = str(project["project_id"])
         project["image_id"] = str(project["image_id"])
         return project
+
+
+def getFriendProjects(friends: List[str]):
+    """Returns a list of all of the project titles associated with friends of a user."""
+    result = []
+    for username in friends:
+        projects = PROJECTS.find({"username": username}).to_list()
+        for project in projects:
+            result.append(_map_projects(project))
+    return result

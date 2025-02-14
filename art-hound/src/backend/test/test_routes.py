@@ -3,8 +3,9 @@
 import json
 
 import pytest
-from login import addFriend, login, newUser, sendFriendRequest, userExists
 from test_login import TestUser
+
+from login import addFriend, login, newUser, sendFriendRequest, userExists
 
 
 def test_public(website):
@@ -37,10 +38,14 @@ def test_searchFriends(
     newUser(user.username, user.email, user.password)
     valid_user, token = login(user.username, user.password)
     assert valid_user
-    website.set_cookie("auth_token", token)
     response = website.get(
         f"/find_user/{search_user.username}",
         content_type="application/json",
+        data=json.dumps(
+            {
+                "token": token,
+            }
+        ),
     )
     data = json.loads(response.data.decode("utf-8"))
     data["UserExists"] == expectation

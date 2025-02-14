@@ -113,9 +113,10 @@ function DisplayProject(project: Project, token: string | null, index: number) {
             </h3>
             <p>Owner: {project['username']}</p>
             <p>
-                {project['startDate'] === project['endDate']
-                    ? project['startDate']
-                    : `${project['startDate']} - ${project['endDate']}`}
+                {project['startDate'] === project['endDate'] ||
+                project['endDate'] == null
+                    ? `Started: ${project['startDate']}`
+                    : `Dates: ${project['startDate']} - ${project['endDate']}`}
             </p>
             <p>{project['description']}</p>
             {project['image_id'] && token ? (
@@ -151,6 +152,7 @@ function DisplayListProjects(projects: Project[], token: string | null) {
 
 function Projects() {
     const [userProjects, setUserProjects] = useState<Project[]>([])
+    const [friendsProjects, setFriendsProjects] = useState<Project[]>([])
     const { user, token } = useContext(LoginContext)
     const [error, setError] = useState<string | null>(null)
 
@@ -204,6 +206,34 @@ function Projects() {
         }
     }, [user, token])
 
+    // Gets a User's Friend's projects list.
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch(`/FriendProjects`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: token }),
+                })
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`)
+                }
+
+                const data = await response.json()
+                setFriendsProjects(data)
+            } catch (err: any) {
+                setError(err.message || 'An error occurred.')
+            }
+        }
+
+        if (user) {
+            fetchProjects()
+        }
+    }, [user, token])
+
     return (
         <>
             <link
@@ -213,18 +243,16 @@ function Projects() {
             <div className="center-body general-body-background feed-body">
                 <LeftBar />
                 <div className="container center-body general-body-background space-between basic-padding">
-                    <div>
+                    <div className="userProjects">
                         <h2>Your Projects:</h2>
-                        <div className="UserProjects">
+                        <div>
                             {DisplayListProjects(userProjects, token)}
                         </div>
                     </div>
-                    <div>
+                    <div className="userProjects">
                         <h2>Friend's Projects:</h2>
-                        <div className="OtherProjects">
-                            <p>
-                                Other users projects feed is under development.
-                            </p>
+                        <div>
+                            {DisplayListProjects(friendsProjects, token)}
                         </div>
                     </div>
                 </div>

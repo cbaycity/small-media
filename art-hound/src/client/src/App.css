@@ -287,3 +287,12 @@ h2 {
 .friend-button {
     height: 50%;
 }
+
+.userProjects{
+    flex: 1;
+}
+.userProjects img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

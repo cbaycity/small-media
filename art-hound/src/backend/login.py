@@ -4,8 +4,9 @@ import datetime
 import secrets
 from typing import Any, Dict, Tuple, Union
 
-from backend_db import DB
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from backend_db import DB
 
 # Get or create a collection of usernames and passwords.
 USERS = DB["users"]

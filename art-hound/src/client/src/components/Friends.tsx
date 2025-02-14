@@ -150,6 +150,8 @@ function Friends() {
     const [madeSubmission, setMadeSubmission] = useState(false)
     const [alreadyFriends, setAlreadyFriends] = useState(false)
 
+    const { token } = useContext(LoginContext)
+
     const handleSubmit = async (formEvent: React.FormEvent) => {
         formEvent.preventDefault()
 
@@ -162,7 +164,9 @@ function Friends() {
         try {
             const response = await fetch(`/find_user/${username}`, {
                 method: 'GET',
-                credentials: 'include',
+                body: JSON.stringify({
+                    token: token,
+                }),
             })
             if (response.ok) {
                 const data = await response.json()
@@ -212,7 +216,7 @@ function Friends() {
                     }
                     return null
                 })()}
-                <h2>Friend's Username:</h2>
+                <h2>Add Friend (username):</h2>
                 <form className="signup-form" onSubmit={handleSubmit}>
                     <label htmlFor="username-search">
                         <input

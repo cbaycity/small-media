@@ -1,14 +1,30 @@
 import os
 
-from backend_db import getPhotoUser, photoProcess
 from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, make_response, redirect, request
-from login import (addFriend, checkUserAccess, getUser, login, newUser,
-                   removeFriend, removeFriendRequest, sendFriendRequest,
-                   userExists, validLogin)
+
+from backend_db import getPhotoUser, photoProcess
+from login import (
+    addFriend,
+    checkUserAccess,
+    getUser,
+    login,
+    newUser,
+    removeFriend,
+    removeFriendRequest,
+    sendFriendRequest,
+    userExists,
+    validLogin,
+)
 from posts import createPost, singleUserFeed
-from projects import (createProject, getProject, getProjectPosts,
-                      getUserProjects, projectAccessCheck)
+from projects import (
+    createProject,
+    getFriendProjects,
+    getProject,
+    getProjectPosts,
+    getUserProjects,
+    projectAccessCheck,
+)
 
 # Load env keys
 load_dotenv()
@@ -167,6 +183,20 @@ def userProjects():
     return getUserProjects(user)
 
 
+@app.route("/FriendProjects", methods=["GET", "POST"])
+def friendsProjects():
+    """Returns a list of mappings with the project information from friends."""
+    data = request.get_json()
+    token = data.get("token")
+
+    # Check if valid login
+    if not validLogin(token):
+        return "Invalid login token.", 401
+    user_doc = getUser(token)
+    friends = user_doc["friends"] if "friends" in user_doc else []
+    return getFriendProjects(friends)
+
+
 @app.route("/project/<username>/<project_id>", methods=["POST"])
 def projectPage(username: str, project_id: str):
     """This function returns data related to single projects."""
@@ -192,8 +222,8 @@ def projectPage(username: str, project_id: str):
 
 @app.route("/find_user/<username>", methods=["GET", "POST"])
 def searchFriends(username: str):
-    # NOTE: Need to switch to getting the token from the data not the cookies to avoid CORS.
-    token = request.cookies.get("auth_token")
+    data = request.get_json()
+    token = data.get("token")
     if not validLogin(token):
         return "Invalid login token.", 401
 
