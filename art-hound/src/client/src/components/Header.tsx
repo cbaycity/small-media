@@ -30,7 +30,7 @@ function ArtHoundHeader() {
             <header className="header" id="header">
                 <div className="logo headerSection">
                     <img
-                        src="/public/artHoundLogoColor.svg"
+                        src="/api/public/artHoundLogoColor.svg"
                         alt="Art Hound Logo"
                         width="150px"
                         height="90px"

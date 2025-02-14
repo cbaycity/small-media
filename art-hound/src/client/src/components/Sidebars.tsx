@@ -7,7 +7,7 @@ function LeftBar() {
             <NewProjectButton />
             <br />
             <NewPostButton />
-            <link rel="stylesheet" href="public/feed.css" />
+            <link rel="stylesheet" href="/api/public/feed.css" />
         </div>
     )
 }
@@ -15,7 +15,7 @@ function RightBar() {
     return (
         <div id="right-side-bar" className="side-bar right-justify">
             <p>Potential future ad?</p>
-            <link rel="stylesheet" href="public/feed.css" />
+            <link rel="stylesheet" href="/api/public/feed.css" />
         </div>
     )
 }

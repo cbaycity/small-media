@@ -26,7 +26,7 @@ function FriendButton({
         const update_friend = async () => {
             // If friends, call the backend to not be friends.
             try {
-                const response = await fetch(`process_friend_request`, {
+                const response = await fetch(`/api/process_friend_request`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ function FriendsSection() {
     useEffect(() => {
         const query_friends = async () => {
             try {
-                const response = await fetch('/friendlist', {
+                const response = await fetch('/api/friendlist', {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -105,7 +105,7 @@ function GetRequests() {
     useEffect(() => {
         const getFriendRequests = async () => {
             try {
-                const response = await fetch('/friend_requests', {
+                const response = await fetch('/api/friend_requests', {
                     method: 'GET',
                     credentials: 'include',
                 })
@@ -162,7 +162,7 @@ function Friends() {
         const username = htmlUsername.value.trim()
 
         try {
-            const response = await fetch(`/find_user/${username}`, {
+            const response = await fetch(`/api/find_user/${username}`, {
                 method: 'GET',
                 body: JSON.stringify({
                     token: token,

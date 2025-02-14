@@ -6,13 +6,13 @@ function About() {
             <div className="p40">
                 <img
                     className="portrait"
-                    src="public/BayardPhoto.png"
-                    alt="Bayard Carlson, Arthound founder."
+                    src="/api/public/BayardPhoto.png"
+                    alt="Bayard Carlson, Small Media founder."
                 ></img>
             </div>
             <div className="p40 about-me-text div-body">
                 <p>
-                    Art Hound is a place where artists can post their art,
+                    Small Media is a place where people can post their art,
                     project updates, and other work without fearing that it will
                     be used to train a generative AI model.
                 </p>
@@ -22,7 +22,7 @@ function About() {
                 </p>
                 <ul>
                     <li>
-                        We don't allow bots to create accounts on Art Hound and
+                        We don't allow bots to create accounts on Small Media and
                         work to remove comprimised accounts.
                     </li>
                     <li>

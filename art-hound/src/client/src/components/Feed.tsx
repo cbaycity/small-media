@@ -24,7 +24,7 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch(`/getUserPosts/${username}`, {
+                const response = await fetch(`/api/getUserPosts/${username}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
                             <p>{post['description']}</p>
                             <img
                                 className="post-img"
-                                src={`/postphotos/${post['image_id']}`}
+                                src={`/api/postphotos/${post['image_id']}`}
                                 alt="Photo from post."
                             />
                         </div>
@@ -104,13 +104,13 @@ function UserFeed(username: string, onUserProfile: boolean = false) {
                         </p>
                         <img
                             className="post-img"
-                            src="/public/artHoundLogoColor.svg"
+                            src="/api/public/artHoundLogoColor.svg"
                             alt="Art Hound Logo"
                         />
                     </div>
                 )}
             </div>
-            <link rel="stylesheet" href="public/feed.css" />
+            <link rel="stylesheet" href="/api/public/feed.css" />
         </>
     )
 }

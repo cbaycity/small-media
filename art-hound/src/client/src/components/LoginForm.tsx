@@ -106,7 +106,7 @@ const FormSubmit = async (
 
     // Send data to backend to see if login succeeds
     try {
-        const response = await fetch('/userLogin', {
+        const response = await fetch('/api/userLogin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ function LoginForm() {
                     </form>
                 </div>
                 {/* Add the stylesheet to the CSS.*/}
-                <link rel="stylesheet" href="public/basic-form.css" />
+                <link rel="stylesheet" href="/api/public/basic-form.css" />
             </div>
         </div>
     )
@@ -189,7 +189,7 @@ function LoginForm() {
 
 const CheckLogin = async (token: string | null): Promise<boolean> => {
     try {
-        const response = await fetch('/validLogin', {
+        const response = await fetch('/api/validLogin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

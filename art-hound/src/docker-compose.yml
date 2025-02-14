@@ -1,11 +1,25 @@
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - small-media
+  
   mongodb:
     image: mongo:latest
     container_name: mongodb
     ports:
       - "27017:27017"
     networks:
-      - art-hound
+      - small-media
     volumes:
       - mongodb_data:/data/db
     restart: always
@@ -13,7 +27,7 @@ services:
   backend:
     build: ./backend
     networks:
-      - art-hound
+      - small-media
     container_name: backend
     env_file: .env
     ports:
@@ -22,7 +36,7 @@ services:
   frontend:
     build: ./client
     networks:
-      - art-hound
+      - small-media
     container_name: react-frontend
     ports:
       - "3000:3000"
@@ -36,7 +50,7 @@ services:
     ports:
       - "8888:8888"
     networks:
-      - art-hound
+      - small-media
     container_name: explore-notebook
     depends_on:
       - backend
@@ -46,7 +60,7 @@ services:
     env_file: .env
   
 networks:
-  art-hound:
+  small-media:
     driver: bridge
 
 volumes:

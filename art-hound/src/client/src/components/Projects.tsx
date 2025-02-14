@@ -61,7 +61,7 @@ const AddPostsForProject: React.FC<AddPostsForProjectProps> = ({
                             <p>{post['description']}</p>
                             <img
                                 className="post-img"
-                                src={`/postphotos/${post['image_id']}`}
+                                src={`/api/postphotos/${post['image_id']}`}
                                 alt="Photo from post."
                             />
                         </div>
@@ -86,7 +86,7 @@ const AddPostsForProject: React.FC<AddPostsForProjectProps> = ({
                         </p>
                         <img
                             className="post-img"
-                            src="/public/artHoundLogoColor.svg"
+                            src="/api/public/artHoundLogoColor.svg"
                             alt="Art Hound Logo"
                         />
                     </div>
@@ -94,7 +94,7 @@ const AddPostsForProject: React.FC<AddPostsForProjectProps> = ({
             </div>
             <link
                 rel="stylesheet"
-                href={`${process.env.PUBLIC_URL}/public/feed.css`}
+                href={`/${process.env.PUBLIC_URL}/api/public/feed.css`}
             />
         </>
     )
@@ -122,7 +122,7 @@ function DisplayProject(project: Project, token: string | null, index: number) {
             {project['image_id'] && token ? (
                 <img
                     className="project-image"
-                    src={`/postphotos/${project['image_id']}`}
+                    src={`/api/postphotos/${project['image_id']}`}
                     alt="Main project photo."
                 />
             ) : (
@@ -182,7 +182,7 @@ function Projects() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await fetch(`/UserProjects`, {
+                const response = await fetch(`/api/UserProjects`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ function Projects() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await fetch(`/FriendProjects`, {
+                const response = await fetch(`/api/FriendProjects`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ function Projects() {
         <>
             <link
                 rel="stylesheet"
-                href={`${process.env.PUBLIC_URL}/public/feed.css`}
+                href={`/${process.env.PUBLIC_URL}/api/public/feed.css`}
             />
             <div className="center-body general-body-background feed-body">
                 <LeftBar />
@@ -277,7 +277,7 @@ function SingleProject() {
         const projectQuery = async () => {
             try {
                 const response = await fetch(
-                    `/project/${username}/${project_id}`,
+                    `/api/project/${username}/${project_id}`,
                     {
                         method: 'POST',
                         headers: {
@@ -317,7 +317,7 @@ function SingleProject() {
                         {project['image_id'] && token ? (
                             <img
                                 className="project-image"
-                                src={`/postphotos/${project['image_id']}`}
+                                src={`/api/postphotos/${project['image_id']}`}
                                 alt="Main project photo."
                             />
                         ) : (
