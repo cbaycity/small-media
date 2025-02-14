@@ -65,3 +65,8 @@ prettier <target: ex. ./*> --write
 2. Use EC2 instance to just trigger ```docker run```.
 3. Put a firewall, like AWS waff, to stop bots.
 
+
+
+Deployment note:
+1. `docker-compose` is used instead of `docker compose`
+2. 
