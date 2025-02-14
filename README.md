@@ -7,7 +7,7 @@ The react front end was built with `npx create-react-app client --template types
 
 
 ## RENAME:
-New Name: Ghost Hound Haven
+New Name: small-media
 
 ## Useful commands:
 

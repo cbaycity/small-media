@@ -296,3 +296,7 @@ h2 {
     height: auto;
     display: block;
 }
+
+.max-width {
+    width: 100% !important;
+}

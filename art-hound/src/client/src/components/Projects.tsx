@@ -134,7 +134,7 @@ function DisplayProject(project: Project, token: string | null, index: number) {
 
 function DisplayListProjects(projects: Project[], token: string | null) {
     return (
-        <div id="feed" className="feed">
+        <div id="feed" className="feed max-width">
             {projects && projects.length > 0 ? (
                 projects.map((project, index) =>
                     DisplayProject(project, token, index)
