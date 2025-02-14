@@ -9,6 +9,8 @@ The react front end was built with `npx create-react-app client --template types
 ## RENAME:
 New Name: small-media
 
+Define errors for files that are too large.
+
 ## Useful commands:
 
 1. The command `flask --app main run` can be from from the backend directory to start up a development server. You need the poetry environment to be runnning and setup correctly.

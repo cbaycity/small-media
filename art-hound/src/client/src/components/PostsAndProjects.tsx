@@ -93,7 +93,7 @@ function CreatePost() {
                     <div id="form-one-block">
                         <form
                             className="signup-form"
-                            action="/createPost"
+                            action="/api/createPost"
                             method="post"
                             encType="multipart/form-data"
                         >
@@ -180,7 +180,7 @@ function CreateProject() {
                     <div id="form-one-block">
                         <form
                             className="signup-form"
-                            action="/createProject"
+                            action="/api/createProject"
                             method="post"
                             encType="multipart/form-data"
                         >
@@ -244,7 +244,7 @@ function EditProfile() {
                     <div id="form-one-block">
                         <form
                             className="signup-form"
-                            action="/editUser"
+                            action="/api/editUser"
                             method="post"
                             encType="multipart/form-data"
                         >
