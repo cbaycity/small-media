@@ -70,3 +70,30 @@ prettier <target: ex. ./*> --write
 Deployment note:
 1. `docker-compose` is used instead of `docker compose`
 2. 
+
+Necessary Commands:
+1. Git Clone command:
+```bash
+git clone -c "core.sshCommand=ssh -i /home/c_bayardcarlson/Small-Media.pem" git@github.com:cbaycity/art-hound
+```
+
+```bash
+git pull -c "core.sshCommand=ssh -i /home/c_bayardcarlson/Small-Media.pem"
+```
+
+2. Install Docker and provide the ability to access ports.
+```bash
+ sudo apt-get install -y docker.io
+sudo systemctl enable docker --now
+sudo chmod 666 /var/run/docker.sock
+```
+
+3. Download the env file
+```bash
+gsutil cp gs://small-media/.env /home/c_bayardcarlson/art-hound/art-hound/src/.env
+```
+
+4. Open SSL Command:
+```bash
+openssl req -newkey rsa:2048 -nodes -keyout private_key.pem -x509 -days 365 -out certificate.pem
+```
