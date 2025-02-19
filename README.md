@@ -88,7 +88,7 @@ sudo systemctl enable docker --now
 sudo chmod 666 /var/run/docker.sock
 ```
 
-3. Download the env file and 
+3. Download the env file and necessary ssl keys.
 ```bash
 gsutil cp gs://small-media/.env /home/c_bayardcarlson/art-hound/art-hound/src/.env
 gsutil cp gs://small-media/certificate.pem /home/c_bayardcarlson/art-hound/art-hound/src/backend/certificate.pem
