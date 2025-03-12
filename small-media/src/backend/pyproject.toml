@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "art-hound"
+name = "small-media"
 version = "0.0.1"
-description = "This runs the backend server for the website art-hound."
+description = "This runs the backend server for the website small-media."
 authors = ["Bayard Carlson"]
 readme = "README.md"
 package-mode = false
