@@ -1,1 +1,1 @@
-"""The backend website for art-hound."""
+"""The backend website for small-media."""

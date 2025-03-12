@@ -13,27 +13,12 @@ function About() {
             <div className="p40 about-me-text div-body">
                 <p>
                     Small Media is a place where people can post their art,
-                    project updates, and other work without fearing that it will
-                    be used to train a generative AI model.
+                    project updates, and other work in posts that are linked to projects. This hopefully focuses the application on user's work and creative pursuits.
                 </p>
                 <p>
-                    We fight to ensure that our user's artwork isn't trained on
-                    by generative AI models.
+                Long term goals include ensuring that the platform has discoverability without allowing generative AI models to train on user data.
                 </p>
-                <ul>
-                    <li>
-                        We don't allow bots to create accounts on Small Media and
-                        work to remove comprimised accounts.
-                    </li>
-                    <li>
-                        We limit the number of assets an account can view per
-                        minute.
-                    </li>
-                    <li>
-                        We provide strong account privacy settings and allow
-                        users to easily adjust their settings.
-                    </li>
-                </ul>
+                <p>This website is built by <a href="https://www.linkedin.com/in/charles-carlson-14aa1090/">Charles Bayard Carlson</a> as a project to improve his full stack development skills. The tech stack includes a React front end, a Flask Backend, and a MongoDB database.</p>
             </div>
         </div>
     )
